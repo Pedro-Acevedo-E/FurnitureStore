@@ -22,11 +22,13 @@ class SQLHelper{
         name TEXT,
         description TEXT,
         user_id INTEGER,
+        location TEXT,
         status TEXT,
         category TEXT,
         equipment_info TEXT,
         external TEXT,
         notes TEXT,
+        createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
       """);
     await database.execute("""CREATE TABLE equipment_log(
@@ -64,5 +66,10 @@ class SQLHelper{
         await createTables(database);
       },
     );
+  }
+
+  static Future<int> createEquipment(String name) async {
+    final db = await SQLHelper.db();
+
   }
 }
