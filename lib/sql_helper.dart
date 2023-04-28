@@ -12,7 +12,7 @@ class SQLHelper{
         first_name TEXT,
         last_name TEXT,
         password TEXT,
-        access TEXT,
+        access TEXT
       )
       """);
     await database.execute("""CREATE TABLE equipment(
@@ -44,13 +44,13 @@ class SQLHelper{
         weight TEXT,
         dimensions TEXT,
         color_1 TEXT,
-        color_2 TEXT,
+        color_2 TEXT
       )
       """);
     await database.execute("""CREATE TABLE category(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         name TEXT,
-        description TEXT,
+        description TEXT
       )
       """);
   }
@@ -61,6 +61,7 @@ class SQLHelper{
       'furniture.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
+        debugPrint("Created database");
         await createTables(database);
       },
     );
@@ -69,6 +70,26 @@ class SQLHelper{
   //CRUD
 
   //CREATE
+  static Future<int> createUser(User user) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      'username': user.username,
+      'first_name': user.firstName,
+      'last_name': user.lastName,
+      'password': user.password,
+      'access': user.access
+    };
+
+    final id = await db.insert(
+        'user',
+        data,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );
+
+    return id;
+  }
+
   static Future<int> createEquipment(Equipment equipment) async {
     final db = await SQLHelper.db();
 
@@ -143,26 +164,6 @@ class SQLHelper{
 
     final id = await db.insert(
         'category',
-        data,
-        conflictAlgorithm: sql.ConflictAlgorithm.replace
-    );
-
-    return id;
-  }
-
-  static Future<int> createUser(User user) async {
-    final db = await SQLHelper.db();
-
-    final data = {
-      'username': user.username,
-      'first_name': user.firstName,
-      'last_name': user.lastName,
-      'password': user.password,
-      'access': user.access
-    };
-
-    final id = await db.insert(
-        'user',
         data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace
     );
