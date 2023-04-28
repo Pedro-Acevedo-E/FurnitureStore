@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:furniture_store/models.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 class SQLHelper{
@@ -21,7 +22,6 @@ class SQLHelper{
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         name TEXT,
         description TEXT,
-        user_id INTEGER,
         location TEXT,
         status TEXT,
         category TEXT,
@@ -40,7 +40,8 @@ class SQLHelper{
       )
       """);
     await database.execute("""CREATE TABLE equipment_info(
-        id TEXT,
+        id INTEGER PRIMARY KEY,
+        product_id TEXT,
         model TEXT,
         description TEXT,
         weight TEXT,
@@ -68,8 +69,70 @@ class SQLHelper{
     );
   }
 
-  static Future<int> createEquipment(String name) async {
+  static Future<int> createEquipment(Equipment equipment) async {
     final db = await SQLHelper.db();
 
+    final data = {
+      'name': equipment.name,
+      'description': equipment.description,
+      'location': equipment.location,
+      'status': equipment.status,
+      'category': equipment.category,
+      'equipment_info': equipment.equipmentInfo,
+      'external': equipment.external,
+      'notes': equipment.notes
+    };
+
+    final id = await db.insert(
+        'equipment',
+        data,
+      conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );
+
+    return id;
+  }
+
+  static Future<int> createEquipmentInfo(EquipmentInfo info, int equipmentId) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      'id': equipmentId,
+      'product_id': info.productId,
+      'model': info.model,
+      'description': info.description,
+      'weight': info.weight,
+      'dimensions': info.dimensions,
+      'color_1': info.color1,
+      'color_2': info.color2
+    };
+
+    final id = await db.insert(
+        'equipment_info',
+        data,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );
+
+    return id;
+  }
+
+  static Future<int> createLog(Users user, String description, int equipmentId) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      'equipment_id': equipmentId,
+      'user_id': user.id,
+      'description': description
+    };
+
+    final id = await db.insert(
+        'equipment_info',
+        data,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );
+
+    return id;
   }
 }
+
+
+

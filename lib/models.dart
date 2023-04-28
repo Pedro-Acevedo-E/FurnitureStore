@@ -11,7 +11,6 @@ class Equipment {
   final int id;
   final String name;
   final String description;
-  final int userId;
   final String location;
   final String status;
   final String category;
@@ -24,7 +23,6 @@ class Equipment {
     required this.id,
     required this.name,
     required this.description,
-    required this.userId,
     required this.location,
     required this.status,
     required this.category,
@@ -53,6 +51,7 @@ class EquipmentLog {
 
 class EquipmentInfo {
   final String id;
+  final String productId;
   final String model;
   final String description;
   final String weight;
@@ -62,6 +61,7 @@ class EquipmentInfo {
 
   EquipmentInfo({
     required this.id,
+    required this.productId,
     required this.model,
     required this.description,
     required this.weight,
