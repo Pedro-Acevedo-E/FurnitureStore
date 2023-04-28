@@ -23,9 +23,10 @@ class SQLHelper{
         description TEXT,
         user_id INTEGER,
         status TEXT,
-        type TEXT,
+        category TEXT,
         equipment_info TEXT,
         external TEXT,
+        notes TEXT,
       )
       """);
     await database.execute("""CREATE TABLE equipment_log(
@@ -39,9 +40,29 @@ class SQLHelper{
     await database.execute("""CREATE TABLE equipment_info(
         id TEXT,
         model TEXT,
-        description INTEGER,
-        specs TEXT,
+        description TEXT,
+        weight TEXT,
+        dimensions TEXT,
+        color_1 TEXT,
+        color_2 TEXT,
       )
       """);
+    await database.execute("""CREATE TABLE category(
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        name TEXT,
+        description TEXT,
+      )
+      """);
+  }
+  //We try to open "furniture.db" database,
+  //If database does not exist it creates it with that name.
+  static Future<sql.Database> db() async {
+    return sql.openDatabase(
+      'furniture.db',
+      version: 1,
+      onCreate: (sql.Database database, int version) async {
+        await createTables(database);
+      },
+    );
   }
 }
