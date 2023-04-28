@@ -1,10 +1,19 @@
-class Users {
+class User {
   final int id;
   final String username;
+  final String firstName;
+  final String lastName;
   final String password;
   final String access;
 
-  Users({required this.id, required this.username, required this.password, required this.access});
+  User({
+    required this.id,
+    required this.username,
+    required this.firstName,
+    required this.lastName,
+    required this.password,
+    required this.access
+  });
 }
 
 class Equipment {
@@ -68,17 +77,5 @@ class EquipmentInfo {
     required this.dimensions,
     required this.color1,
     required this.color2,
-  });
-}
-
-class Category {
-  final int id;
-  final String name;
-  final String description;
-
-  Category({
-    required this.id,
-    required this.name,
-    required this.description,
   });
 }
