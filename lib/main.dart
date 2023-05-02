@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/admin_main_view.dart';
@@ -9,8 +11,15 @@ import 'package:furniture_store/views/user_main_view.dart';
 import 'models.dart';
 
 void main() {
+  //Were ensuring the app can only run in landscape
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((value) => runApp(const MyApp()));
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -38,25 +47,47 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    //createUser();
-    loadUsers();
+    //createDemo();
+    loadItems();
   }
 
-  void loadUsers() async {
+  void loadItems() async {
     final data = await SQLHelper.getList("user");
+    final categoryData = await SQLHelper.getList("category");
     setState(() {
       items = data;
     });
-    print("We have ${items.length} users in our database");
+    if (kDebugMode) {
+      print("We have ${items.length} users in our database");
+      for(int i = 0; i < items.length; i++) {
+        print(items.elementAt(i)["username"]);
+        print(items.elementAt(i)["id"]);
+      }
+      print("We have ${categoryData.length} categories in our database");
+      for(int i = 0; i < categoryData.length; i++) {
+        print(categoryData.elementAt(i)["name"]);
+        print(categoryData.elementAt(i)["id"]);
+      }
+    }
   }
 
-  void createUser() async {
+  void createDemo() async {
+    final phoneCategoryData = await SQLHelper.createCategory("Phone", "Mobile phone devices");
+    final pcCategoryData = await SQLHelper.createCategory("PC", "Personal computer");
+    final laptopCategoryData = await SQLHelper.createCategory("Laptop", "Portable personal computers");
+    final deskCategoryData = await SQLHelper.createCategory("Desk", "Personal Desk");
     final adminData = await SQLHelper.createUser(User(id: 0, username: "admin", firstName: "", lastName: "", password: "12345678", access: "admin"));
     final userData = await SQLHelper.createUser(User(id: 0, username: "user", firstName: "", lastName: "", password: "12345678", access: "user"));
     final securityData = await SQLHelper.createUser(User(id: 0, username: "security", firstName: "", lastName: "", password: "12345678", access: "security"));
-    print("User $adminData created succesfully");
-    print("User $userData created succesfully");
-    print("User $securityData created succesfully");
+    if (kDebugMode) {
+      print("Created category $phoneCategoryData in database");
+      print("Created category $pcCategoryData in database");
+      print("Created category $laptopCategoryData in database");
+      print("Created category $deskCategoryData in database");
+      print("Created user $adminData in database");
+      print("Created user $userData in database");
+      print("Created user $securityData in database");
+    }
   }
 
   Widget mainView() {

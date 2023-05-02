@@ -8,10 +8,10 @@ class SQLHelper{
   static Future<void> createTables(sql.Database database) async {
     await database.execute("""CREATE TABLE user(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        username TEXT,
+        username TEXT NOT NULL UNIQUE,
         first_name TEXT,
         last_name TEXT,
-        password TEXT,
+        password TEXT NOT NULL,
         access TEXT
       )
       """);
@@ -51,7 +51,7 @@ class SQLHelper{
       """);
     await database.execute("""CREATE TABLE category(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        name TEXT,
+        name TEXT NOT NULL UNIQUE,
         description TEXT
       )
       """);
