@@ -29,7 +29,7 @@ class AdminMainView extends StatelessWidget {
                 onSelected: (PopupSelection item) {
                   switch(item) {
                     case PopupSelection.profile: {
-                      changeState(AppState.userView);
+                      changeState(AppState.profile);
                     } break;
                     case PopupSelection.settings: {
                       changeState(AppState.settings);
@@ -64,7 +64,7 @@ class AdminMainView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Your furniture"),
-                Text("Your furnitur will be here"),
+                Text("Your furniture will be here"),
               ],
             ),
           ),

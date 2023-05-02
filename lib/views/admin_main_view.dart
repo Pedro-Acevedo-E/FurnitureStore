@@ -29,7 +29,7 @@ class AdminMainView extends StatelessWidget {
                 onSelected: (PopupSelection item) {
                   switch(item) {
                     case PopupSelection.profile: {
-                      changeState(AppState.userView);
+                      changeState(AppState.profile);
                     } break;
                     case PopupSelection.settings: {
                       changeState(AppState.settings);
@@ -80,14 +80,30 @@ class AdminMainView extends StatelessWidget {
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: assignFurniture,
+                          child: const Text("Assign furniture")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: furnitureList,
+                          child: const Text("Furniture List")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
                           onPressed: createCategory,
-                          child: const Text("Create category")
+                          child: const Text("Create Category")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: viewLogs,
+                          child: const Text("View Logs")
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
                           onPressed: createIncident,
-                          child: const Text("Report Incident")
+                          child: const Text("Create Incident")
                       ),
+
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
                           onPressed: furnitureEntrance,
@@ -100,8 +116,8 @@ class AdminMainView extends StatelessWidget {
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                          onPressed: viewLogs,
-                          child: const Text("View Logs")
+                          onPressed: userListView,
+                          child: const Text("User List")
                       ),
                     ],
                   ),
@@ -123,8 +139,20 @@ class AdminMainView extends StatelessWidget {
     changeState(AppState.createFurniture);
   }
 
+  void assignFurniture() {
+    changeState(AppState.assignFurniture);
+  }
+
+  void furnitureList() {
+    changeState(AppState.furnitureList);
+  }
+
   void createCategory() {
     changeState(AppState.createCategory);
+  }
+
+  void viewLogs() {
+    changeState(AppState.equipmentLogListView);
   }
 
   void createIncident() {
@@ -139,7 +167,7 @@ class AdminMainView extends StatelessWidget {
     changeState(AppState.furnitureEntrance);
   }
 
-  void viewLogs() {
-    changeState(AppState.equipmentLogView);
+  void userListView() {
+    changeState(AppState.userList);
   }
 }
