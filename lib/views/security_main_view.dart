@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../app_state.dart';
 import '../models.dart';
 
-class AdminMainView extends StatelessWidget {
+class SecurityMainView extends StatelessWidget {
   final User user;
   final Function(AppState val) changeState;
   final VoidCallback logout;
 
-  const AdminMainView({
+  const SecurityMainView({
     super.key,
     required this.user,
     required this.changeState,

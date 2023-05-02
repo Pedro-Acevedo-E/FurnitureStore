@@ -56,8 +56,7 @@ class SQLHelper{
       )
       """);
   }
-  //We try to open "furniture.db" database,
-  //If database does not exist it creates it with that name.
+
   static Future<sql.Database> db() async {
     return sql.openDatabase(
       'furniture.db',

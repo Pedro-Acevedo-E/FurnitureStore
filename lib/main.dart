@@ -3,6 +3,8 @@ import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/admin_main_view.dart';
 import 'package:furniture_store/views/login_view.dart';
+import 'package:furniture_store/views/security_main_view.dart';
+import 'package:furniture_store/views/user_main_view.dart';
 
 import 'models.dart';
 
@@ -67,7 +69,10 @@ class _MyAppState extends State<MyApp> {
             passwordController: passwordController);
       } break;
       case AppState.userMainView: {
-        return const Text("user Main view");
+        return UserMainView(
+            user: loginUser,
+            changeState: (AppState state) => changeState(state),
+            logout: () => logout());
       } break;
       case AppState.adminMainView: {
         return AdminMainView(
@@ -76,7 +81,10 @@ class _MyAppState extends State<MyApp> {
             logout: () => logout());
       } break;
       case AppState.securityMainView: {
-        return const Text("Security Main view");
+        return SecurityMainView(
+            user: loginUser,
+            changeState: (AppState state) => changeState(state),
+            logout: () => logout());
       } break;
       default: {
         return Text(appState.toString());
