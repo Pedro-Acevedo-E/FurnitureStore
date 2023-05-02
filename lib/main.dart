@@ -48,15 +48,16 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     //createDemo();
-    loadItems();
+    loadItemsDemo();
   }
 
-  void loadItems() async {
+  void loadItemsDemo() async {
     final data = await SQLHelper.getList("user");
     final categoryData = await SQLHelper.getList("category");
     setState(() {
       items = data;
     });
+    final exists = await SQLHelper.userExists("pedro");
     if (kDebugMode) {
       print("We have ${items.length} users in our database");
       for(int i = 0; i < items.length; i++) {
@@ -67,6 +68,11 @@ class _MyAppState extends State<MyApp> {
       for(int i = 0; i < categoryData.length; i++) {
         print(categoryData.elementAt(i)["name"]);
         print(categoryData.elementAt(i)["id"]);
+      }
+      if(exists) {
+        print("Test User exists in database");
+      } else {
+        print("Test User does not exist in database");
       }
     }
   }

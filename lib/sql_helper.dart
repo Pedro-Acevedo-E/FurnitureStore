@@ -185,6 +185,16 @@ class SQLHelper{
     final db = await SQLHelper.db();
     return db.query(from, where: "id = ?", whereArgs: [id], limit: 1);
   }
+
+  static Future<bool> userExists(String username) async {
+    final db = await SQLHelper.db();
+    final query = await db.query("user", where: "username = ?", whereArgs: [username], limit: 1);
+    if (query.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   
   //UPDATE ITEM
   static Future<int> updateUser(int id, User user) async {
