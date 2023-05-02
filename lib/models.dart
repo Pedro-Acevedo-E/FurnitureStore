@@ -14,6 +14,10 @@ class User {
     required this.password,
     required this.access
   });
+
+  static User empty(){
+    return User(id: 0, username: "", firstName: "", lastName: "", password: "", access: "");
+  }
 }
 
 class Equipment {

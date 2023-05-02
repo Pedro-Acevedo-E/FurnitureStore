@@ -255,6 +255,9 @@ class SQLHelper{
       debugPrint("Deletion attempt of $from: $id failed,\n $err");
     }
   }
-  
-  
+
+  static Future<List<Map<String, dynamic>>> loginUser(String username, String password) async {
+    final db = await SQLHelper.db();
+    return db.rawQuery('SELECT * FROM user WHERE username=? AND password=?', [username, password]);
+  }
 }
