@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
+import 'package:furniture_store/views/admin_main_view.dart';
 import 'package:furniture_store/views/login_view.dart';
 
 import 'models.dart';
@@ -68,7 +69,10 @@ class _MyAppState extends State<MyApp> {
         return const Text("user Main view");
       } break;
       case AppState.adminMainView: {
-        return const Text("Admin Main view");
+        return AdminMainView(
+            user: loginUser,
+            changeState: (AppState state) => changeState(state),
+            logout: () => logout());
       } break;
       case AppState.securityMainView: {
         return const Text("Security Main view");
@@ -79,26 +83,71 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  void changeState(AppState state) {
+    setState(() {
+      appState = state;
+      alertText = "";
+    });
+  }
+
   void login() async {
     List<Map<String, dynamic>> data = await SQLHelper.loginUser(usernameController.text, passwordController.text);
     if(data.length == 1) {
-      print("Succesfull log in");
-      setState(() {
-        print("set appstate to use main view");
-        appState = AppState.adminMainView;
-        alertText = "";
-      });
-    } else if (data.length != 1) {
-      setState(() {
-        alertText = "Login Failed: Your user ID or password is incorrect";
-      });
-        print("multiple users found");
+      setUserInfo(data[0]);
+      switch(loginUser.access) {
+        case "admin": {
+          setState(() {
+            appState = AppState.adminMainView;
+            alertText = "";
+          });
+        } break;
+        case "user": {
+          setState(() {
+            appState = AppState.userMainView;
+            alertText = "";
+          });
+        } break;
+        case "security": {
+          setState(() {
+            appState = AppState.securityMainView;
+            alertText = "";
+          });
+        } break;
+        default: {
+          setState(() {
+            appState = AppState.error;
+            alertText = "";
+          });
+        } break;
+      }
     } else {
       setState(() {
         alertText = "Login Failed: Your user ID or password is incorrect";
       });
-        print("Login failed");
     }
-
   }
+
+  void logout() {
+    setState(() {
+      loginUser = User.empty();
+      appState = AppState.loginScreen;
+      usernameController.text = "";
+      passwordController.text = "";
+      alertText = "";
+    });
+  }
+
+  void setUserInfo(Map<String, dynamic> data) {
+    setState(() {
+      loginUser = User(
+          id: data["id"],
+          username: data["username"],
+          firstName: data["first_name"],
+          lastName: data["last_name"],
+          password: data["password"],
+          access: data["access"]
+      );
+    });
+  }
+
 }

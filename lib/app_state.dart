@@ -6,7 +6,7 @@ enum AppState {
   securityMainView,
 
   //Views
-  tablesView, //Basic CRUD operations
+  databaseView, //Basic CRUD operations
       //Lists
   userListView, //You can click any of these to check info (CANNOT delete or edit info here)
   equipmentListView,
@@ -29,9 +29,9 @@ enum AppState {
   //Functions
   createIncident,
   entranceFurniture, //assign furniture to user and update its state this generates logs
-  exitFurniture,
-  createExternalFurniture, //maybe can be deprecated for createFurniture
+  exitFurniture, //maybe can be deprecated for createFurniture
   userFurniture, //Just check furniture asigned to a user (external and internal)
+  settings,
 
   //Updates or edits
   updateUser,
@@ -41,4 +41,10 @@ enum AppState {
   updateCategory,
 
   error,
+}
+
+enum PopupSelection {
+  profile,
+  settings,
+  logout,
 }

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:furniture_store/sql_helper.dart';
-import 'package:furniture_store/app_state.dart';
-
-import '../models.dart';
 
 class LoginView extends StatelessWidget {
   final String alertText;
