@@ -30,6 +30,7 @@ class SQLHelper{
       """);
     await database.execute("""CREATE TABLE equipment_log(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        title VARCHAR,
         equipment_id INTEGER,
         user_id INTEGER,
         description TEXT,
@@ -136,10 +137,11 @@ class SQLHelper{
     return id;
   }
 
-  static Future<int> createEquipmentLog(User user, String description, int equipmentId) async {
+  static Future<int> createEquipmentLog(User user, String title, String description, int equipmentId) async {
     final db = await SQLHelper.db();
 
     final data = {
+      'title': title,
       'equipment_id': equipmentId,
       'user_id': user.id,
       'description': "User ${user.username}:\n $description"

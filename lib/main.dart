@@ -49,9 +49,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void createUser() async {
-    //final data = await SQLHelper.createUser(User(id: 0, username: "admin", firstName: "", lastName: "", password: "12345678", access: "admin"));
+    final adminData = await SQLHelper.createUser(User(id: 0, username: "admin", firstName: "", lastName: "", password: "12345678", access: "admin"));
     final userData = await SQLHelper.createUser(User(id: 0, username: "user", firstName: "", lastName: "", password: "12345678", access: "user"));
     final securityData = await SQLHelper.createUser(User(id: 0, username: "security", firstName: "", lastName: "", password: "12345678", access: "security"));
+    print("User $adminData created succesfully");
     print("User $userData created succesfully");
     print("User $securityData created succesfully");
   }

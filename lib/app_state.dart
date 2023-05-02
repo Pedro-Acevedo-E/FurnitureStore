@@ -28,8 +28,8 @@ enum AppState {
 
   //Functions
   createIncident,
-  entranceFurniture, //assign furniture to user and update its state this generates logs
-  exitFurniture, //maybe can be deprecated for createFurniture
+  furnitureEntrance, //assign furniture to user and update its state this generates logs
+  furnitureExit,
   userFurniture, //Just check furniture asigned to a user (external and internal)
   settings,
 

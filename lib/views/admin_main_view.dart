@@ -59,36 +59,53 @@ class AdminMainView extends StatelessWidget {
           ),
         ),
         body: Center(
-          child: SizedBox(
-            width: 300,
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                      onPressed: viewDatabase,
-                      child: const Text("Database")
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: viewDatabase,
+                          child: const Text("Database")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: createUser,
+                          child: const Text("Create user")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: createFurniture,
+                          child: const Text("Create furniture")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: createCategory,
+                          child: const Text("Create category")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: createIncident,
+                          child: const Text("Report Incident")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: furnitureEntrance,
+                          child: const Text("Furniture entrance")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: furnitureExit,
+                          child: const Text("Furniture exit")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: viewLogs,
+                          child: const Text("View Logs")
+                      ),
+                    ],
                   ),
-                  ElevatedButton(
-                      onPressed: createUser,
-                      child: const Text("Create user")
-                  ),
-                  ElevatedButton(
-                      onPressed: createFurniture,
-                      child: const Text("Create furniture")
-                  ),
-                  ElevatedButton(
-                      onPressed: createCategory,
-                      child: const Text("Create category")
-                  ),
-                  ElevatedButton(
-                      onPressed: viewLogs,
-                      child: const Text("View Logs")
-                  ),
-                ],
-              ),
             ),
-          ),
         ),
       ),
     );
@@ -108,6 +125,18 @@ class AdminMainView extends StatelessWidget {
 
   void createCategory() {
     changeState(AppState.createCategory);
+  }
+
+  void createIncident() {
+    changeState(AppState.createIncident);
+  }
+
+  void furnitureExit() {
+    changeState(AppState.furnitureExit);
+  }
+
+  void furnitureEntrance() {
+    changeState(AppState.furnitureEntrance);
   }
 
   void viewLogs() {

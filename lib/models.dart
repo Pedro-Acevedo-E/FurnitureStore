@@ -48,6 +48,7 @@ class Equipment {
 
 class EquipmentLog {
   final int id;
+  final String title;
   final int equipmentId;
   final int userId;
   final String description;
@@ -55,6 +56,7 @@ class EquipmentLog {
 
   EquipmentLog({
     required this.id,
+    required this.title,
     required this.equipmentId,
     required this.userId,
     required this.description,
