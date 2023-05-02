@@ -22,24 +22,26 @@ class User {
 
 class Equipment {
   final int id;
+  final int userID;
   final String name;
   final String description;
   final String location;
   final String status;
   final String category;
-  final String equipmentInfo;
+  final int equipmentInfoID;
   final String external;
   final String notes;
   final String createdAt;
 
   Equipment({
     required this.id,
+    required this.userID,
     required this.name,
     required this.description,
     required this.location,
     required this.status,
     required this.category,
-    required this.equipmentInfo,
+    required this.equipmentInfoID,
     required this.external,
     required this.notes,
     required this.createdAt,

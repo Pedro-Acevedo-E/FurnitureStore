@@ -17,15 +17,16 @@ class SQLHelper{
       """);
     await database.execute("""CREATE TABLE equipment(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        user_id INTEGER,
         name TEXT,
         description TEXT,
         location TEXT,
         status TEXT,
         category TEXT,
-        equipment_info TEXT,
+        equipment_info_id INTEGER,
         external TEXT,
         notes TEXT,
-        createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
       """);
     await database.execute("""CREATE TABLE equipment_log(
@@ -34,7 +35,7 @@ class SQLHelper{
         equipment_id INTEGER,
         user_id INTEGER,
         description TEXT,
-        createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
       """);
     await database.execute("""CREATE TABLE equipment_info(
@@ -95,12 +96,13 @@ class SQLHelper{
     final db = await SQLHelper.db();
 
     final data = {
+      'user_id': equipment.userID,
       'name': equipment.name,
       'description': equipment.description,
       'location': equipment.location,
       'status': equipment.status,
       'category': equipment.category,
-      'equipment_info': equipment.equipmentInfo,
+      'equipment_info_id': equipment.equipmentInfoID,
       'external': equipment.external,
       'notes': equipment.notes
     };
@@ -205,12 +207,13 @@ class SQLHelper{
     final db = await SQLHelper.db();
 
     final data = {
+      'user_id': equipment.userID,
       'name': equipment.name,
       'description': equipment.description,
       'location': equipment.location,
       'status': equipment.status,
       'category': equipment.category,
-      'equipment_info': equipment.equipmentInfo,
+      'equipment_info_id': equipment.equipmentInfoID,
       'external': equipment.external,
       'notes': equipment.notes
     };
