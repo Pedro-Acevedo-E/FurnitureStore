@@ -37,6 +37,18 @@ class User {
     return User(id: 0, username: "security", firstName: "security", lastName: "in cool", password: "1234", entranceTime: "", internal: "no", external: "no", access: "security");
   }
 
+  static User demo4(){
+    return User(id: 0, username: "PedroAcevedo", firstName: "Pedro", lastName: "Acevedo", password: "1234", entranceTime: "", internal: "yes", external: "no", access: "user");
+  }
+
+  static User demo5(){
+    return User(id: 0, username: "FernandoMorales", firstName: "Fernando", lastName: "Morales", password: "1234", entranceTime: "12:50", internal: "no", external: "yes", access: "user");
+  }
+
+  static User demo6(){
+    return User(id: 0, username: "CarlosHernandez", firstName: "Carlos", lastName: "Hernandez", password: "1234", entranceTime: "08:20", internal: "yes", external: "yes", access: "user");
+  }
+
 }
 
 class EquipmentExt {
@@ -53,6 +65,14 @@ class EquipmentExt {
     required this.description,
     required this.createdAt,
   });
+
+  static EquipmentExt demo1(){
+    return EquipmentExt(id: 0, user: "FernandoMorales", name: "Headphones", description: "Black wireless headphones", createdAt: "");
+  }
+  static EquipmentExt demo2(){
+    return EquipmentExt(id: 0, user: "CarlosHernandez", name: "Laptop", description: "Apple laptop Mac M1", createdAt: "");
+  }
+
 }
 
 class EquipmentInt {
@@ -89,6 +109,87 @@ class EquipmentInt {
     required this.notes,
     required this.createdAt,
   });
+
+  static EquipmentInt demo1(){
+    return EquipmentInt(
+        id: 0,
+        user: "PedroAcevedo",
+        location: "Outside with user",
+        status: "Good condition",
+        productId: "AEEPLG3456",
+        name: "iPhone 13 Pro",
+        description: "White mobile phone",
+        category: "Phone",
+        model: "13",
+        weight: "240g",
+        dimensions: "5.78inches X 2.82inches",
+        color_1: "White",
+        color_2: "Silver",
+        notes: "Phone does not have chip, and has a 128GB Kingston SD card",
+        createdAt: ""
+    );
+  }
+
+  static EquipmentInt demo2(){
+    return EquipmentInt(
+        id: 0,
+        user: "CarlosHernandez",
+        location: "In office with user",
+        status: "Good condition",
+        productId: "AEEPLG3459",
+        name: "iPhone 13 Pro",
+        description: "White mobile phone",
+        category: "Phone",
+        model: "13",
+        weight: "240g",
+        dimensions: "5.78inches X 2.82inches",
+        color_1: "White",
+        color_2: "Silver",
+        notes: "Phone has an activated Telcel chip, it has no SD card",
+        createdAt: ""
+    );
+  }
+
+  static EquipmentInt demo3(){
+    return EquipmentInt(
+        id: 0,
+        user: "",
+        location: "In office",
+        status: "Good condition",
+        productId: "AEEPGP345",
+        name: "mini Mac M2",
+        description: "Small PC",
+        category: "PC",
+        model: "1.2",
+        weight: "1.18kg",
+        dimensions: "1.41inches X 7.75inches",
+        color_1: "Silver",
+        color_2: "Black",
+        notes: "",
+        createdAt: ""
+    );
+  }
+
+  static EquipmentInt demo4(){
+    return EquipmentInt(
+        id: 0,
+        user: "",
+        location: "In office",
+        status: "Fine condition",
+        productId: "AEEPGP3459",
+        name: "MacBook Air M2",
+        description: "Laptop",
+        category: "Laptop",
+        model: "1.2",
+        weight: "1.29kg",
+        dimensions: "11.97inches X 8.46inches",
+        color_1: "Silver",
+        color_2: "White",
+        notes: "Device has a small crack in the top right corner of the screen",
+        createdAt: ""
+    );
+  }
+
 }
 
 class Log {
@@ -106,5 +207,6 @@ class Log {
     required this.createdAt,
   });
 }
+
 
 

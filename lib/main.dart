@@ -11,7 +11,6 @@ import 'package:furniture_store/views/user_main_view.dart';
 import 'models.dart';
 
 void main() {
-  //Were ensuring the app can only run in landscape
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -49,17 +48,28 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     //createDemo();
     loadItemsDemo();
+    if (kDebugMode) {
+      print("Hour: ${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}");
+      print("Current Date: ${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}");
+    }
   }
 
   void loadItemsDemo() async {
-    final data = await SQLHelper.getList("user");
+    final userData = await SQLHelper.getList("user");
+    final intFurnitureData = await SQLHelper.getList("equipment_int");
+    final extFurnitureData = await SQLHelper.getList("equipment_ext");
     final categoryData = await SQLHelper.getList("category");
+
     setState(() {
-      items = data;
+      items = userData;
     });
-    final exists = await SQLHelper.userExists("pedro");
     if (kDebugMode) {
       print("We have ${items.length} users in our database");
+      print("We have ${categoryData.length} categories in our database");
+      print("We have ${intFurnitureData.length} internal furniture in our database");
+      print("We have ${extFurnitureData.length} external furniture in our database");
+      /*
+      final exists = await SQLHelper.userExists("pedro");
       for(int i = 0; i < items.length; i++) {
         print(items.elementAt(i)["username"]);
         print(items.elementAt(i)["id"]);
@@ -74,6 +84,8 @@ class _MyAppState extends State<MyApp> {
       } else {
         print("Test User does not exist in database");
       }
+       */
+
     }
   }
 
@@ -84,6 +96,16 @@ class _MyAppState extends State<MyApp> {
     final adminData = await SQLHelper.createUser(User.demo1());
     final userData = await SQLHelper.createUser(User.demo2());
     final securityData = await SQLHelper.createUser(User.demo3());
+    final user1 = await SQLHelper.createUser(User.demo4());
+    final user2 = await SQLHelper.createUser(User.demo5());
+    final user3 = await SQLHelper.createUser(User.demo6());
+    final extDevice1 = await SQLHelper.createEquipmentExt(EquipmentExt.demo1());
+    final extDevice2 = await SQLHelper.createEquipmentExt(EquipmentExt.demo2());
+    final intDevice1 = await SQLHelper.createEquipmentInt(EquipmentInt.demo1());
+    final intDevice2 = await SQLHelper.createEquipmentInt(EquipmentInt.demo2());
+    final intDevice3 = await SQLHelper.createEquipmentInt(EquipmentInt.demo3());
+    final intDevice4 = await SQLHelper.createEquipmentInt(EquipmentInt.demo4());
+
     if (kDebugMode) {
       print("Created category $phoneCategoryData in database");
       print("Created category $pcCategoryData in database");
@@ -91,6 +113,15 @@ class _MyAppState extends State<MyApp> {
       print("Created user $adminData in database");
       print("Created user $userData in database");
       print("Created user $securityData in database");
+      print("Created user $user1 in database");
+      print("Created user $user2 in database");
+      print("Created user $user3 in database");
+      print("Created ext device $extDevice1 in database");
+      print("Created ext device $extDevice2 in database");
+      print("Created int device $intDevice1 in database");
+      print("Created int device $intDevice2 in database");
+      print("Created int device $intDevice3 in database");
+      print("Created int device $intDevice4 in database");
     }
   }
 

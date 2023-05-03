@@ -65,18 +65,8 @@ class SecurityMainView extends StatelessWidget {
               children: [
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                    onPressed: userListView,
-                    child: const Text("User List")
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                    onPressed: furnitureList,
-                    child: const Text("Furniture List")
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                    onPressed: createFurniture,
-                    child: const Text("Create furniture")
+                    onPressed: entranceAndExits,
+                    child: const Text("Entrances and exits")
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
@@ -85,23 +75,28 @@ class SecurityMainView extends StatelessWidget {
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                    onPressed: viewLogs,
-                    child: const Text("View Logs")
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
                     onPressed: createIncident,
-                    child: const Text("Report Incident")
+                    child: const Text("Create Incident")
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                    onPressed: furnitureEntrance,
-                    child: const Text("Furniture entrance")
+                    onPressed: viewIncidentLogs,
+                    child: const Text("Incident Log")
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                    onPressed: furnitureExit,
-                    child: const Text("Furniture exit")
+                    onPressed: viewUserLogs,
+                    child: const Text("User Log")
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                    onPressed: viewExternalFurniture,
+                    child: const Text("External furniture")
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                    onPressed: viewInternalFurniture,
+                    child: const Text("Internal furniture")
                 ),
               ],
             ),
@@ -111,35 +106,32 @@ class SecurityMainView extends StatelessWidget {
     );
   }
 
-  void userListView() {
-    changeState(AppState.userList);
-  }
-
-  void furnitureList() {
-    changeState(AppState.furnitureList);
-  }
-
-  void createFurniture() {
-    changeState(AppState.createFurniture);
+  void entranceAndExits() {
+    changeState(AppState.entrancesAndExits);
   }
 
   void assignFurniture() {
     changeState(AppState.assignFurniture);
-  }
-  void viewLogs() {
-    changeState(AppState.equipmentLogListView);
   }
 
   void createIncident() {
     changeState(AppState.createIncident);
   }
 
-  void furnitureExit() {
-    changeState(AppState.furnitureExit);
+  void viewIncidentLogs() {
+    changeState(AppState.incidentLog);
   }
 
-  void furnitureEntrance() {
-    changeState(AppState.furnitureEntrance);
+  void viewUserLogs() {
+    changeState(AppState.userLog);
+  }
+
+  void viewInternalFurniture() {
+    changeState(AppState.internalFurniture);
+  }
+
+  void viewExternalFurniture() {
+    changeState(AppState.externalFurniture);
   }
 
 

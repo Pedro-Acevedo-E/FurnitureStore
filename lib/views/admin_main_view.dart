@@ -65,18 +65,13 @@ class AdminMainView extends StatelessWidget {
                     children: [
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                          onPressed: viewDatabase,
-                          child: const Text("Database")
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                          onPressed: createUser,
-                          child: const Text("Create user")
+                          onPressed: entranceAndExits,
+                          child: const Text("Entrances and exits")
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
                           onPressed: createFurniture,
-                          child: const Text("Create furniture")
+                          child: const Text("Create Internal furniture")
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
@@ -85,39 +80,28 @@ class AdminMainView extends StatelessWidget {
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                          onPressed: furnitureList,
-                          child: const Text("Furniture List")
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                          onPressed: createCategory,
-                          child: const Text("Create Category")
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                          onPressed: viewLogs,
-                          child: const Text("View Logs")
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
                           onPressed: createIncident,
                           child: const Text("Create Incident")
                       ),
-
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                          onPressed: furnitureEntrance,
-                          child: const Text("Furniture entrance")
+                          onPressed: viewIncidentLogs,
+                          child: const Text("Incident Log")
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                          onPressed: furnitureExit,
-                          child: const Text("Furniture exit")
+                          onPressed: viewUserLogs,
+                          child: const Text("User Log")
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-                          onPressed: userListView,
-                          child: const Text("User List")
+                          onPressed: viewExternalFurniture,
+                          child: const Text("External furniture")
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+                          onPressed: viewInternalFurniture,
+                          child: const Text("Internal furniture")
                       ),
                     ],
                   ),
@@ -127,47 +111,35 @@ class AdminMainView extends StatelessWidget {
     );
   }
 
-  void viewDatabase() {
-    changeState(AppState.databaseView);
-  }
-
-  void createUser() {
-    changeState(AppState.createUser);
+  void entranceAndExits() {
+    changeState(AppState.entrancesAndExits);
   }
 
   void createFurniture() {
-    changeState(AppState.createFurniture);
+    changeState(AppState.createInternalFurniture);
   }
 
   void assignFurniture() {
     changeState(AppState.assignFurniture);
   }
 
-  void furnitureList() {
-    changeState(AppState.furnitureList);
-  }
-
-  void createCategory() {
-    changeState(AppState.createCategory);
-  }
-
-  void viewLogs() {
-    changeState(AppState.equipmentLogListView);
-  }
-
   void createIncident() {
     changeState(AppState.createIncident);
   }
 
-  void furnitureExit() {
-    changeState(AppState.furnitureExit);
+  void viewIncidentLogs() {
+    changeState(AppState.incidentLog);
   }
 
-  void furnitureEntrance() {
-    changeState(AppState.furnitureEntrance);
+  void viewUserLogs() {
+    changeState(AppState.userLog);
   }
 
-  void userListView() {
-    changeState(AppState.userList);
+  void viewInternalFurniture() {
+    changeState(AppState.internalFurniture);
+  }
+
+  void viewExternalFurniture() {
+    changeState(AppState.externalFurniture);
   }
 }
