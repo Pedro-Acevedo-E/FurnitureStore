@@ -81,15 +81,13 @@ class _MyAppState extends State<MyApp> {
     final phoneCategoryData = await SQLHelper.createCategory("Phone", "Mobile phone devices");
     final pcCategoryData = await SQLHelper.createCategory("PC", "Personal computer");
     final laptopCategoryData = await SQLHelper.createCategory("Laptop", "Portable personal computers");
-    final deskCategoryData = await SQLHelper.createCategory("Desk", "Personal Desk");
-    final adminData = await SQLHelper.createUser(User(id: 0, username: "admin", firstName: "", lastName: "", password: "12345678", access: "admin"));
-    final userData = await SQLHelper.createUser(User(id: 0, username: "user", firstName: "", lastName: "", password: "12345678", access: "user"));
-    final securityData = await SQLHelper.createUser(User(id: 0, username: "security", firstName: "", lastName: "", password: "12345678", access: "security"));
+    final adminData = await SQLHelper.createUser(User.demo1());
+    final userData = await SQLHelper.createUser(User.demo2());
+    final securityData = await SQLHelper.createUser(User.demo3());
     if (kDebugMode) {
       print("Created category $phoneCategoryData in database");
       print("Created category $pcCategoryData in database");
       print("Created category $laptopCategoryData in database");
-      print("Created category $deskCategoryData in database");
       print("Created user $adminData in database");
       print("Created user $userData in database");
       print("Created user $securityData in database");
@@ -191,9 +189,13 @@ class _MyAppState extends State<MyApp> {
           firstName: data["first_name"],
           lastName: data["last_name"],
           password: data["password"],
+          entranceTime: data["entrance_time"],
+          internal: data["internal"],
+          external: data["external"],
           access: data["access"]
       );
     });
   }
 
 }
+

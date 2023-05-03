@@ -12,41 +12,52 @@ class SQLHelper{
         first_name TEXT,
         last_name TEXT,
         password TEXT NOT NULL,
+        entrance_time TEXT,
+        internal TEXT,
+        external TEXT,
         access TEXT
       )
       """);
-    await database.execute("""CREATE TABLE equipment(
+    await database.execute("""CREATE TABLE equipment_ext(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        user_id INTEGER,
+        user TEXT,
         name TEXT,
-        description TEXT,
+        description TEXT
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+      """);
+    await database.execute("""CREATE TABLE equipment_int(
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        user TEXT,
         location TEXT,
         status TEXT,
+        product_id TEXT,
+        name TEXT,
+        description TEXT,
         category TEXT,
-        equipment_info_id INTEGER,
-        external TEXT,
+        model TEXT,
+        weight TEXT,
+        dimensions TEXT,
+        color_1 TEXT,
+        color_2 TEXT,
         notes TEXT,
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
       """);
-    await database.execute("""CREATE TABLE equipment_log(
+    await database.execute("""CREATE TABLE user_log(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        title VARCHAR,
-        equipment_id INTEGER,
-        user_id INTEGER,
+        title TEXT,
+        created_by TEXT,
         description TEXT,
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
       """);
-    await database.execute("""CREATE TABLE equipment_info(
-        id INTEGER PRIMARY KEY,
-        product_id TEXT,
-        model TEXT,
+    await database.execute("""CREATE TABLE incident_log(
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        title TEXT,
+        created_by TEXT,
         description TEXT,
-        weight TEXT,
-        dimensions TEXT,
-        color_1 TEXT,
-        color_2 TEXT
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
       """);
     await database.execute("""CREATE TABLE category(
@@ -79,6 +90,9 @@ class SQLHelper{
       'first_name': user.firstName,
       'last_name': user.lastName,
       'password': user.password,
+      'entrance_time': user.entranceTime,
+      'internal': user.internal,
+      'external': user.external,
       'access': user.access
     };
 
@@ -91,46 +105,17 @@ class SQLHelper{
     return id;
   }
 
-  static Future<int> createEquipment(Equipment equipment) async {
+  static Future<int> createEquipmentExt(EquipmentExt equipment) async {
     final db = await SQLHelper.db();
 
     final data = {
-      'user_id': equipment.userID,
+      'user': equipment.user,
       'name': equipment.name,
       'description': equipment.description,
-      'location': equipment.location,
-      'status': equipment.status,
-      'category': equipment.category,
-      'equipment_info_id': equipment.equipmentInfoID,
-      'external': equipment.external,
-      'notes': equipment.notes
     };
 
     final id = await db.insert(
-        'equipment',
-        data,
-      conflictAlgorithm: sql.ConflictAlgorithm.replace
-    );
-
-    return id;
-  }
-
-  static Future<int> createEquipmentInfo(EquipmentInfo info, int equipmentId) async {
-    final db = await SQLHelper.db();
-
-    final data = {
-      'id': equipmentId,
-      'product_id': info.productId,
-      'model': info.model,
-      'description': info.description,
-      'weight': info.weight,
-      'dimensions': info.dimensions,
-      'color_1': info.color1,
-      'color_2': info.color2
-    };
-
-    final id = await db.insert(
-        'equipment_info',
+        'equipment_ext',
         data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace
     );
@@ -138,18 +123,51 @@ class SQLHelper{
     return id;
   }
 
-  static Future<int> createEquipmentLog(User user, String title, String description, int equipmentId) async {
+  static Future<int> createEquipmentInt(EquipmentInt equipment) async {
     final db = await SQLHelper.db();
 
     final data = {
-      'title': title,
-      'equipment_id': equipmentId,
-      'user_id': user.id,
-      'description': "User ${user.username}:\n $description"
+      'user': equipment.user,
+      'location': equipment.location,
+      'status': equipment.status,
+      'product_id': equipment.location,
+      'name': equipment.name,
+      'description': equipment.description,
+      'category': equipment.category,
+      'model': equipment.model,
+      'weight': equipment.weight,
+      'dimensions': equipment.dimensions,
+      'color_1': equipment.color_1,
+      'color_2': equipment.color_2,
+      'notes': equipment.notes
     };
 
     final id = await db.insert(
-        'equipment_log',
+        'equipment_int',
+        data,
+      conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );
+
+    return id;
+  }
+/*
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        title TEXT,
+        created_by TEXT,
+        description TEXT,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+ */
+  static Future<int> createLog(User user, Log log, String table) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      'title': log.title,
+      'created_by': user.username,
+      'description': log.description,
+    };
+
+    final id = await db.insert(
+        table,
         data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace
     );
@@ -205,6 +223,9 @@ class SQLHelper{
       'first_name': user.firstName,
       'last_name': user.lastName,
       'password': user.password,
+      'entrance_time': user.entranceTime,
+      'internal': user.internal,
+      'external': user.external,
       'access': user.access
     };
     
@@ -212,39 +233,26 @@ class SQLHelper{
     return result;
   }
 
-  static Future<int> updateEquipment(int id, Equipment equipment) async {
+  static Future<int> updateEquipmentInt(int id, EquipmentInt equipment) async {
     final db = await SQLHelper.db();
 
     final data = {
-      'user_id': equipment.userID,
-      'name': equipment.name,
-      'description': equipment.description,
+      'user': equipment.user,
       'location': equipment.location,
       'status': equipment.status,
+      'product_id': equipment.location,
+      'name': equipment.name,
+      'description': equipment.description,
       'category': equipment.category,
-      'equipment_info_id': equipment.equipmentInfoID,
-      'external': equipment.external,
+      'model': equipment.model,
+      'weight': equipment.weight,
+      'dimensions': equipment.dimensions,
+      'color_1': equipment.color_1,
+      'color_2': equipment.color_2,
       'notes': equipment.notes
     };
 
     final result = await db.update('equipment', data, where: "id = ?", whereArgs: [id]);
-    return result;
-  }
-
-  static Future<int> updateEquipmentInfo(int id, EquipmentInfo info) async {
-    final db = await SQLHelper.db();
-
-    final data = {
-      'product_id': info.productId,
-      'model': info.model,
-      'description': info.description,
-      'weight': info.weight,
-      'dimensions': info.dimensions,
-      'color_1': info.color1,
-      'color_2': info.color2
-    };
-
-    final result = await db.update('equipment_info', data, where: "id = ?", whereArgs: [id]);
     return result;
   }
 
