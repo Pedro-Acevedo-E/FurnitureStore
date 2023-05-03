@@ -5,6 +5,7 @@ import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/admin_main_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
+import 'package:furniture_store/views/external_furniture_form.dart';
 import 'package:furniture_store/views/login_view.dart';
 import 'package:furniture_store/views/security_main_view.dart';
 import 'package:furniture_store/views/user_details_view.dart';
@@ -32,18 +33,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<User> userList = [];
-  List<User> filteredUserList = [];
   List<EquipmentExt> extList = [];
   List<EquipmentInt> intList = [];
   User loginUser = User.empty();
   User selectedUser = User.empty();
 
-  List<EquipmentExt> selectedExtList = [];
-  List<EquipmentInt> selectedIntList = [];
+  //login
   AppState appState = AppState.loginScreen;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   var alertText = "";
+
+  //entrance user
+  List<User> filteredUserList = [];
+  List<Widget> formList = [];
+  List<TextEditingController> nameControllerList = [];
+  List<TextEditingController> descriptionControllerList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -158,14 +163,16 @@ class _MyAppState extends State<MyApp> {
         return UserEntranceView(
             user: loginUser,
             selectedUser: selectedUser,
-            selectedExtList: selectedExtList,
-            selectedIntList: selectedIntList,
             userList: filteredUserList,
-            extList: extList,
             intList: intList,
             changeState: (AppState state) => changeState(state),
             selectUser: (User user) => selectUser(user),
-            logout: () => logout());
+            logout: () => logout(),
+            addForm: () => addForm(),
+            removeForm: () => removeForm(),
+            formList: formList,
+            nameControllerList: nameControllerList,
+            descriptionControllerList: descriptionControllerList);
       } break;
       case AppState.userExit: {
         return Text("User exit");
@@ -344,11 +351,28 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       filteredUserList = tempUserList;
       selectedUser = filteredUserList[0];
-      selectedExtList = [];
-      selectedIntList = [];
+      formList = [];
+      nameControllerList = [];
+      descriptionControllerList = [];
     });
     //add if to check if filtered list is empty
     changeState(AppState.userEntrance);
+  }
+
+  void addForm() {
+    setState(() {
+      nameControllerList.add(TextEditingController());
+      descriptionControllerList.add(TextEditingController());
+      formList.add(ExternalFurnitureForm(nameController: nameControllerList.last, descriptionController: descriptionControllerList.last));
+    });
+  }
+
+  void removeForm() {
+    setState(() {
+      nameControllerList.removeAt(nameControllerList.length - 1);
+      descriptionControllerList.removeAt(descriptionControllerList.length - 1);
+      formList.removeAt(formList.length - 1);
+    });
   }
 
   void selectUser(User user) {
