@@ -6,9 +6,10 @@ import '../models.dart';
 
 class EntranceAndExitsView extends StatelessWidget {
   final User user;
-  final List<Map<String, dynamic>> userList;
+  final List<User> userList;
   final Function(AppState val) changeState;
-  final Function(Map<String, dynamic> data) viewUserDetails;
+  final Function(User user) viewUserDetails;
+  final VoidCallback viewUserEntrance;
   final VoidCallback logout;
   final VoidCallback returnToMain;
 
@@ -18,6 +19,7 @@ class EntranceAndExitsView extends StatelessWidget {
     required this.userList,
     required this.changeState,
     required this.viewUserDetails,
+    required this.viewUserEntrance,
     required this.logout,
     required this.returnToMain
   });
@@ -68,7 +70,7 @@ class EntranceAndExitsView extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => changeState(AppState.userEntrance),
+          onPressed: viewUserEntrance,
           tooltip: "New entrance",
           child: const Icon(Icons.add),
         ),
@@ -76,22 +78,22 @@ class EntranceAndExitsView extends StatelessWidget {
     );
   }
 
-  Widget getUserListWidgets(List<Map<String, dynamic>> users) {
+  Widget getUserListWidgets(List<User> users) {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < users.length; i++){
-      if (users.elementAt(i)["entrance_time"] != "") {
+      if (users[i].entranceTime != "") {
         list.add(Row(
           children: [
-            Text(users.elementAt(i)["username"]),
+            Text(users[i].username),
             const Spacer(),
-            Text(users.elementAt(i)["internal"]),
+            Text(users[i].internal),
             const Spacer(),
-            Text(users.elementAt(i)["external"]),
+            Text(users[i].external),
             const Spacer(),
-            Text(users.elementAt(i)["entrance_time"]),
+            Text(users[i].entranceTime),
             const Spacer(),
             TextButton(
-                onPressed: () => userDetails(users.elementAt(i)),
+                onPressed: () => userDetails(users[i]),
                 child: const Text("Details")
             ),
             TextButton(
@@ -105,7 +107,7 @@ class EntranceAndExitsView extends StatelessWidget {
     return Column(children: list);
   }
 
-  void userDetails(Map<String, dynamic> user) {
+  void userDetails(User user) {
     viewUserDetails(user);
   }
 }

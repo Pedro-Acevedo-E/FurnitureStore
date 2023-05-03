@@ -282,4 +282,9 @@ id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     final db = await SQLHelper.db();
     return db.rawQuery('SELECT * FROM user WHERE username=? AND password=?', [username, password]);
   }
+
+  static Future<List<Map<String, dynamic>>> filteredUserList() async {
+    final db = await SQLHelper.db();
+    return db.rawQuery('SELECT * FROM user WHERE entrance_time=?', [""]);
+  }
 }

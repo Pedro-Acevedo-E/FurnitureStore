@@ -8,6 +8,7 @@ import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/login_view.dart';
 import 'package:furniture_store/views/security_main_view.dart';
 import 'package:furniture_store/views/user_details_view.dart';
+import 'package:furniture_store/views/user_entrance_view.dart';
 import 'package:furniture_store/views/user_main_view.dart';
 
 import 'models.dart';
@@ -30,14 +31,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Map<String, dynamic>> items = [];
-
-  List<Map<String, dynamic>> userList = [];
-  List<Map<String, dynamic>> extList = [];
-  List<Map<String, dynamic>> intList = [];
-
+  List<User> userList = [];
+  List<User> filteredUserList = [];
+  List<EquipmentExt> extList = [];
+  List<EquipmentInt> intList = [];
   User loginUser = User.empty();
   User selectedUser = User.empty();
+
+  List<EquipmentExt> selectedExtList = [];
+  List<EquipmentInt> selectedIntList = [];
   AppState appState = AppState.loginScreen;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -53,15 +55,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
-    //refreshUserList();
-
     //createDemo();
     loadItemsDemo();
-    if (kDebugMode) {
-      print("Hour: ${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}");
-      print("Current Date: ${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}");
-    }
   }
 
   void loadItemsDemo() async {
@@ -69,33 +64,11 @@ class _MyAppState extends State<MyApp> {
     final intFurnitureData = await SQLHelper.getList("equipment_int");
     final extFurnitureData = await SQLHelper.getList("equipment_ext");
     final categoryData = await SQLHelper.getList("category");
-
-    setState(() {
-      items = userData;
-    });
     if (kDebugMode) {
-      print("We have ${items.length} users in our database");
+      print("We have ${userData.length} users in our database");
       print("We have ${categoryData.length} categories in our database");
       print("We have ${intFurnitureData.length} internal furniture in our database");
       print("We have ${extFurnitureData.length} external furniture in our database");
-      /*
-      final exists = await SQLHelper.userExists("pedro");
-      for(int i = 0; i < items.length; i++) {
-        print(items.elementAt(i)["username"]);
-        print(items.elementAt(i)["id"]);
-      }
-      print("We have ${categoryData.length} categories in our database");
-      for(int i = 0; i < categoryData.length; i++) {
-        print(categoryData.elementAt(i)["name"]);
-        print(categoryData.elementAt(i)["id"]);
-      }
-      if(exists) {
-        print("Test User exists in database");
-      } else {
-        print("Test User does not exist in database");
-      }
-       */
-
     }
   }
 
@@ -167,7 +140,8 @@ class _MyAppState extends State<MyApp> {
             user: loginUser,
             userList: userList,
             changeState: (AppState state) => changeState(state),
-            viewUserDetails: (Map<String, dynamic> data) => viewUserDetails(data),
+            viewUserDetails: (User user) => viewUserDetails(user),
+            viewUserEntrance: () => viewUserEntrance(),
             logout: () => logout(),
             returnToMain: () => returnToMain());
       } break;
@@ -181,7 +155,17 @@ class _MyAppState extends State<MyApp> {
             logout: () => logout());
       } break;
       case AppState.userEntrance: {
-        return Text("User entrance");
+        return UserEntranceView(
+            user: loginUser,
+            selectedUser: selectedUser,
+            selectedExtList: selectedExtList,
+            selectedIntList: selectedIntList,
+            userList: filteredUserList,
+            extList: extList,
+            intList: intList,
+            changeState: (AppState state) => changeState(state),
+            selectUser: (User user) => selectUser(user),
+            logout: () => logout());
       } break;
       case AppState.userExit: {
         return Text("User exit");
@@ -267,14 +251,57 @@ class _MyAppState extends State<MyApp> {
   void refreshList() async {
     final data = await SQLHelper.getList("user");
     final ext = await SQLHelper.getList("equipment_ext");
-    final int = await SQLHelper.getList("equipment_int");
+    final intE = await SQLHelper.getList("equipment_int");
+
+    List<User> tempUserList = [];
+    for(var i = 0; i < data.length; i++) {
+      tempUserList.add(User(
+          id: data.elementAt(i)["id"],
+          username: data.elementAt(i)["username"],
+          firstName: data.elementAt(i)["first_name"],
+          lastName: data.elementAt(i)["last_name"],
+          password: data.elementAt(i)["password"],
+          entranceTime: data.elementAt(i)["entrance_time"],
+          internal: data.elementAt(i)["internal"],
+          external: data.elementAt(i)["external"],
+          access: data.elementAt(i)["access"]));
+    }
+    List<EquipmentExt> tempExtList = [];
+    for(var i = 0; i < ext.length; i++) {
+      tempExtList.add(EquipmentExt(
+          id: ext.elementAt(i)["id"],
+          user: ext.elementAt(i)["user"],
+          name: ext.elementAt(i)["name"],
+          description: ext.elementAt(i)["description"],
+          createdAt: ext.elementAt(i)["created_at"].toString()));
+    }
+    List<EquipmentInt> tempIntList = [];
+    for(var i = 0; i < intE.length; i++) {
+      tempIntList.add(EquipmentInt(
+          id: intE.elementAt(i)["id"],
+          user: intE.elementAt(i)["user"],
+          location: intE.elementAt(i)["location"],
+          status: intE.elementAt(i)["status"],
+          productId: intE.elementAt(i)["product_id"],
+          name: intE.elementAt(i)["name"],
+          description: intE.elementAt(i)["description"],
+          category: intE.elementAt(i)["category"],
+          model: intE.elementAt(i)["model"],
+          weight: intE.elementAt(i)["weight"],
+          dimensions: intE.elementAt(i)["dimensions"],
+          color_1: intE.elementAt(i)["color_1"],
+          color_2: intE.elementAt(i)["color_2"],
+          notes: intE.elementAt(i)["notes"],
+          createdAt: intE.elementAt(i)["created_at"].toString()));
+    }
 
     setState(() {
-      userList = data;
-      extList = ext;
-      intList = int;
+      userList = tempUserList;
+      extList = tempExtList;
+      intList = tempIntList;
     });
   }
+
 
   void returnToMain() async {
     switch (loginUser.access) {
@@ -293,21 +320,41 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void viewUserDetails(Map<String, dynamic> data) {
-    setState(() {
-      selectedUser = User(
-          id: data["id"],
-          username: data["username"],
-          firstName: data["first_name"],
-          lastName: data["last_name"],
-          password: data["password"],
-          entranceTime: data["entrance_time"],
-          internal: data["internal"],
-          external: data["external"],
-          access: data["access"]
-      );
-    });
+  void viewUserDetails(User user) {
+    selectUser(user);
     changeState(AppState.userDetails);
+  }
+
+  void viewUserEntrance() async {
+    final data = await SQLHelper.filteredUserList();
+    List<User> tempUserList = [];
+    for(var i = 0; i < data.length; i++) {
+      tempUserList.add(User(
+          id: data.elementAt(i)["id"],
+          username: data.elementAt(i)["username"],
+          firstName: data.elementAt(i)["first_name"],
+          lastName: data.elementAt(i)["last_name"],
+          password: data.elementAt(i)["password"],
+          entranceTime: data.elementAt(i)["entrance_time"],
+          internal: data.elementAt(i)["internal"],
+          external: data.elementAt(i)["external"],
+          access: data.elementAt(i)["access"]));
+    }
+
+    setState(() {
+      filteredUserList = tempUserList;
+      selectedUser = filteredUserList[0];
+      selectedExtList = [];
+      selectedIntList = [];
+    });
+    //add if to check if filtered list is empty
+    changeState(AppState.userEntrance);
+  }
+
+  void selectUser(User user) {
+    setState(() {
+      selectedUser = user;
+    });
   }
 }
 

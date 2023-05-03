@@ -7,8 +7,8 @@ import '../models.dart';
 class UserDetailsView extends StatelessWidget {
   final User user;
   final User selectedUser;
-  final List<Map<String, dynamic>> extList;
-  final List<Map<String, dynamic>> intList;
+  final List<EquipmentExt> extList;
+  final List<EquipmentInt> intList;
   final Function(AppState val) changeState;
   final VoidCallback logout;
 
@@ -54,9 +54,9 @@ class UserDetailsView extends StatelessWidget {
                 Access: ${selectedUser.access}
                 """),
                 const Text("Internal Equipment: "),
-                getEquipmentListWidgets(intList),
+                getIntEquipmentListWidgets(intList),
                 const Text("External Equipment: "),
-                getEquipmentListWidgets(extList),
+                getExtEquipmentListWidgets(extList),
               ],
             ),
           ),
@@ -65,14 +65,29 @@ class UserDetailsView extends StatelessWidget {
     );
   }
 
-  Widget getEquipmentListWidgets(List<Map<String, dynamic>> equipmentList) {
+  Widget getExtEquipmentListWidgets(List<EquipmentExt> equipmentList) {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < equipmentList.length; i++){
-      if (equipmentList.elementAt(i)["user"] == selectedUser.username) {
+      if (equipmentList[i].user == selectedUser.username) {
         list.add(Row(
             children: [
-              Text("Equipment ${equipmentList.elementAt(i)["id"]}: ${equipmentList.elementAt(i)["name"]} "),
-              Text("Description: ${equipmentList.elementAt(i)["description"]}"),
+              Text("Equipment ${equipmentList[i].id}: ${equipmentList[i].name} "),
+              Text("Description: ${equipmentList[i].description}"),
+            ])
+        );
+      }
+    }
+    return Column(children: list);
+  }
+
+  Widget getIntEquipmentListWidgets(List<EquipmentInt> equipmentList) {
+    List<Widget> list = <Widget>[];
+    for(var i = 0; i < equipmentList.length; i++){
+      if (equipmentList[i].user == selectedUser.username) {
+        list.add(Row(
+            children: [
+              Text("Equipment ${equipmentList[i].id}: ${equipmentList[i].name} "),
+              Text("Description: ${equipmentList[i].description}"),
             ])
         );
       }
