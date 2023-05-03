@@ -180,6 +180,12 @@ class _MyAppState extends State<MyApp> {
             changeState: (AppState state) => changeState(state),
             logout: () => logout());
       } break;
+      case AppState.userEntrance: {
+        return Text("User entrance");
+      } break;
+      case AppState.userExit: {
+        return Text("User exit");
+      } break;
       default: {
         return Text(appState.toString());
       } break;

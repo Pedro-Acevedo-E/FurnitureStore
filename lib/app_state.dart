@@ -7,6 +7,9 @@ enum AppState {
 
   entrancesAndExits,
   userDetails,
+  userEntrance,
+  userExit,
+
   assignFurniture,
   createIncident,
   incidentLog,
@@ -15,16 +18,6 @@ enum AppState {
   externalFurniture,
   createInternalFurniture,
 
-  databaseView,
-  createUser,
-  furnitureList,
-  updateFurniture,
-  createCategory,
-  equipmentLogListView,
-  furnitureEntrance,
-  furnitureExit,
-  userList,
-  userFurnitureList,
 
   profile,
   settings,

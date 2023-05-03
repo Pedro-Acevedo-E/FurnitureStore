@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/views/popup_menu_button.dart';
 
 import '../app_state.dart';
 import '../models.dart';
@@ -35,36 +36,7 @@ class UserDetailsView extends StatelessWidget {
               ),
               Text("Details of: ${selectedUser.username}"),
               const Spacer(),
-              PopupMenuButton<PopupSelection>(
-                initialValue: PopupSelection.profile,
-                onSelected: (PopupSelection item) {
-                  switch(item) {
-                    case PopupSelection.profile: {
-                      changeState(AppState.profile);
-                    } break;
-                    case PopupSelection.settings: {
-                      changeState(AppState.settings);
-                    } break;
-                    case PopupSelection.logout: {
-                      logout();
-                    } break;
-                    default: {
-                      changeState(AppState.error);
-                    } break;
-                  }
-                },
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<PopupSelection>>[
-                  const PopupMenuItem(
-                      value: PopupSelection.profile,
-                      child: Text("Profile")),
-                  const PopupMenuItem(
-                      value: PopupSelection.settings,
-                      child: Text("Settings")),
-                  const PopupMenuItem(
-                      value: PopupSelection.logout,
-                      child: Text("Logout")),
-                ],
-              ),
+              PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
             ],
           ),
