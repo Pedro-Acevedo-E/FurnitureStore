@@ -4,8 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/admin_main_view.dart';
+import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/login_view.dart';
 import 'package:furniture_store/views/security_main_view.dart';
+import 'package:furniture_store/views/user_details_view.dart';
 import 'package:furniture_store/views/user_main_view.dart';
 
 import 'models.dart';
@@ -30,7 +32,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   List<Map<String, dynamic>> items = [];
 
+  List<Map<String, dynamic>> userList = [];
+  List<Map<String, dynamic>> extList = [];
+  List<Map<String, dynamic>> intList = [];
+
   User loginUser = User.empty();
+  User selectedUser = User.empty();
   AppState appState = AppState.loginScreen;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -46,6 +53,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    //refreshUserList();
+
     //createDemo();
     loadItemsDemo();
     if (kDebugMode) {
@@ -152,6 +161,25 @@ class _MyAppState extends State<MyApp> {
             changeState: (AppState state) => changeState(state),
             logout: () => logout());
       } break;
+      case AppState.entrancesAndExits: {
+        return EntranceAndExitsView(
+            user: loginUser,
+            userList: userList,
+            changeState: (AppState state) => changeState(state),
+            viewUserDetails: (Map<String, dynamic> data) => viewUserDetails(data),
+            logout: () => logout(),
+            returnToMain: () => returnToMain());
+      } break;
+      case AppState.userDetails: {
+        return UserDetailsView(
+            user: loginUser,
+            selectedUser: selectedUser,
+            extList: extList,
+            intList: intList,
+            changeState: (AppState state) => changeState(state),
+            logout: () => logout(),
+            returnToMain: () => returnToMain());
+      } break;
       default: {
         return Text(appState.toString());
       } break;
@@ -159,6 +187,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void changeState(AppState state) {
+   refreshList();
     setState(() {
       appState = state;
       alertText = "";
@@ -228,5 +257,52 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void refreshList() async {
+    final data = await SQLHelper.getList("user");
+    final ext = await SQLHelper.getList("equipment_ext");
+    final int = await SQLHelper.getList("equipment_int");
+
+    setState(() {
+      userList = data;
+      extList = ext;
+      intList = int;
+    });
+  }
+
+  void returnToMain() async {
+    switch (loginUser.access) {
+      case "admin": {
+        changeState(AppState.adminMainView);
+      } break;
+      case "user": {
+        changeState(AppState.userMainView);
+      } break;
+      case "security": {
+        changeState(AppState.securityMainView);
+      } break;
+      default: {
+        changeState(AppState.error);
+      } break;
+
+    }
+  }
+
+  void viewUserDetails(Map<String, dynamic> data) {
+    setState(() {
+      selectedUser = User(
+          id: data["id"],
+          username: data["username"],
+          firstName: data["first_name"],
+          lastName: data["last_name"],
+          password: data["password"],
+          entranceTime: data["entrance_time"],
+          internal: data["internal"],
+          external: data["external"],
+          access: data["access"]
+      );
+    });
+    refreshList();
+    changeState(AppState.userDetails);
+  }
 }
 

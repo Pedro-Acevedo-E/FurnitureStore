@@ -6,6 +6,7 @@ enum AppState {
   securityMainView,
 
   entrancesAndExits,
+  userDetails,
   assignFurniture,
   createIncident,
   incidentLog,
