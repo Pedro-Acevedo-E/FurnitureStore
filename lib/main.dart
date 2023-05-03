@@ -53,6 +53,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     //refreshUserList();
 
     //createDemo();
@@ -177,8 +178,7 @@ class _MyAppState extends State<MyApp> {
             extList: extList,
             intList: intList,
             changeState: (AppState state) => changeState(state),
-            logout: () => logout(),
-            returnToMain: () => returnToMain());
+            logout: () => logout());
       } break;
       default: {
         return Text(appState.toString());
@@ -234,6 +234,7 @@ class _MyAppState extends State<MyApp> {
   void logout() {
     setState(() {
       loginUser = User.empty();
+      selectedUser = User.empty();
       appState = AppState.loginScreen;
       usernameController.text = "";
       passwordController.text = "";
@@ -283,7 +284,6 @@ class _MyAppState extends State<MyApp> {
       default: {
         changeState(AppState.error);
       } break;
-
     }
   }
 
@@ -301,7 +301,6 @@ class _MyAppState extends State<MyApp> {
           access: data["access"]
       );
     });
-    refreshList();
     changeState(AppState.userDetails);
   }
 }

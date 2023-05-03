@@ -10,8 +10,6 @@ class UserDetailsView extends StatelessWidget {
   final List<Map<String, dynamic>> intList;
   final Function(AppState val) changeState;
   final VoidCallback logout;
-  final VoidCallback returnToMain;
-
 
   const UserDetailsView({
     super.key,
@@ -20,8 +18,7 @@ class UserDetailsView extends StatelessWidget {
     required this.extList,
     required this.intList,
     required this.changeState,
-    required this.logout,
-    required this.returnToMain
+    required this.logout
   });
 
   @override
@@ -32,7 +29,7 @@ class UserDetailsView extends StatelessWidget {
           title: Row(
             children: [
               IconButton(
-                  onPressed: returnToMain,
+                  onPressed: () => changeState(AppState.entrancesAndExits),
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
@@ -102,7 +99,8 @@ class UserDetailsView extends StatelessWidget {
       if (equipmentList.elementAt(i)["user"] == selectedUser.username) {
         list.add(Row(
             children: [
-              Text("Equipment ${i + 1}: ${equipmentList.elementAt(i)["name"]}"),
+              Text("Equipment ${equipmentList.elementAt(i)["id"]}: ${equipmentList.elementAt(i)["name"]} "),
+              Text("Description: ${equipmentList.elementAt(i)["description"]}"),
             ])
         );
       }
