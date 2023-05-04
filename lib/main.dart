@@ -371,6 +371,7 @@ class _MyAppState extends State<MyApp> {
     updateInternal(selectedUser, "Office");
 
     final userData = await SQLHelper.updateUser(selectedUser.id, selectedUser);
+
     final logData = Log(
         id: 0,
         title: "${selectedUser.username} Has entered Office at ${selectedUser.entranceTime}",
@@ -380,19 +381,7 @@ class _MyAppState extends State<MyApp> {
     );
     final userLogData = await SQLHelper.createLog(logData, "user_log");
 
-    if(showIncidentForm && incidentTitleController.text.isNotEmpty && incidentDescriptionController.text.isNotEmpty) {
-      final incidentLogData = Log(
-          id: 0,
-          title: incidentTitleController.text,
-          createdBy: loginUser.username,
-          description: incidentDescriptionController.text,
-          createdAt: ""
-      );
-      final incidentData = await SQLHelper.createLog(incidentLogData, "incident_log");
-      if (kDebugMode) {
-        print("Created Incident Log $incidentData");
-      }
-    }
+    createIncident();
 
     if (kDebugMode) {
       print("Updated User $userData");
@@ -422,10 +411,7 @@ class _MyAppState extends State<MyApp> {
       for(var i = 0; i < extList.length; i++) {
         if(extList[i].user == selectedUser.username) {
           descriptionString = "$descriptionString \nExited with ${extList[i].name}";
-          final data = SQLHelper.deleteItem(extList[i].id, "equipment_ext");
-          if (kDebugMode) {
-            print("Deleted ext Equipment $data");
-          }
+          SQLHelper.deleteItem(extList[i].id, "equipment_ext");
         }
       }
     }
@@ -443,19 +429,7 @@ class _MyAppState extends State<MyApp> {
     );
     final userLogData = await SQLHelper.createLog(logData, "user_log");
 
-    if(showIncidentForm && incidentTitleController.text.isNotEmpty && incidentDescriptionController.text.isNotEmpty) {
-      final incidentLogData = Log(
-          id: 0,
-          title: incidentTitleController.text,
-          createdBy: loginUser.username,
-          description: incidentDescriptionController.text,
-          createdAt: ""
-      );
-      final incidentData = await SQLHelper.createLog(incidentLogData, "incident_log");
-      if (kDebugMode) {
-        print("Created Incident Log $incidentData");
-      }
-    }
+    createIncident();
 
     if (kDebugMode) {
       print("Updated User $userData");
@@ -473,6 +447,22 @@ class _MyAppState extends State<MyApp> {
         if (kDebugMode) {
           print("Updated Internal Equipment $data");
         }
+      }
+    }
+  }
+
+  void createIncident() async {
+    if(showIncidentForm && incidentTitleController.text.isNotEmpty && incidentDescriptionController.text.isNotEmpty) {
+      final incidentLogData = Log(
+          id: 0,
+          title: incidentTitleController.text,
+          createdBy: loginUser.username,
+          description: incidentDescriptionController.text,
+          createdAt: ""
+      );
+      final incidentData = await SQLHelper.createLog(incidentLogData, "incident_log");
+      if (kDebugMode) {
+        print("Created Incident Log $incidentData");
       }
     }
   }
