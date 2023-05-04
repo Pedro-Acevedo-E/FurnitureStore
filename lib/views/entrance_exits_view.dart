@@ -10,6 +10,7 @@ class EntranceAndExitsView extends StatelessWidget {
   final Function(AppState val) changeState;
   final Function(User user) viewUserDetails;
   final VoidCallback viewUserEntrance;
+  final Function(User user) viewUserExit;
   final VoidCallback logout;
 
   const EntranceAndExitsView({
@@ -19,6 +20,7 @@ class EntranceAndExitsView extends StatelessWidget {
     required this.changeState,
     required this.viewUserDetails,
     required this.viewUserEntrance,
+    required this.viewUserExit,
     required this.logout,
   });
 
@@ -95,7 +97,7 @@ class EntranceAndExitsView extends StatelessWidget {
                 child: const Text("Details")
             ),
             TextButton(
-                onPressed: () {},
+                onPressed: () => viewUserExit(users[i]),
                 child: const Text("Exit")
             ),
           ])
@@ -107,5 +109,9 @@ class EntranceAndExitsView extends StatelessWidget {
 
   void userDetails(User user) {
     viewUserDetails(user);
+  }
+
+  void userExit(User user) {
+    viewUserExit(user);
   }
 }

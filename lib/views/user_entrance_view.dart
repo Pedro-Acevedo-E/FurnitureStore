@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:furniture_store/views/external_furniture_form.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
@@ -106,7 +104,7 @@ class UserEntranceView extends StatelessWidget {
                   const Padding(padding: EdgeInsets.only(bottom: 10)),
                   ElevatedButton(
                       onPressed: createEntrance,
-                      child: const Text("Create Entrance"),
+                      child: const Text("Register Entrance"),
                   ),
               ],
             ),

@@ -11,6 +11,7 @@ import 'package:furniture_store/views/main_view.dart';
 import 'package:furniture_store/views/security_main_view.dart';
 import 'package:furniture_store/views/user_details_view.dart';
 import 'package:furniture_store/views/user_entrance_view.dart';
+import 'package:furniture_store/views/user_exit_view.dart';
 import 'package:furniture_store/views/user_main_view.dart';
 
 import 'models.dart';
@@ -137,6 +138,7 @@ class _MyAppState extends State<MyApp> {
             changeState: (AppState state) => changeState(state),
             viewUserDetails: (User user) => viewUserDetails(user),
             viewUserEntrance: () => viewUserEntrance(),
+            viewUserExit: (User user) => viewUserExit(user),
             logout: () => logout());
       } break;
       case AppState.userDetails: {
@@ -169,7 +171,19 @@ class _MyAppState extends State<MyApp> {
             descriptionControllerList: descriptionControllerList);
       } break;
       case AppState.userExit: {
-        return Text("User exit");
+        return UserExitView(
+            user: loginUser,
+            selectedUser: selectedUser,
+            intList: intList,
+            extList: extList,
+            changeState: (AppState state) => changeState(state),
+            logout: () => logout(),
+            createExit: () => createExit(),
+            toggleIncidentForm: () => toggleIncidentForm(),
+            showIncidentForm: showIncidentForm,
+            incidentTitleController: incidentTitleController,
+            incidentDescriptionController: incidentDescriptionController
+        );
       } break;
       default: {
         return Text(appState.toString());
@@ -386,6 +400,22 @@ class _MyAppState extends State<MyApp> {
     }
 
     changeState(AppState.entrancesAndExits);
+  }
+
+  void viewUserExit(User user) async {
+
+    setState(() {
+      selectedUser = user;
+      showIncidentForm = false;
+      incidentDescriptionController.text = "";
+      incidentDescriptionController.text = "";
+    });
+
+    changeState(AppState.userExit);
+  }
+
+  void createExit() {
+
   }
 
   void updateInternal(User user, String location) async {
