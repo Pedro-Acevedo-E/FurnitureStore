@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
+import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/external_furniture_form.dart';
 import 'package:furniture_store/views/login_view.dart';
@@ -21,7 +22,6 @@ void main() {
   ]).then((value) => runApp(const MyApp()));
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -180,6 +180,16 @@ class _MyAppState extends State<MyApp> {
             showIncidentForm: showIncidentForm,
             incidentTitleController: incidentTitleController,
             incidentDescriptionController: incidentDescriptionController
+        );
+      }
+      case AppState.createIncident: {
+        return CreateIncidentView(
+            user: loginUser,
+            changeState: (AppState state) => changeState(state),
+            logout: () => logout(),
+            incidentTitleController: incidentTitleController,
+            incidentDescriptionController: incidentDescriptionController,
+            createIncident: () => createIncident()
         );
       }
       default: {
@@ -389,7 +399,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void viewUserExit(User user) async {
-
     setState(() {
       selectedUser = user;
       showIncidentForm = false;
@@ -449,7 +458,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void createIncident() async {
-    if(showIncidentForm && incidentTitleController.text.isNotEmpty && incidentDescriptionController.text.isNotEmpty) {
+    if(incidentTitleController.text.isNotEmpty && incidentDescriptionController.text.isNotEmpty) {
       final incidentLogData = Log(
           id: 0,
           title: incidentTitleController.text,
@@ -466,6 +475,8 @@ class _MyAppState extends State<MyApp> {
 
   void toggleIncidentForm() {
     setState(() {
+      incidentDescriptionController.text = "";
+      incidentTitleController.text = "";
       if (showIncidentForm == true) {
         showIncidentForm = false;
       } else {

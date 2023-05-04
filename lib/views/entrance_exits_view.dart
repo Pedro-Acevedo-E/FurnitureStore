@@ -36,7 +36,7 @@ class EntranceAndExitsView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              Text("Welcome ${user.username}"),
+              const Text("Entrances & Exits"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),

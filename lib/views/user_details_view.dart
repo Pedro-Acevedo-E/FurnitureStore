@@ -69,11 +69,12 @@ class UserDetailsView extends StatelessWidget {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < equipmentList.length; i++){
       if (equipmentList[i].user == selectedUser.username) {
-        list.add(Row(
-            children: [
-              Text("Equipment ${equipmentList[i].id}: ${equipmentList[i].name} "),
-              Text("Description: ${equipmentList[i].description}"),
-            ])
+        list.add(
+            Row(
+                children: [
+                  Expanded(child: Text("Equipment ${equipmentList[i].id}: ${equipmentList[i].name} ")),
+                  Expanded(child: Text("Description: ${equipmentList[i].description}")),
+                ])
         );
       }
     }

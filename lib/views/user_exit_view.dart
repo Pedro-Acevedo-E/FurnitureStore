@@ -45,7 +45,7 @@ class UserExitView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              Text("Create new entrance ${user.username}"),
+              const Text("New exit"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
@@ -56,6 +56,7 @@ class UserExitView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Padding(padding: EdgeInsets.only(top: 20)),
               Row(
                   children: [
                     const Spacer(),
