@@ -3,16 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
-import 'package:furniture_store/views/admin_main_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/external_furniture_form.dart';
 import 'package:furniture_store/views/login_view.dart';
 import 'package:furniture_store/views/main_view.dart';
-import 'package:furniture_store/views/security_main_view.dart';
 import 'package:furniture_store/views/user_details_view.dart';
 import 'package:furniture_store/views/user_entrance_view.dart';
 import 'package:furniture_store/views/user_exit_view.dart';
-import 'package:furniture_store/views/user_main_view.dart';
 
 import 'models.dart';
 
@@ -124,13 +121,13 @@ class _MyAppState extends State<MyApp> {
             login: () => login(),
             usernameController: usernameController,
             passwordController: passwordController);
-      } break;
+      }
       case AppState.mainView: {
         return MainView(
             user: loginUser,
             changeState: (AppState state) => changeState(state),
             logout: () => logout());
-      } break;
+      }
       case AppState.entrancesAndExits: {
         return EntranceAndExitsView(
             user: loginUser,
@@ -140,7 +137,7 @@ class _MyAppState extends State<MyApp> {
             viewUserEntrance: () => viewUserEntrance(),
             viewUserExit: (User user) => viewUserExit(user),
             logout: () => logout());
-      } break;
+      }
       case AppState.userDetails: {
         return UserDetailsView(
             user: loginUser,
@@ -149,7 +146,7 @@ class _MyAppState extends State<MyApp> {
             intList: intList,
             changeState: (AppState state) => changeState(state),
             logout: () => logout());
-      } break;
+      }
       case AppState.userEntrance: {
         return UserEntranceView(
             user: loginUser,
@@ -169,7 +166,7 @@ class _MyAppState extends State<MyApp> {
             formList: formList,
             nameControllerList: nameControllerList,
             descriptionControllerList: descriptionControllerList);
-      } break;
+      }
       case AppState.userExit: {
         return UserExitView(
             user: loginUser,
@@ -184,10 +181,10 @@ class _MyAppState extends State<MyApp> {
             incidentTitleController: incidentTitleController,
             incidentDescriptionController: incidentDescriptionController
         );
-      } break;
+      }
       default: {
         return Text(appState.toString());
-      } break;
+      }
     }
   }
 
