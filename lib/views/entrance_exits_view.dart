@@ -41,11 +41,11 @@ class EntranceAndExitsView extends StatelessWidget {
             ],
           ),
         ),
-        body: Center(
-          child: SingleChildScrollView(
+        body: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Padding(padding: EdgeInsets.only(top: 20)),
                 Row(
                     children: const [
                       Spacer(),
@@ -66,7 +66,7 @@ class EntranceAndExitsView extends StatelessWidget {
               ],
             ),
           ),
-        ),
+
         floatingActionButton: FloatingActionButton(
           onPressed: viewUserEntrance,
           tooltip: "New entrance",
