@@ -7,6 +7,7 @@ import 'package:furniture_store/views/admin_main_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/external_furniture_form.dart';
 import 'package:furniture_store/views/login_view.dart';
+import 'package:furniture_store/views/main_view.dart';
 import 'package:furniture_store/views/security_main_view.dart';
 import 'package:furniture_store/views/user_details_view.dart';
 import 'package:furniture_store/views/user_entrance_view.dart';
@@ -122,20 +123,8 @@ class _MyAppState extends State<MyApp> {
             usernameController: usernameController,
             passwordController: passwordController);
       } break;
-      case AppState.userMainView: {
-        return UserMainView(
-            user: loginUser,
-            changeState: (AppState state) => changeState(state),
-            logout: () => logout());
-      } break;
-      case AppState.adminMainView: {
-        return AdminMainView(
-            user: loginUser,
-            changeState: (AppState state) => changeState(state),
-            logout: () => logout());
-      } break;
-      case AppState.securityMainView: {
-        return SecurityMainView(
+      case AppState.mainView: {
+        return MainView(
             user: loginUser,
             changeState: (AppState state) => changeState(state),
             logout: () => logout());
@@ -147,8 +136,7 @@ class _MyAppState extends State<MyApp> {
             changeState: (AppState state) => changeState(state),
             viewUserDetails: (User user) => viewUserDetails(user),
             viewUserEntrance: () => viewUserEntrance(),
-            logout: () => logout(),
-            returnToMain: () => returnToMain());
+            logout: () => logout());
       } break;
       case AppState.userDetails: {
         return UserDetailsView(
@@ -195,32 +183,10 @@ class _MyAppState extends State<MyApp> {
     List<Map<String, dynamic>> data = await SQLHelper.loginUser(usernameController.text, passwordController.text);
     if(data.length == 1) {
       setUserInfo(data[0]);
-      switch(loginUser.access) {
-        case "admin": {
-          setState(() {
-            appState = AppState.adminMainView;
-            alertText = "";
-          });
-        } break;
-        case "user": {
-          setState(() {
-            appState = AppState.userMainView;
-            alertText = "";
-          });
-        } break;
-        case "security": {
-          setState(() {
-            appState = AppState.securityMainView;
-            alertText = "";
-          });
-        } break;
-        default: {
-          setState(() {
-            appState = AppState.error;
-            alertText = "";
-          });
-        } break;
-      }
+      setState(() {
+        appState = AppState.mainView;
+        alertText = "";
+      });
     } else {
       setState(() {
         alertText = "Login Failed: Your user ID or password is incorrect";
@@ -307,24 +273,6 @@ class _MyAppState extends State<MyApp> {
       extList = tempExtList;
       intList = tempIntList;
     });
-  }
-
-
-  void returnToMain() async {
-    switch (loginUser.access) {
-      case "admin": {
-        changeState(AppState.adminMainView);
-      } break;
-      case "user": {
-        changeState(AppState.userMainView);
-      } break;
-      case "security": {
-        changeState(AppState.securityMainView);
-      } break;
-      default: {
-        changeState(AppState.error);
-      } break;
-    }
   }
 
   void viewUserDetails(User user) {

@@ -18,30 +18,15 @@ class UserMainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Text("Welcome ${user.username}"),
-              const Spacer(),
-              PopupMenuButtonView(changeState: changeState, logout: logout),
-              const Padding(padding: EdgeInsets.only(right: 10)),
-            ],
-          ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+            onPressed: () => changeState(AppState.registeredFurniture),
+            child: const Text("Check Registered Furniture")
         ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Your furniture"),
-                Text("Your furniture will be here"),
-              ],
-            ),
-          ),
-        ),
-      ),
+      ],
     );
   }
 }

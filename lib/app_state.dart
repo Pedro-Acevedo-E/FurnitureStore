@@ -1,22 +1,22 @@
 enum AppState {
   loading,
   loginScreen,
-  adminMainView,
-  userMainView,
-  securityMainView,
+  mainView,
 
   entrancesAndExits,
   userDetails,
   userEntrance,
   userExit,
 
-  assignFurniture,
   createIncident,
+  createUser,
+  editUser,
   incidentLog,
   userLog,
   internalFurniture,
   externalFurniture,
   createInternalFurniture,
+  registeredFurniture,
 
 
   profile,

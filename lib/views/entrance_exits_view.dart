@@ -11,7 +11,6 @@ class EntranceAndExitsView extends StatelessWidget {
   final Function(User user) viewUserDetails;
   final VoidCallback viewUserEntrance;
   final VoidCallback logout;
-  final VoidCallback returnToMain;
 
   const EntranceAndExitsView({
     super.key,
@@ -21,7 +20,6 @@ class EntranceAndExitsView extends StatelessWidget {
     required this.viewUserDetails,
     required this.viewUserEntrance,
     required this.logout,
-    required this.returnToMain
   });
 
   @override
@@ -32,7 +30,7 @@ class EntranceAndExitsView extends StatelessWidget {
           title: Row(
             children: [
               IconButton(
-                  onPressed: returnToMain,
+                  onPressed: () => changeState(AppState.mainView),
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
