@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furniture_store/views/external_furniture_form.dart';
+import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
 import '../app_state.dart';

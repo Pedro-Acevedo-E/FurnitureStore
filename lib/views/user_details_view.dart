@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/views/details_row.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
 import '../app_state.dart';
@@ -30,7 +31,7 @@ class UserDetailsView extends StatelessWidget {
           title: Row(
             children: [
               IconButton(
-                  onPressed: () => changeState(AppState.entrancesAndExits),
+                  onPressed: () => changeState(AppState.mainView),
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
@@ -41,29 +42,32 @@ class UserDetailsView extends StatelessWidget {
             ],
           ),
         ),
-        body: Center(
-          child: SingleChildScrollView(
+        body: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("""User Data: 
-                Username: ${selectedUser.username}
-                FirstName: ${selectedUser.firstName}
-                LastName: ${selectedUser.lastName}
-                Entrance: ${selectedUser.entranceTime}
-                Access: ${selectedUser.access}
-                """),
-                const Text("Internal Equipment: "),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                const Text("User Data:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const Padding(padding: EdgeInsets.only(bottom: 20)),
+                DetailsRowView(field: "ID", value: selectedUser.id.toString()),
+                DetailsRowView(field: "Username", value: selectedUser.username),
+                DetailsRowView(field: "FirstName", value: selectedUser.firstName),
+                DetailsRowView(field: "LastName", value: selectedUser.lastName),
+                DetailsRowView(field: "Entrance Time", value: selectedUser.entranceTime),
+                DetailsRowView(field: "Has internal equipment", value: selectedUser.internal),
                 getIntEquipmentListWidgets(intList),
-                const Text("External Equipment: "),
+                const Padding(padding: EdgeInsets.only(bottom: 20)),
+                DetailsRowView(field: "Has external equipment", value: selectedUser.external),
                 getExtEquipmentListWidgets(extList),
+                const Padding(padding: EdgeInsets.only(bottom: 20)),
+                DetailsRowView(field: "Access", value: selectedUser.access),
               ],
             ),
           ),
-        ),
       ),
     );
   }
+
 
   Widget getExtEquipmentListWidgets(List<EquipmentExt> equipmentList) {
     List<Widget> list = <Widget>[];
@@ -72,8 +76,11 @@ class UserDetailsView extends StatelessWidget {
         list.add(
             Row(
                 children: [
-                  Expanded(child: Text("Equipment ${equipmentList[i].id}: ${equipmentList[i].name} ")),
-                  Expanded(child: Text("Description: ${equipmentList[i].description}")),
+                  const Spacer(flex: 1),
+                  Expanded(flex: 6, child: Text("Equipment ${equipmentList[i].id}: ${equipmentList[i].name} ")),
+                  const Spacer(flex: 1),
+                  Expanded(flex: 10, child: Text("Description: ${equipmentList[i].description}")),
+                  const Spacer(flex: 1),
                 ])
         );
       }
@@ -87,8 +94,11 @@ class UserDetailsView extends StatelessWidget {
       if (equipmentList[i].user == selectedUser.username) {
         list.add(Row(
             children: [
-              Text("Equipment ${equipmentList[i].id}: ${equipmentList[i].name} "),
-              Text("Description: ${equipmentList[i].description}"),
+              const Spacer(flex: 1),
+              Expanded(flex: 6, child: Text("Equipment ${equipmentList[i].id}: ${equipmentList[i].name} ")),
+              const Spacer(flex: 1),
+              Expanded(flex: 10, child: Text("Description: ${equipmentList[i].description}")),
+              const Spacer(flex: 1),
             ])
         );
       }

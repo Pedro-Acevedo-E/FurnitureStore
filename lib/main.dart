@@ -5,7 +5,8 @@ import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
-import 'package:furniture_store/views/external_furniture_form.dart';
+import 'package:furniture_store/views/input_form.dart';
+import 'package:furniture_store/views/log_details_view.dart';
 import 'package:furniture_store/views/log_list_view.dart';
 import 'package:furniture_store/views/login_view.dart';
 import 'package:furniture_store/views/main_view.dart';
@@ -218,6 +219,14 @@ class _MyAppState extends State<MyApp> {
             logout: () => logout()
         );
       }
+      case AppState.logDetails: {
+        return LogDetailsView(
+            user: loginUser,
+            selectedLog: selectedLog,
+            changeState: (AppState state) => changeState(state),
+            logout: () => logout()
+        );
+      }
       default: {
         return Text(appState.toString());
       }
@@ -359,7 +368,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void viewLogDetails(Log log) {
-
+    setState(() {
+      selectedLog = log;
+    });
+    changeState(AppState.logDetails);
   }
 
   void viewUserEntrance() async {

@@ -14,6 +14,7 @@ enum AppState {
   createIncident,
   incidentLog,
   userLog,
+  logDetails,
   internalFurniture,
   externalFurniture,
 
