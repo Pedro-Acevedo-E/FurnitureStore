@@ -35,7 +35,7 @@ class SecurityMainView extends StatelessWidget {
         ElevatedButton(
             style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
             onPressed: () => changeState(AppState.userLog),
-            child: const Text("User Log")
+            child: const Text("Entrance and Exits Log")
         ),
         ElevatedButton(
             style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),

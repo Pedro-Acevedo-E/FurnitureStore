@@ -6,6 +6,7 @@ import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/external_furniture_form.dart';
+import 'package:furniture_store/views/log_list_view.dart';
 import 'package:furniture_store/views/login_view.dart';
 import 'package:furniture_store/views/main_view.dart';
 import 'package:furniture_store/views/user_details_view.dart';
@@ -43,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   final passwordController = TextEditingController();
   var alertText = "";
 
-  //entrance user
+  //entrance & exits
   List<User> filteredUserList = [];
   List<Widget> formList = [];
   List<TextEditingController> nameControllerList = [];
@@ -51,6 +52,11 @@ class _MyAppState extends State<MyApp> {
   bool showIncidentForm = false;
   final incidentTitleController = TextEditingController();
   final incidentDescriptionController = TextEditingController();
+
+  //logs
+  List<Log> incidentsList = [];
+  List<Log> userLogList = [];
+  Log selectedLog = Log.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -192,6 +198,26 @@ class _MyAppState extends State<MyApp> {
             createIncident: () => createIncident()
         );
       }
+      case AppState.incidentLog: {
+        return LogListView(
+            title: "Incidents",
+            user: loginUser,
+            logList: incidentsList,
+            changeState: (AppState state) => changeState(state),
+            viewLogDetails: viewLogDetails,
+            logout: () => logout()
+        );
+      }
+      case AppState.userLog: {
+        return LogListView(
+            title: "Entrance and Exit",
+            user: loginUser,
+            logList: userLogList,
+            changeState: (AppState state) => changeState(state),
+            viewLogDetails: viewLogDetails,
+            logout: () => logout()
+        );
+      }
       default: {
         return Text(appState.toString());
       }
@@ -199,7 +225,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void changeState(AppState state) {
-   refreshList();
+    setState(() {
+      appState = AppState.loading;
+    });
+    refreshList();
     setState(() {
       appState = state;
       alertText = "";
@@ -252,6 +281,8 @@ class _MyAppState extends State<MyApp> {
     final data = await SQLHelper.getList("user");
     final ext = await SQLHelper.getList("equipment_ext");
     final intE = await SQLHelper.getList("equipment_int");
+    final iLog = await SQLHelper.getList("incident_log");
+    final uLog = await SQLHelper.getList("user_log");
 
     List<User> tempUserList = [];
     for(var i = 0; i < data.length; i++) {
@@ -294,17 +325,41 @@ class _MyAppState extends State<MyApp> {
           notes: intE.elementAt(i)["notes"],
           createdAt: intE.elementAt(i)["created_at"].toString()));
     }
+    List<Log> uTempLog = [];
+    for(var i = 0; i < uLog.length; i++) {
+      uTempLog.add(Log(
+          id: uLog.elementAt(i)["id"],
+          title: uLog.elementAt(i)["title"],
+          createdBy: uLog.elementAt(i)["created_by"],
+          description: uLog.elementAt(i)["description"],
+          createdAt: uLog.elementAt(i)["created_at"].toString()));
+    }
+    List<Log> iTempLog = [];
+    for(var i = 0; i < iLog.length; i++) {
+      iTempLog.add(Log(
+          id: iLog.elementAt(i)["id"],
+          title: iLog.elementAt(i)["title"],
+          createdBy: iLog.elementAt(i)["created_by"],
+          description: iLog.elementAt(i)["description"],
+          createdAt: iLog.elementAt(i)["created_at"].toString()));
+    }
 
     setState(() {
       userList = tempUserList;
       extList = tempExtList;
       intList = tempIntList;
+      incidentsList = iTempLog;
+      userLogList = uTempLog;
     });
   }
 
   void viewUserDetails(User user) {
     selectUser(user);
     changeState(AppState.userDetails);
+  }
+
+  void viewLogDetails(Log log) {
+
   }
 
   void viewUserEntrance() async {

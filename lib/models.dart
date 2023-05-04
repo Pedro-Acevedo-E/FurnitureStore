@@ -194,6 +194,10 @@ class Log {
     required this.description,
     required this.createdAt,
   });
+
+  static Log empty(){
+    return Log(id: 0, title: "", createdBy: "", description: "", createdAt: "");
+  }
 }
 
 
