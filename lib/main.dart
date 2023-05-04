@@ -351,7 +351,7 @@ class _MyAppState extends State<MyApp> {
     var descriptionString = "User entered Office";
 
     if (formList.isNotEmpty) {
-      selectedUser.external = "Yes";
+      selectedUser.external = "yes";
       for(var i = 0; i < formList.length;i++) {
         final tempEquipmentExt = EquipmentExt(
             id: 0,
@@ -380,7 +380,7 @@ class _MyAppState extends State<MyApp> {
     );
     final userLogData = await SQLHelper.createLog(logData, "user_log");
 
-    if(showIncidentForm) {
+    if(showIncidentForm && incidentTitleController.text.isNotEmpty && incidentDescriptionController.text.isNotEmpty) {
       final incidentLogData = Log(
           id: 0,
           title: incidentTitleController.text,
@@ -414,14 +414,61 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.userExit);
   }
 
-  void createExit() {
+  void createExit() async {
+    selectedUser.entranceTime = "";
+    var descriptionString = "User Exited Office";
+    if(selectedUser.external == "yes" || selectedUser.external == "Yes") {
+      selectedUser.external = "no";
+      for(var i = 0; i < extList.length; i++) {
+        if(extList[i].user == selectedUser.username) {
+          descriptionString = "$descriptionString \nExited with ${extList[i].name}";
+          final data = SQLHelper.deleteItem(extList[i].id, "equipment_ext");
+          if (kDebugMode) {
+            print("Deleted ext Equipment $data");
+          }
+        }
+      }
+    }
 
+    updateInternal(selectedUser, "Outside");
+
+    final userData = await SQLHelper.updateUser(selectedUser.id, selectedUser);
+
+    final logData = Log(
+        id: 0,
+        title: "${selectedUser.username} Has exited Office at ${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}",
+        createdBy: loginUser.username,
+        description: descriptionString,
+        createdAt: ""
+    );
+    final userLogData = await SQLHelper.createLog(logData, "user_log");
+
+    if(showIncidentForm && incidentTitleController.text.isNotEmpty && incidentDescriptionController.text.isNotEmpty) {
+      final incidentLogData = Log(
+          id: 0,
+          title: incidentTitleController.text,
+          createdBy: loginUser.username,
+          description: incidentDescriptionController.text,
+          createdAt: ""
+      );
+      final incidentData = await SQLHelper.createLog(incidentLogData, "incident_log");
+      if (kDebugMode) {
+        print("Created Incident Log $incidentData");
+      }
+    }
+
+    if (kDebugMode) {
+      print("Updated User $userData");
+      print("Created User Log $userLogData");
+    }
+
+    changeState(AppState.entrancesAndExits);
   }
 
   void updateInternal(User user, String location) async {
     for (var i = 0; i < intList.length; i++) {
       if(intList[i].user == user.username) {
-        intList[i].location = "In $location with ${user.username}";
+        intList[i].location = "$location with ${user.username}";
         final data = await SQLHelper.updateEquipmentInt(intList[i].id, intList[i]);
         if (kDebugMode) {
           print("Updated Internal Equipment $data");
