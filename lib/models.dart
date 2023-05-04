@@ -4,9 +4,9 @@ class User {
   final String firstName;
   final String lastName;
   final String password;
-  final String entranceTime;
-  final String internal;
-  final String external;
+  String entranceTime;
+  String internal;
+  String external;
   final String access;
 
   User({
@@ -26,26 +26,14 @@ class User {
   }
 
   static User demo1(){
-    return User(id: 0, username: "admin", firstName: "admin", lastName: "is cool", password: "1234", entranceTime: "", internal: "no", external: "no", access: "admin");
-  }
-
-  static User demo2(){
-    return User(id: 0, username: "user", firstName: "user", lastName: "is cool", password: "1234", entranceTime: "", internal: "no", external: "no", access: "user");
-  }
-
-  static User demo3(){
-    return User(id: 0, username: "security", firstName: "security", lastName: "in cool", password: "1234", entranceTime: "", internal: "no", external: "no", access: "security");
-  }
-
-  static User demo4(){
     return User(id: 0, username: "PedroAcevedo", firstName: "Pedro", lastName: "Acevedo", password: "1234", entranceTime: "", internal: "yes", external: "no", access: "user");
   }
 
-  static User demo5(){
+  static User demo2(){
     return User(id: 0, username: "FernandoMorales", firstName: "Fernando", lastName: "Morales", password: "1234", entranceTime: "12:50", internal: "no", external: "yes", access: "user");
   }
 
-  static User demo6(){
+  static User demo3(){
     return User(id: 0, username: "CarlosHernandez", firstName: "Carlos", lastName: "Hernandez", password: "1234", entranceTime: "08:20", internal: "yes", external: "yes", access: "user");
   }
 
@@ -78,7 +66,7 @@ class EquipmentExt {
 class EquipmentInt {
   final int id;
   final String user;
-  final String location;
+  String location;
   final String status;
   final String productId;
   final String name;
@@ -196,7 +184,7 @@ class Log {
   final int id;
   final String title;
   final String createdBy;
-  final int description;
+  final String description;
   final String createdAt;
 
   Log({

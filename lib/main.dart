@@ -73,11 +73,15 @@ class _MyAppState extends State<MyApp> {
     final intFurnitureData = await SQLHelper.getList("equipment_int");
     final extFurnitureData = await SQLHelper.getList("equipment_ext");
     final categoryData = await SQLHelper.getList("category");
+    final userLogData = await SQLHelper.getList("user_log");
+    final incidentsLogData = await SQLHelper.getList("incident_log");
     if (kDebugMode) {
       print("We have ${userData.length} users in our database");
       print("We have ${categoryData.length} categories in our database");
       print("We have ${intFurnitureData.length} internal furniture in our database");
       print("We have ${extFurnitureData.length} external furniture in our database");
+      print("We have ${userLogData.length} user logs in our database");
+      print("We have ${incidentsLogData.length} incidents logs in our database");
     }
   }
 
@@ -85,12 +89,9 @@ class _MyAppState extends State<MyApp> {
     final phoneCategoryData = await SQLHelper.createCategory("Phone", "Mobile phone devices");
     final pcCategoryData = await SQLHelper.createCategory("PC", "Personal computer");
     final laptopCategoryData = await SQLHelper.createCategory("Laptop", "Portable personal computers");
-    final adminData = await SQLHelper.createUser(User.demo1());
-    final userData = await SQLHelper.createUser(User.demo2());
-    final securityData = await SQLHelper.createUser(User.demo3());
-    final user1 = await SQLHelper.createUser(User.demo4());
-    final user2 = await SQLHelper.createUser(User.demo5());
-    final user3 = await SQLHelper.createUser(User.demo6());
+    final user1 = await SQLHelper.createUser(User.demo1());
+    final user2 = await SQLHelper.createUser(User.demo2());
+    final user3 = await SQLHelper.createUser(User.demo3());
     final extDevice1 = await SQLHelper.createEquipmentExt(EquipmentExt.demo1());
     final extDevice2 = await SQLHelper.createEquipmentExt(EquipmentExt.demo2());
     final intDevice1 = await SQLHelper.createEquipmentInt(EquipmentInt.demo1());
@@ -102,9 +103,6 @@ class _MyAppState extends State<MyApp> {
       print("Created category $phoneCategoryData in database");
       print("Created category $pcCategoryData in database");
       print("Created category $laptopCategoryData in database");
-      print("Created user $adminData in database");
-      print("Created user $userData in database");
-      print("Created user $securityData in database");
       print("Created user $user1 in database");
       print("Created user $user2 in database");
       print("Created user $user3 in database");
@@ -314,7 +312,7 @@ class _MyAppState extends State<MyApp> {
       incidentTitleController.text = "";
       incidentDescriptionController.text = "";
     });
-    //add if to check if filtered list is empty
+    //add if to check if filtered list is empty to show that there R no members outside
     changeState(AppState.userEntrance);
   }
 
@@ -334,9 +332,97 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void createEntrance() {
-    print("create entrance");
+  void createEntrance() async {
+    selectedUser.entranceTime = "${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}";
+    var descriptionString = "User entered Office";
+
+    if (formList.isNotEmpty) {
+      selectedUser.external = "Yes";
+      for(var i = 0; i < formList.length;i++) {
+        final tempEquipmentExt = EquipmentExt(
+            id: 0,
+            user: selectedUser.username,
+            name: nameControllerList[i].text,
+            description: descriptionControllerList[i].text,
+            createdAt: ""
+        );
+        descriptionString = "$descriptionString \nWith external equipment ${tempEquipmentExt.name}";
+        final data = await SQLHelper.createEquipmentExt(tempEquipmentExt);
+        if (kDebugMode) {
+          print("Created External Equipment $data");
+        }
+      }
+    }
+
+    updateInternal(selectedUser, "Office");
+
+    final userData = await SQLHelper.updateUser(selectedUser.id, selectedUser);
+    final logData = Log(
+        id: 0,
+        title: "${selectedUser.username} Has entered Office at ${selectedUser.entranceTime}",
+        createdBy: loginUser.username,
+        description: descriptionString,
+        createdAt: ""
+    );
+    final userLogData = await SQLHelper.createLog(logData, "user_log");
+
+    if(showIncidentForm) {
+      final incidentLogData = Log(
+          id: 0,
+          title: incidentTitleController.text,
+          createdBy: loginUser.username,
+          description: incidentDescriptionController.text,
+          createdAt: ""
+      );
+      final incidentData = await SQLHelper.createLog(incidentLogData, "incident_log");
+      if (kDebugMode) {
+        print("Created Incident Log $incidentData");
+      }
+    }
+
+    if (kDebugMode) {
+      print("Updated User $userData");
+      print("Created User Log $userLogData");
+    }
+
+    changeState(AppState.entrancesAndExits);
   }
+
+  void updateInternal(User user, String location) async {
+    for (var i = 0; i < intList.length; i++) {
+      if(intList[i].user == user.username) {
+        intList[i].location = "In $location with ${user.username}";
+        final data = await SQLHelper.updateEquipmentInt(intList[i].id, intList[i]);
+        if (kDebugMode) {
+          print("Updated Internal Equipment $data");
+        }
+      }
+    }
+  }
+
+
+  /*
+  case AppState.userEntrance: {
+        return UserEntranceView(
+            user: loginUser,
+            selectedUser: selectedUser,
+            userList: filteredUserList,
+            intList: intList,
+            changeState: (AppState state) => changeState(state),
+            selectUser: (User user) => selectUser(user),
+            logout: () => logout(),
+            addForm: () => addForm(),
+            removeForm: () => removeForm(),
+            createEntrance: () => createEntrance(),
+            toggleIncidentForm: () => toggleIncidentForm(),
+            showIncidentForm: showIncidentForm,
+            incidentTitleController: incidentTitleController,
+            incidentDescriptionController: incidentDescriptionController,
+            formList: formList,
+            nameControllerList: nameControllerList,
+            descriptionControllerList: descriptionControllerList);
+      } break;
+   */
 
   void toggleIncidentForm() {
     setState(() {

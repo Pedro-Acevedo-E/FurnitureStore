@@ -66,6 +66,50 @@ class SQLHelper{
         description TEXT
       )
       """);
+    final dataAdmin = {
+      'username': "admin",
+      'first_name': "admin",
+      'last_name': "",
+      'password': "1234",
+      'entrance_time': "",
+      'internal': "no",
+      'external': "no",
+      'access': "admin"
+    };
+    final dataSecurity = {
+      'username': "security",
+      'first_name': "security",
+      'last_name': "",
+      'password': "1234",
+      'entrance_time': "",
+      'internal': "no",
+      'external': "no",
+      'access': "security"
+    };
+    final dataUser = {
+      'username': "user",
+      'first_name': "user",
+      'last_name': "",
+      'password': "1234",
+      'entrance_time': "",
+      'internal': "no",
+      'external': "no",
+      'access': "user"
+    };
+    await database.insert(
+        'user',
+        dataAdmin,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );
+    await database.insert(
+        'user',
+        dataSecurity,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );await database.insert(
+        'user',
+        dataUser,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );
   }
 
   static Future<sql.Database> db() async {
@@ -150,19 +194,13 @@ class SQLHelper{
 
     return id;
   }
-/*
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        title TEXT,
-        created_by TEXT,
-        description TEXT,
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
- */
-  static Future<int> createLog(User user, Log log, String table) async {
+
+  static Future<int> createLog(Log log, String table) async {
     final db = await SQLHelper.db();
 
     final data = {
       'title': log.title,
-      'created_by': user.username,
+      'created_by': log.createdBy,
       'description': log.description,
     };
 
@@ -252,7 +290,7 @@ id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       'notes': equipment.notes
     };
 
-    final result = await db.update('equipment', data, where: "id = ?", whereArgs: [id]);
+    final result = await db.update('equipment_int', data, where: "id = ?", whereArgs: [id]);
     return result;
   }
 
