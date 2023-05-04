@@ -7,7 +7,7 @@ class ExternalFurnitureForm extends StatelessWidget {
   const ExternalFurnitureForm({
     super.key,
     required this.nameController,
-    required this.descriptionController
+    required this.descriptionController,
   });
 
   @override
@@ -15,7 +15,6 @@ class ExternalFurnitureForm extends StatelessWidget {
     return Column(
       children: [
         const Padding(padding: EdgeInsets.only(top: 30)),
-        const Text("Name: "),
         SizedBox(
           width: 300,
           child: TextField(
@@ -23,12 +22,11 @@ class ExternalFurnitureForm extends StatelessWidget {
             textAlign: TextAlign.center,
             textInputAction: TextInputAction.done,
             decoration: const InputDecoration(
-                hintText: "Insert Name Here"
+                hintText: "Name"
             ),
           ),
         ),
         const Padding(padding: EdgeInsets.only(top: 10)),
-        const Text("Description: "),
         SizedBox(
             width: 300,
             child: TextField(
@@ -41,7 +39,7 @@ class ExternalFurnitureForm extends StatelessWidget {
               ),
             ),
         ),
-
+        const Padding(padding: EdgeInsets.only(bottom: 30)),
       ],
     );
   }

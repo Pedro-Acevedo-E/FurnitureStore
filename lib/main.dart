@@ -50,6 +50,9 @@ class _MyAppState extends State<MyApp> {
   List<Widget> formList = [];
   List<TextEditingController> nameControllerList = [];
   List<TextEditingController> descriptionControllerList = [];
+  bool showIncidentForm = false;
+  final incidentTitleController = TextEditingController();
+  final incidentDescriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -158,6 +161,11 @@ class _MyAppState extends State<MyApp> {
             logout: () => logout(),
             addForm: () => addForm(),
             removeForm: () => removeForm(),
+            createEntrance: () => createEntrance(),
+            toggleIncidentForm: () => toggleIncidentForm(),
+            showIncidentForm: showIncidentForm,
+            incidentTitleController: incidentTitleController,
+            incidentDescriptionController: incidentDescriptionController,
             formList: formList,
             nameControllerList: nameControllerList,
             descriptionControllerList: descriptionControllerList);
@@ -297,11 +305,14 @@ class _MyAppState extends State<MyApp> {
     }
 
     setState(() {
+      showIncidentForm = false;
       filteredUserList = tempUserList;
       selectedUser = filteredUserList[0];
       formList = [];
       nameControllerList = [];
       descriptionControllerList = [];
+      incidentTitleController.text = "";
+      incidentDescriptionController.text = "";
     });
     //add if to check if filtered list is empty
     changeState(AppState.userEntrance);
@@ -320,6 +331,20 @@ class _MyAppState extends State<MyApp> {
       nameControllerList.removeAt(nameControllerList.length - 1);
       descriptionControllerList.removeAt(descriptionControllerList.length - 1);
       formList.removeAt(formList.length - 1);
+    });
+  }
+
+  void createEntrance() {
+    print("create entrance");
+  }
+
+  void toggleIncidentForm() {
+    setState(() {
+      if (showIncidentForm == true) {
+        showIncidentForm = false;
+      } else {
+        showIncidentForm = true;
+      }
     });
   }
 
