@@ -23,7 +23,7 @@ class UserMainView extends StatelessWidget {
       children: [
         ElevatedButton(
             style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-            onPressed: () => changeState(AppState.registeredFurniture),
+            onPressed: () => changeState(AppState.checkFurniture),
             child: const Text("Check Furniture")
         ),
       ],

@@ -400,30 +400,6 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-
-  /*
-  case AppState.userEntrance: {
-        return UserEntranceView(
-            user: loginUser,
-            selectedUser: selectedUser,
-            userList: filteredUserList,
-            intList: intList,
-            changeState: (AppState state) => changeState(state),
-            selectUser: (User user) => selectUser(user),
-            logout: () => logout(),
-            addForm: () => addForm(),
-            removeForm: () => removeForm(),
-            createEntrance: () => createEntrance(),
-            toggleIncidentForm: () => toggleIncidentForm(),
-            showIncidentForm: showIncidentForm,
-            incidentTitleController: incidentTitleController,
-            incidentDescriptionController: incidentDescriptionController,
-            formList: formList,
-            nameControllerList: nameControllerList,
-            descriptionControllerList: descriptionControllerList);
-      } break;
-   */
-
   void toggleIncidentForm() {
     setState(() {
       if (showIncidentForm == true) {

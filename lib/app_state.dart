@@ -3,21 +3,27 @@ enum AppState {
   loginScreen,
   mainView,
 
-  entrancesAndExits,
-  userDetails,
-  userEntrance,
-  userExit,
-
-  createIncident,
-  createUser,
+  //admin
   editUser,
+  editExternal,
+  editInternal,
+  editCategory,
+
+  //security
+  entrancesAndExits,
+  createIncident,
   incidentLog,
   userLog,
   internalFurniture,
   externalFurniture,
-  createInternalFurniture,
-  registeredFurniture,
 
+  //User
+  checkFurniture,
+
+  //Entrances and exits
+  userDetails,
+  userEntrance,
+  userExit,
 
   profile,
   settings,

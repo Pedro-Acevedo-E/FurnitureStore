@@ -21,18 +21,23 @@ class AdminMainView extends StatelessWidget {
       children: [
         ElevatedButton(
             style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-            onPressed: () => changeState(AppState.createUser),
-            child: const Text("Create user")
-        ),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-            onPressed: () => changeState(AppState.createInternalFurniture),
-            child: const Text("Create Internal furniture")
-        ),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
             onPressed: () => changeState(AppState.editUser),
-            child: const Text("Edit user")
+            child: const Text("Edit Users")
+        ),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+            onPressed: () => changeState(AppState.editExternal),
+            child: const Text("Edit External Furniture")
+        ),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+            onPressed: () => changeState(AppState.editInternal),
+            child: const Text("Edit Internal Furniture")
+        ),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+            onPressed: () => changeState(AppState.editCategory),
+            child: const Text("Edit Categories")
         ),
       ],
     );
