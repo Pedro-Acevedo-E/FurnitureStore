@@ -31,6 +31,11 @@ enum AppState {
   internalEdit,
   internalCreate,
 
+  externalDetails,
+  externalDelete,
+  externalEdit,
+  externalCreate,
+
   profile,
   settings,
 

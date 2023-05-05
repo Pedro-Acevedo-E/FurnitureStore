@@ -3,23 +3,23 @@ import 'package:furniture_store/views/popup_menu_button.dart';
 import '../app_state.dart';
 import '../models.dart';
 
-class IntFurnitureView extends StatelessWidget {
+class ExtFurnitureView extends StatelessWidget {
   final User user;
-  final List<EquipmentInt> intList;
+  final List<EquipmentExt> extList;
   final Function(AppState val) changeState;
-  final Function(EquipmentInt item) viewInternalFurnitureDetails;
-  final Function(EquipmentInt item) deleteInternalFurniture;
-  final Function(EquipmentInt item) editInternalFurniture;
+  final Function(EquipmentExt item) viewExternalFurnitureDetails;
+  final Function(EquipmentExt item) deleteExternalFurniture;
+  final Function(EquipmentExt item) editExternalFurniture;
   final VoidCallback logout;
 
-  const IntFurnitureView({
+  const ExtFurnitureView({
     super.key,
     required this.user,
-    required this.intList,
+    required this.extList,
     required this.changeState,
-    required this.viewInternalFurnitureDetails,
-    required this.deleteInternalFurniture,
-    required this.editInternalFurniture,
+    required this.viewExternalFurnitureDetails,
+    required this.deleteExternalFurniture,
+    required this.editExternalFurniture,
     required this.logout,
   });
 
@@ -35,7 +35,7 @@ class IntFurnitureView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              const Text("Internal Furniture"),
+              const Text("External Furniture"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
@@ -49,20 +49,20 @@ class IntFurnitureView extends StatelessWidget {
               const Padding(padding: EdgeInsets.only(top: 20)),
               getTitleListWidgets(),
               const Padding(padding: EdgeInsets.only(top: 20)),
-              getIntListWidgets(intList),
+              getExtListWidgets(extList),
             ],
           ),
         ),
         floatingActionButton: user.access == "admin" ? FloatingActionButton(
-          onPressed: () => changeState(AppState.internalCreate),
-          tooltip: "New Internal furniture",
-          child: const Icon(Icons.add)
+            onPressed: () => changeState(AppState.internalCreate),
+            tooltip: "New External furniture",
+            child: const Icon(Icons.add)
         ): const SizedBox.shrink(),
       ),
     );
   }
 
-  Widget getIntListWidgets(List<EquipmentInt> eqList) {
+  Widget getExtListWidgets(List<EquipmentExt> eqList) {
     List<Widget> list = <Widget>[];
     if(user.access == "admin") {
       for(var i = 0; i < eqList.length; i++){
@@ -139,8 +139,8 @@ class IntFurnitureView extends StatelessWidget {
           children: const [
             Spacer(flex: 1),
             Expanded(
-                flex: 7,
-                child: Text("Name"),
+              flex: 7,
+              child: Text("Name"),
             ),
             Spacer(flex: 1),
             Expanded(
@@ -188,15 +188,15 @@ class IntFurnitureView extends StatelessWidget {
     }
   }
 
-  void viewDetails(EquipmentInt item) {
-    viewInternalFurnitureDetails(item);
+  void viewDetails(EquipmentExt item) {
+    viewExternalFurnitureDetails(item);
   }
-  void delete(EquipmentInt item) {
-    deleteInternalFurniture(item);
+  void delete(EquipmentExt item) {
+    deleteExternalFurniture(item);
   }
 
-  void edit(EquipmentInt item) {
-    editInternalFurniture(item);
+  void edit(EquipmentExt item) {
+    editExternalFurniture(item);
   }
 
 }

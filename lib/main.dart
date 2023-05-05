@@ -5,6 +5,7 @@ import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
+import 'package:furniture_store/views/ext_furniture_list_view.dart';
 import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/int_furniture_list_view.dart';
 import 'package:furniture_store/views/log_details_view.dart';
@@ -62,7 +63,7 @@ class _MyAppState extends State<MyApp> {
   Log selectedLog = Log.empty();
 
   EquipmentInt selectedInt = EquipmentInt.empty();
-  EquipmentInt selectedExt = EquipmentInt.empty();
+  EquipmentExt selectedExt = EquipmentExt.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +97,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void createDemo() async {
+    final otherCategoryData = await SQLHelper.createCategory("Other", "Portable personal computers");
     final phoneCategoryData = await SQLHelper.createCategory("Phone", "Mobile phone devices");
     final pcCategoryData = await SQLHelper.createCategory("PC", "Personal computer");
     final laptopCategoryData = await SQLHelper.createCategory("Laptop", "Portable personal computers");
@@ -110,6 +112,7 @@ class _MyAppState extends State<MyApp> {
     final intDevice4 = await SQLHelper.createEquipmentInt(EquipmentInt.demo4());
 
     if (kDebugMode) {
+      print("Created category $otherCategoryData in database");
       print("Created category $phoneCategoryData in database");
       print("Created category $pcCategoryData in database");
       print("Created category $laptopCategoryData in database");
@@ -242,9 +245,18 @@ class _MyAppState extends State<MyApp> {
             viewInternalFurnitureDetails: viewInternalFurnitureDetails,
             deleteInternalFurniture: deleteInternalFurniture,
             editInternalFurniture: editInternalFurniture,
-            createInternalFurniture: () => createInternalFurniture(),
             logout: () => logout()
         );
+      }
+      case AppState.externalFurniture: {
+        return ExtFurnitureView(
+            user: loginUser,
+            extList: extList,
+            changeState: changeState,
+            viewExternalFurnitureDetails: viewExternalFurnitureDetails,
+            deleteExternalFurniture: deleteExternalFurniture,
+            editExternalFurniture: editExternalFurniture,
+            logout: logout);
       }
       default: {
         return Text(appState.toString());
@@ -379,6 +391,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  //CRUD operations############################################################
   void viewUserDetails(User user) {
     selectUser(user);
     changeState(AppState.userDetails);
@@ -412,9 +425,29 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.internalDelete);
   }
 
-  void createInternalFurniture() {
-    changeState(AppState.internalCreate);
+  void viewExternalFurnitureDetails(EquipmentExt data) {
+    setState(() {
+      selectedExt = data;
+    });
+    changeState(AppState.externalDetails);
   }
+
+  void editExternalFurniture(EquipmentExt data) {
+    setState(() {
+      selectedExt = data;
+    });
+    changeState(AppState.externalEdit);
+  }
+  void deleteExternalFurniture(EquipmentExt data) {
+    setState(() {
+      selectedExt = data;
+    });
+    changeState(AppState.externalDelete);
+  }
+
+
+
+  //End CRUD operations ############################################################
 
   void viewUserEntrance() async {
     final data = await SQLHelper.filteredUserList();
@@ -514,7 +547,6 @@ class _MyAppState extends State<MyApp> {
       incidentDescriptionController.text = "";
       incidentDescriptionController.text = "";
     });
-
     changeState(AppState.userExit);
   }
 
