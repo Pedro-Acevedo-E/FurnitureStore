@@ -23,7 +23,7 @@ class SQLHelper{
         user TEXT,
         name TEXT,
         description TEXT
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        created_at DATE DEFAULT (datetime('now','localtime'))
       )
       """);
     await database.execute("""CREATE TABLE equipment_int(
@@ -41,7 +41,7 @@ class SQLHelper{
         color_1 TEXT,
         color_2 TEXT,
         notes TEXT,
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        created_at DATE DEFAULT (datetime('now','localtime'))
       )
       """);
     await database.execute("""CREATE TABLE user_log(
@@ -49,7 +49,7 @@ class SQLHelper{
         title TEXT,
         created_by TEXT,
         description TEXT,
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        created_at DATE DEFAULT (datetime('now','localtime'))
       )
       """);
     await database.execute("""CREATE TABLE incident_log(
@@ -57,7 +57,7 @@ class SQLHelper{
         title TEXT,
         created_by TEXT,
         description TEXT,
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        created_at DATE DEFAULT (datetime('now','localtime'))
       )
       """);
     await database.execute("""CREATE TABLE category(
