@@ -6,6 +6,7 @@ import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/input_form.dart';
+import 'package:furniture_store/views/int_furniture_list_view.dart';
 import 'package:furniture_store/views/log_details_view.dart';
 import 'package:furniture_store/views/log_list_view.dart';
 import 'package:furniture_store/views/login_view.dart';
@@ -59,6 +60,9 @@ class _MyAppState extends State<MyApp> {
   List<Log> incidentsList = [];
   List<Log> userLogList = [];
   Log selectedLog = Log.empty();
+
+  EquipmentInt selectedInt = EquipmentInt.empty();
+  EquipmentInt selectedExt = EquipmentInt.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -230,6 +234,18 @@ class _MyAppState extends State<MyApp> {
             lastState: lastState,
         );
       }
+      case AppState.internalFurniture: {
+        return IntFurnitureView(
+            user: loginUser,
+            intList: intList,
+            changeState: (AppState state) => changeState(state),
+            viewInternalFurnitureDetails: viewInternalFurnitureDetails,
+            deleteInternalFurniture: deleteInternalFurniture,
+            editInternalFurniture: editInternalFurniture,
+            createInternalFurniture: () => createInternalFurniture(),
+            logout: () => logout()
+        );
+      }
       default: {
         return Text(appState.toString());
       }
@@ -373,6 +389,31 @@ class _MyAppState extends State<MyApp> {
       selectedLog = log;
     });
     changeState(AppState.logDetails);
+  }
+
+  void viewInternalFurnitureDetails(EquipmentInt data) {
+    setState(() {
+       selectedInt = data;
+    });
+    changeState(AppState.internalDetails);
+  }
+
+  void editInternalFurniture(EquipmentInt data) {
+    setState(() {
+      selectedInt = data;
+    });
+    changeState(AppState.internalEdit);
+  }
+
+  void deleteInternalFurniture(EquipmentInt data) {
+    setState(() {
+      selectedInt = data;
+    });
+    changeState(AppState.internalDelete);
+  }
+
+  void createInternalFurniture() {
+    changeState(AppState.internalCreate);
   }
 
   void viewUserEntrance() async {

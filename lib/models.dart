@@ -54,6 +54,10 @@ class EquipmentExt {
     required this.createdAt,
   });
 
+  static EquipmentExt empty(){
+    return EquipmentExt(id: 0, user: "", name: "", description: "", createdAt: "");
+  }
+
   static EquipmentExt demo1(){
     return EquipmentExt(id: 0, user: "FernandoMorales", name: "Headphones", description: "Black wireless headphones", createdAt: "");
   }
@@ -97,6 +101,25 @@ class EquipmentInt {
     required this.notes,
     required this.createdAt,
   });
+
+  static EquipmentInt empty(){
+    return EquipmentInt(
+        id: 0,
+        user: "",
+        location: "",
+        status: "",
+        productId: "",
+        name: "",
+        description: "",
+        category: "",
+        model: "",
+        weight: "",
+        dimensions: "",
+        color_1: "",
+        color_2: "",
+        notes: "",
+        createdAt: "");
+  }
 
   static EquipmentInt demo1(){
     return EquipmentInt(

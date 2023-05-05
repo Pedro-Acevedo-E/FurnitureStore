@@ -39,7 +39,7 @@ class SecurityMainView extends StatelessWidget {
         ),
         ElevatedButton(
             style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
-            onPressed: () => changeState(AppState.internalFurniture),
+            onPressed: () => changeState(AppState.externalFurniture),
             child: const Text("External furniture")
         ),
         ElevatedButton(

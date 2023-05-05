@@ -4,10 +4,8 @@ enum AppState {
   mainView,
 
   //admin
-  editUser,
-  editExternal,
-  editInternal,
-  editCategory,
+  userList,
+  categoryList,
 
   //security
   entrancesAndExits,
@@ -22,9 +20,16 @@ enum AppState {
   checkFurniture,
 
   //Entrances and exits
-  userDetails,
   userEntrance,
   userExit,
+
+  //CRUD
+  userDetails,
+
+  internalDetails,
+  internalDelete,
+  internalEdit,
+  internalCreate,
 
   profile,
   settings,
