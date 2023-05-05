@@ -72,16 +72,16 @@ class ExtFurnitureView extends StatelessWidget {
               Expanded(
                   flex: 7,
                   child: Text(eqList[i].name)),
-              const Spacer(),
+              const Spacer(flex: 1),
               Expanded(
                   flex: 7,
                   child: Text(eqList[i].user)),
               const Spacer(),
               Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: IconButton(
                     onPressed: () => viewDetails(eqList[i]),
-                    icon: const Icon(Icons.search),
+                    icon: const Icon(Icons.find_in_page),
                   )
               ),
               const Spacer(),
@@ -121,7 +121,7 @@ class ExtFurnitureView extends StatelessWidget {
                   flex: 5,
                   child: IconButton(
                     onPressed: () => viewDetails(eqList[i]),
-                    icon: const Icon(Icons.search),
+                    icon: const Icon(Icons.find_in_page),
                   )
               ),
               const Spacer(),
