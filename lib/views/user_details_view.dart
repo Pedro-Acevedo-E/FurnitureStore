@@ -12,6 +12,7 @@ class UserDetailsView extends StatelessWidget {
   final List<EquipmentInt> intList;
   final Function(AppState val) changeState;
   final VoidCallback logout;
+  final AppState lastState;
 
   const UserDetailsView({
     super.key,
@@ -20,7 +21,8 @@ class UserDetailsView extends StatelessWidget {
     required this.extList,
     required this.intList,
     required this.changeState,
-    required this.logout
+    required this.logout,
+    required this.lastState,
   });
 
   @override
@@ -31,7 +33,7 @@ class UserDetailsView extends StatelessWidget {
           title: Row(
             children: [
               IconButton(
-                  onPressed: () => changeState(AppState.mainView),
+                  onPressed: () => changeState(lastState),
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),

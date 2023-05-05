@@ -9,13 +9,15 @@ class LogDetailsView extends StatelessWidget {
   final Log selectedLog;
   final Function(AppState val) changeState;
   final VoidCallback logout;
+  final AppState lastState;
 
   const LogDetailsView({
     super.key,
     required this.user,
     required this.selectedLog,
     required this.changeState,
-    required this.logout
+    required this.logout,
+    required this.lastState
   });
 
   @override
@@ -26,7 +28,7 @@ class LogDetailsView extends StatelessWidget {
           title: Row(
             children: [
               IconButton(
-                  onPressed: () => changeState(AppState.mainView),
+                  onPressed: () => changeState(lastState),
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),

@@ -38,6 +38,7 @@ class _MyAppState extends State<MyApp> {
   List<EquipmentInt> intList = [];
   User loginUser = User.empty();
   User selectedUser = User.empty();
+  AppState lastState = AppState.loginScreen;
 
   //login
   AppState appState = AppState.loginScreen;
@@ -152,7 +153,8 @@ class _MyAppState extends State<MyApp> {
             extList: extList,
             intList: intList,
             changeState: (AppState state) => changeState(state),
-            logout: () => logout());
+            logout: () => logout(),
+            lastState: lastState);
       }
       case AppState.userEntrance: {
         return UserEntranceView(
@@ -224,7 +226,8 @@ class _MyAppState extends State<MyApp> {
             user: loginUser,
             selectedLog: selectedLog,
             changeState: (AppState state) => changeState(state),
-            logout: () => logout()
+            logout: () => logout(),
+            lastState: lastState,
         );
       }
       default: {
@@ -234,11 +237,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void changeState(AppState state) {
-    setState(() {
-      appState = AppState.loading;
-    });
     refreshList();
     setState(() {
+      lastState = appState;
       appState = state;
       alertText = "";
     });
