@@ -44,7 +44,7 @@ class LoginView extends StatelessWidget {
                       const Padding(padding: EdgeInsets.all(10)),
                       ElevatedButton(
                           onPressed: login,
-                          child: const Text("Login")
+                          child: const Text("Login", style: TextStyle(fontSize: 18))
                       ),
                       const Padding(padding: EdgeInsets.all(10)),
                       Text(alertText, style: const TextStyle(color: Colors.red), textAlign: TextAlign.center),

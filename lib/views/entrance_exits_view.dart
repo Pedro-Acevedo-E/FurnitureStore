@@ -51,17 +51,35 @@ class EntranceAndExitsView extends StatelessWidget {
                 Row(
                     children: const [
                       Spacer(),
-                      Text("Username"),
+                      Expanded(
+                          flex: 18,
+                          child: Text("Username")
+                      ),
+                      Spacer(flex: 1),
+                      Expanded(
+                          flex: 3,
+                          child: Text("Int")
+                      ),
                       Spacer(),
-                      Text("Internal"),
+                      Expanded(
+                          flex: 3,
+                          child: Text("Ext")
+                      ),
                       Spacer(),
-                      Text("External"),
+                      Expanded(
+                          flex: 6,
+                          child: Text("Entrance")
+                      ),
                       Spacer(),
-                      Text("Entrance"),
+                      Expanded(
+                          flex: 5,
+                          child: Text("Details")
+                      ),
                       Spacer(),
-                      Text("Details"),
-                      Spacer(),
-                      Text("Exits"),
+                      Expanded(
+                          flex: 4,
+                          child: Text("Exits")
+                      ),
                       Spacer(),
                     ]),
                 getUserListWidgets(userList),
@@ -84,22 +102,43 @@ class EntranceAndExitsView extends StatelessWidget {
       if (users[i].entranceTime != "") {
         list.add(Row(
           children: [
-            Text(users[i].username),
             const Spacer(),
-            Text(users[i].internal),
-            const Spacer(),
-            Text(users[i].external),
-            const Spacer(),
-            Text(users[i].entranceTime),
-            const Spacer(),
-            TextButton(
-                onPressed: () => userDetails(users[i]),
-                child: const Text("Details")
+            Expanded(
+                flex: 18,
+                child: Text(users[i].username)
             ),
-            TextButton(
-                onPressed: () => viewUserExit(users[i]),
-                child: const Text("Exit")
+            const Spacer(flex: 5),
+            Expanded(
+                flex: 3,
+                child: Text(users[i].internal)
             ),
+            const Spacer(flex: 2),
+            Expanded(
+                flex: 3,
+                child: Text(users[i].external)
+            ),
+            const Spacer(flex: 3),
+            Expanded(
+                flex: 6,
+                child: Text(users[i].entranceTime)
+            ),
+            const Spacer(),
+            Expanded(
+                flex: 5,
+                child: IconButton(
+                    onPressed: () => userDetails(users[i]),
+                    icon: const Icon(Icons.find_in_page)
+                ),
+            ),
+            const Spacer(flex: 1),
+            Expanded(
+                flex: 6,
+                child: TextButton(
+                    onPressed: () => viewUserExit(users[i]),
+                    child: const Text("Exit")
+                ),
+            ),
+            const Spacer(),
           ])
         );
       }

@@ -68,10 +68,11 @@ class UserEntranceView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                  const SizedBox(height: 90),
                   Row(
                     children: [
                       const Spacer(),
-                      const Text("Select User: "),
+                      const Text("Select User: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       const Spacer(),
                       DropdownButton(
                           value: selectedUser,
@@ -88,13 +89,14 @@ class UserEntranceView extends StatelessWidget {
                       ),
                       const Spacer(),
                     ]),
-                  const Padding(padding: EdgeInsets.only(bottom: 10)),
-                  const Text("Internal equipment:"),
-                  const Padding(padding: EdgeInsets.only(bottom: 10)),
+                  const SizedBox(height: 20),
+                  const Text("Internal equipment:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 20),
                   getIntListWidgets(),
+                  const SizedBox(height: 20),
                   Row(children: [
                     const Spacer(),
-                    const Text("External Equipment?"),
+                    const Text("External Equipment?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     IconButton(onPressed: addForm, icon: const Icon(Icons.add)),
                     IconButton(onPressed: removeForm, icon: const Icon(Icons.remove)),
                     const Spacer(),
@@ -104,8 +106,9 @@ class UserEntranceView extends StatelessWidget {
                   const Padding(padding: EdgeInsets.only(bottom: 10)),
                   ElevatedButton(
                       onPressed: createEntrance,
-                      child: const Text("Register Entrance"),
+                      child: const Text("Register Entrance", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   ),
+                  const SizedBox(height: 90),
               ],
             ),
           ),
@@ -121,6 +124,7 @@ class UserEntranceView extends StatelessWidget {
                 nameController: nameControllerList[i],
                 descriptionController: descriptionControllerList[i])
         );
+        list.add(const Padding(padding: EdgeInsets.only(top: 10)));
     }
     return Column(children: list);
   }
@@ -132,7 +136,7 @@ class UserEntranceView extends StatelessWidget {
         list.add(
             Row(children: [
               const Spacer(),
-              Text("Item ${intList[i].id}: ${intList[i].name} ${intList[i].description}"),
+              Text("Item ${intList[i].id}: ${intList[i].name} ${intList[i].description}", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
               const Spacer(),
             ])
         );
@@ -147,7 +151,7 @@ class UserEntranceView extends StatelessWidget {
         children: [
           Row(children: [
             const Spacer(),
-            const Text("Incident?"),
+            const Text("Incident?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             IconButton(onPressed: toggleIncidentForm, icon: const Icon(Icons.close)),
             const Spacer(),
           ]),
@@ -160,7 +164,7 @@ class UserEntranceView extends StatelessWidget {
     } else {
       return Row(children: [
         const Spacer(),
-        const Text("Incident?"),
+        const Text("Incident?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         IconButton(onPressed: toggleIncidentForm, icon: const Icon(Icons.check)),
         const Spacer(),
       ]);

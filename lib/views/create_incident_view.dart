@@ -42,18 +42,21 @@ class CreateIncidentView extends StatelessWidget {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Center(child: Column(
+        body: Center(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Spacer(),
                 getIncidentWidget(),
+                const SizedBox(height: 40),
                 ElevatedButton(
                     onPressed: registerIncident,
-                    child: const Text("Register Incident")),
+                    child: const Text("Register Incident", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+                ),
+                const Spacer(flex: 6),
               ]
           ),
           ),
-        ),
       ),
     );
   }

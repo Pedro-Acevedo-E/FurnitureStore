@@ -56,26 +56,31 @@ class UserExitView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Padding(padding: EdgeInsets.only(top: 20)),
+              const SizedBox(height: 50),
               Row(
                   children: [
                     const Spacer(),
-                    Text("User ${selectedUser.username} is about to exit office"),
+                    Row(children: [
+                      const Text("User ", style: TextStyle(fontSize: 18)),
+                      Text(selectedUser.username, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      const Text(" is about to exit office", style: TextStyle(fontSize: 18)),
+                    ]),
                     const Spacer(),
                   ]),
-              const Padding(padding: EdgeInsets.only(bottom: 10)),
-              const Text("Internal equipment:"),
-              const Padding(padding: EdgeInsets.only(bottom: 10)),
+              const SizedBox(height: 20),
+              const Text("Internal equipment:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
               getIntListWidgets(),
-              const Padding(padding: EdgeInsets.only(bottom: 10)),
-              const Text("External equipment:"),
-              const Padding(padding: EdgeInsets.only(bottom: 10)),
+              const SizedBox(height: 20),
+              const Text("External equipment:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
               getExtListWidgets(),
+              const SizedBox(height: 20),
               getIncidentWidget(),
-              const Padding(padding: EdgeInsets.only(bottom: 10)),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: createExit,
-                child: const Text("Register Exit"),
+                child: const Text("Register Exit", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ],
           ),
@@ -91,7 +96,7 @@ class UserExitView extends StatelessWidget {
         list.add(
             Row(children: [
               const Spacer(),
-              Text("Item ${intList[i].id}: ${intList[i].name} ${intList[i].description}"),
+              Text("Item ${intList[i].id}: ${intList[i].name} ${intList[i].description}", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
               const Spacer(),
             ])
         );
@@ -107,7 +112,7 @@ class UserExitView extends StatelessWidget {
         list.add(
             Row(children: [
               const Spacer(),
-              Text("Item ${extList[i].id}: ${extList[i].name} ${extList[i].description}"),
+              Text("Item ${extList[i].id}: ${extList[i].name} ${extList[i].description}", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
               const Spacer(),
             ])
         );
@@ -122,7 +127,7 @@ class UserExitView extends StatelessWidget {
         children: [
           Row(children: [
             const Spacer(),
-            const Text("Incident?"),
+            const Text("Incident?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             IconButton(onPressed: toggleIncidentForm, icon: const Icon(Icons.close)),
             const Spacer(),
           ]),
@@ -135,7 +140,7 @@ class UserExitView extends StatelessWidget {
     } else {
       return Row(children: [
         const Spacer(),
-        const Text("Incident?"),
+        const Text("Incident?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         IconButton(onPressed: toggleIncidentForm, icon: const Icon(Icons.check)),
         const Spacer(),
       ]);

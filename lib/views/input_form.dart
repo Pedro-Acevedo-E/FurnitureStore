@@ -12,22 +12,28 @@ class ExternalFurnitureForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Padding(padding: EdgeInsets.only(top: 30)),
-        SizedBox(
-          width: 300,
-          child: TextField(
-            controller: nameController,
-            textAlign: TextAlign.center,
-            textInputAction: TextInputAction.done,
-            decoration: const InputDecoration(
-                hintText: "Name"
+    return Container(
+      width: 350,
+      decoration: BoxDecoration(
+          color: Colors.blue.withOpacity(0.5),
+          borderRadius: const BorderRadius.all(Radius.circular(10))
+      ),
+      child: Column(
+        children: [
+          const Padding(padding: EdgeInsets.only(top: 10)),
+          SizedBox(
+            width: 300,
+            child: TextField(
+              controller: nameController,
+              textAlign: TextAlign.center,
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(
+                  hintText: "Name"
+              ),
             ),
           ),
-        ),
-        const Padding(padding: EdgeInsets.only(top: 10)),
-        SizedBox(
+          const Padding(padding: EdgeInsets.only(top: 10)),
+          SizedBox(
             width: 300,
             child: TextField(
               controller: descriptionController,
@@ -38,9 +44,10 @@ class ExternalFurnitureForm extends StatelessWidget {
                   hintText: "Add Description"
               ),
             ),
-        ),
-        const Padding(padding: EdgeInsets.only(bottom: 30)),
-      ],
+          ),
+          const Padding(padding: EdgeInsets.only(bottom: 30)),
+        ],
+      ),
     );
   }
 }

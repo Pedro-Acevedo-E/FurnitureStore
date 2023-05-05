@@ -49,11 +49,20 @@ class LogListView extends StatelessWidget {
               Row(
                   children: const [
                     Spacer(flex: 1),
-                    Text("Name"),
-                    Spacer(flex: 2),
-                    Text("CreatedAt"),
-                    Spacer(flex: 3),
-                    Text("Details"),
+                    Expanded(
+                        flex: 8,
+                        child: Text("Name"),
+                    ),
+                    Spacer(flex: 1),
+                    Expanded(
+                      flex: 5,
+                      child: Text("Created At"),
+                    ),
+                    Spacer(flex: 1),
+                    Expanded(
+                      flex: 3,
+                      child: Text("  Details"),
+                    ),
                     Spacer(),
                   ]),
               const Padding(padding: EdgeInsets.only(top: 20)),
@@ -70,18 +79,21 @@ class LogListView extends StatelessWidget {
     for(var i = 0; i < logList.length; i++){
         list.add(Row(
             children: [
+              const Spacer(),
               Expanded(
-                  flex: 5,
+                  flex: 8,
                   child: Text(logList[i].title)),
               const Spacer(flex: 1),
               Expanded(
                   flex: 5,
                   child: Text(logList[i].createdAt)),
               const Spacer(),
-              TextButton(
-                  onPressed: () => viewDetails(logList[i]),
-                  child: const Text("Details")
-              ),
+              Expanded(
+                  flex: 3,
+                  child: TextButton(
+                      onPressed: () => viewDetails(logList[i]),
+                      child: const Text("Details")
+                  )),
               const Spacer(),
             ])
         );
