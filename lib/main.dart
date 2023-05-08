@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:furniture_store/controllers/external_furniture_controller.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
+import 'package:furniture_store/views/create_external_form.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/ext_furniture_list_view.dart';
@@ -57,6 +59,8 @@ class _MyAppState extends State<MyApp> {
   final incidentTitleController = TextEditingController();
   final incidentDescriptionController = TextEditingController();
 
+  final externalController = ExternalController();
+
   //logs
   List<Log> incidentsList = [];
   List<Log> userLogList = [];
@@ -64,6 +68,8 @@ class _MyAppState extends State<MyApp> {
 
   EquipmentInt selectedInt = EquipmentInt.empty();
   EquipmentExt selectedExt = EquipmentExt.empty();
+  EquipmentCategory? selectedCategory;
+
 
   @override
   Widget build(BuildContext context) {
@@ -266,7 +272,19 @@ class _MyAppState extends State<MyApp> {
             viewExternalFurnitureDetails: viewExternalFurnitureDetails,
             deleteExternalFurniture: deleteExternalFurniture,
             editExternalFurniture: editExternalFurniture,
+            viewCreateExternalFurniture: viewCreateExternalFurniture,
             logout: logout);
+      }
+      case AppState.externalCreate: {
+        return CreateExternalView(
+            user: loginUser,
+            selectedUser: selectedUser,
+            externalController: externalController,
+            userList: userList,
+            createExternalFurniture: createExternalFurniture,
+            selectUser: (User user) => selectUser(user),
+            logout: logout,
+            changeState: changeState);
       }
       default: {
         return Text(appState.toString());
@@ -437,6 +455,19 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.internalDelete);
   }
 
+  void viewCreateInternalFurniture() {
+    setState(() {
+      selectedUser = null;
+      selectedCategory = null;
+    });
+    changeState(AppState.externalCreate);
+  }
+
+  void createInternalFurniture() {
+    //create stuff
+    changeState(AppState.externalFurniture);
+  }
+
   void viewExternalFurnitureDetails(EquipmentExt data) {
     setState(() {
       selectedExt = data;
@@ -457,7 +488,21 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.externalDelete);
   }
 
+  void viewCreateExternalFurniture() {
+    setState(() {
+      selectedUser = null;
+    });
+    changeState(AppState.externalCreate);
+  }
 
+  void createExternalFurniture() {
+    final selectedUser = this.selectedUser;
+    if (selectedUser != null) {
+      externalController.create(selectedUser);
+      externalController.reset();
+      changeState(AppState.externalFurniture);
+    }
+  }
 
   //End CRUD operations ############################################################
 

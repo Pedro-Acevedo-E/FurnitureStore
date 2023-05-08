@@ -96,6 +96,10 @@ class SQLHelper{
       'external': "no",
       'access': "user"
     };
+    final dataCategory = {
+      "name" : "other",
+      "description" : "Other registered equipment"
+    };
     await database.insert(
         'user',
         dataAdmin,
@@ -108,6 +112,11 @@ class SQLHelper{
     );await database.insert(
         'user',
         dataUser,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );
+    await database.insert(
+        'category',
+        dataCategory,
         conflictAlgorithm: sql.ConflictAlgorithm.replace
     );
   }

@@ -200,7 +200,6 @@ class EquipmentInt {
         createdAt: ""
     );
   }
-
 }
 
 class Log {
@@ -221,6 +220,18 @@ class Log {
   static Log empty(){
     return Log(id: 0, title: "", createdBy: "", description: "", createdAt: "");
   }
+}
+
+class EquipmentCategory {
+  final int id;
+  final String name;
+  final String description;
+
+  EquipmentCategory ({
+    required this.id,
+    required this.name,
+    required this.description
+  });
 }
 
 

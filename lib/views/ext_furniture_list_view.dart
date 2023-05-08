@@ -10,6 +10,7 @@ class ExtFurnitureView extends StatelessWidget {
   final Function(EquipmentExt item) viewExternalFurnitureDetails;
   final Function(EquipmentExt item) deleteExternalFurniture;
   final Function(EquipmentExt item) editExternalFurniture;
+  final VoidCallback viewCreateExternalFurniture;
   final VoidCallback logout;
 
   const ExtFurnitureView({
@@ -20,6 +21,7 @@ class ExtFurnitureView extends StatelessWidget {
     required this.viewExternalFurnitureDetails,
     required this.deleteExternalFurniture,
     required this.editExternalFurniture,
+    required this.viewCreateExternalFurniture,
     required this.logout,
   });
 
@@ -54,7 +56,7 @@ class ExtFurnitureView extends StatelessWidget {
           ),
         ),
         floatingActionButton: user.access == "admin" ? FloatingActionButton(
-            onPressed: () => changeState(AppState.internalCreate),
+            onPressed: viewCreateExternalFurniture,
             tooltip: "New External furniture",
             child: const Icon(Icons.add)
         ): const SizedBox.shrink(),
