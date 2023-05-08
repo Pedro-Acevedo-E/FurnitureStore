@@ -90,7 +90,7 @@ class IntFurnitureView extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: IconButton(
-                    onPressed: () => viewDetails(eqList[i]),
+                    onPressed: () => edit(eqList[i]),
                     icon: const Icon(Icons.edit),
                   )
               ),
@@ -98,7 +98,7 @@ class IntFurnitureView extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: IconButton(
-                    onPressed: () => viewDetails(eqList[i]),
+                    onPressed: () => delete(eqList[i]),
                     icon: const Icon(Icons.delete),
                   )
               ),

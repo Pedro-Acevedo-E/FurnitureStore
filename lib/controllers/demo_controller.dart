@@ -22,7 +22,6 @@ class DemoController {
   }
 
   void createDemo() async {
-    final otherCategoryData = await SQLHelper.createCategory("Other", "Portable personal computers");
     final phoneCategoryData = await SQLHelper.createCategory("Phone", "Mobile phone devices");
     final pcCategoryData = await SQLHelper.createCategory("PC", "Personal computer");
     final laptopCategoryData = await SQLHelper.createCategory("Laptop", "Portable personal computers");
@@ -37,7 +36,6 @@ class DemoController {
     final intDevice4 = await SQLHelper.createEquipmentInt(EquipmentInt.demo4());
 
     if (kDebugMode) {
-      print("Created category $otherCategoryData in database");
       print("Created category $phoneCategoryData in database");
       print("Created category $pcCategoryData in database");
       print("Created category $laptopCategoryData in database");

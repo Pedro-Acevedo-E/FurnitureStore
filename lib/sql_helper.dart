@@ -22,7 +22,7 @@ class SQLHelper{
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         user TEXT,
         name TEXT,
-        description TEXT
+        description TEXT,
         created_at DATE DEFAULT (datetime('now','localtime'))
       )
       """);
@@ -124,7 +124,7 @@ class SQLHelper{
   static Future<sql.Database> db() async {
     return sql.openDatabase(
       'furniture.db',
-      version: 1,
+      version: 2,
       onCreate: (sql.Database database, int version) async {
         debugPrint("Created database");
         await createTables(database);

@@ -17,7 +17,7 @@ class DetailsRowView extends StatelessWidget {
             const Spacer(flex: 1),
             Expanded(
               flex: 8,
-              child: Text("$field: $value", style: const TextStyle(fontSize: 20)
+              child: Text("$field: $value", style: const TextStyle(fontSize: 20), maxLines: null
               ),
             ),
             const Spacer(flex: 1),

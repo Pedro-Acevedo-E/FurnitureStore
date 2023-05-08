@@ -12,6 +12,8 @@ import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/create_internal_form.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/ext_furniture_list_view.dart';
+import 'package:furniture_store/views/external_furniture_details.dart';
+import 'package:furniture_store/views/internal_furniture_details_view.dart';
 import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/int_furniture_list_view.dart';
 import 'package:furniture_store/views/log_details_view.dart';
@@ -55,6 +57,7 @@ class _MyAppState extends State<MyApp> {
   EquipmentInt? selectedInt;
   EquipmentExt? selectedExt;
   EquipmentCategory? selectedCategory;
+  Log? selectedLog;
 
   final demoController = DemoController();
   final loginController = LoginController();
@@ -72,9 +75,6 @@ class _MyAppState extends State<MyApp> {
   final externalController = ExternalController();
   final incidentController = IncidentController();
   final internalController = InternalController();
-
-  //logs
-  Log selectedLog = Log.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -196,13 +196,18 @@ class _MyAppState extends State<MyApp> {
         );
       }
       case AppState.logDetails: {
-        return LogDetailsView(
+        final selectedLog = this.selectedLog;
+        if(selectedLog != null) {
+          return LogDetailsView(
             user: loginController.loginUser,
             selectedLog: selectedLog,
             changeState: (AppState state) => changeState(state),
             logout: () => logout(),
             lastState: lastState,
-        );
+          );
+        } else {
+          return const Text("Error");
+        }
       }
       case AppState.internalFurniture: {
         return IntFurnitureView(
@@ -252,6 +257,32 @@ class _MyAppState extends State<MyApp> {
             logout: logout,
             changeState: changeState
         );
+      }
+      case AppState.internalDetails: {
+        final selectedInt = this.selectedInt;
+        if (selectedInt != null) {
+          return InternalDetailsView(
+              user: loginController.loginUser,
+              selectedInt: selectedInt,
+              changeState: changeState,
+              logout: logout
+          );
+        } else {
+          return const Text("Error");
+        }
+      }
+      case AppState.externalDetails: {
+        final selectedExt = this.selectedExt;
+        if (selectedExt != null) {
+          return ExternalDetailsView(
+              user: loginController.loginUser,
+              selectedExt: selectedExt,
+              changeState: changeState,
+              logout: logout
+          );
+        } else {
+          return const Text("Error");
+        }
       }
       default: {
         return Text(appState.toString());

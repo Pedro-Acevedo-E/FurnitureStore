@@ -90,7 +90,7 @@ class ExtFurnitureView extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: IconButton(
-                    onPressed: () => viewDetails(eqList[i]),
+                    onPressed: () => edit(eqList[i]),
                     icon: const Icon(Icons.edit),
                   )
               ),
@@ -98,7 +98,7 @@ class ExtFurnitureView extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: IconButton(
-                    onPressed: () => viewDetails(eqList[i]),
+                    onPressed: () => delete(eqList[i]),
                     icon: const Icon(Icons.delete),
                   )
               ),
@@ -193,6 +193,7 @@ class ExtFurnitureView extends StatelessWidget {
   void viewDetails(EquipmentExt item) {
     viewExternalFurnitureDetails(item);
   }
+
   void delete(EquipmentExt item) {
     deleteExternalFurniture(item);
   }
