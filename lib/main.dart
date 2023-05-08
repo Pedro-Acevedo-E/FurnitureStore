@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:furniture_store/controllers/demo_controller.dart';
 import 'package:furniture_store/controllers/external_furniture_controller.dart';
 import 'package:furniture_store/controllers/internal_furniture_controller.dart';
+import 'package:furniture_store/controllers/login_controller.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/create_external_form.dart';
@@ -40,6 +42,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  AppState appState = AppState.loginScreen;
+  AppState lastState = AppState.loginScreen;
   List<User> userList = [];
   List<EquipmentExt> extList = [];
   List<EquipmentInt> intList = [];
@@ -47,12 +51,13 @@ class _MyAppState extends State<MyApp> {
   List<Log> incidentsList = [];
   List<Log> userLogList = [];
 
-  User loginUser = User.empty();
   User? selectedUser;
-  AppState lastState = AppState.loginScreen;
+  EquipmentInt? selectedInt;
+  EquipmentExt? selectedExt;
+  EquipmentCategory? selectedCategory;
 
-  //login
-  AppState appState = AppState.loginScreen;
+  final demoController = DemoController();
+  final loginController = LoginController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   var alertText = "";
@@ -71,11 +76,6 @@ class _MyAppState extends State<MyApp> {
   //logs
   Log selectedLog = Log.empty();
 
-  EquipmentInt selectedInt = EquipmentInt.empty();
-  EquipmentExt selectedExt = EquipmentExt.empty();
-  EquipmentCategory? selectedCategory;
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -86,77 +86,27 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    //createDemo();
-    loadItemsDemo();
-  }
-
-  void loadItemsDemo() async {
-    final userData = await SQLHelper.getList("user");
-    final intFurnitureData = await SQLHelper.getList("equipment_int");
-    final extFurnitureData = await SQLHelper.getList("equipment_ext");
-    final categoryData = await SQLHelper.getList("category");
-    final userLogData = await SQLHelper.getList("user_log");
-    final incidentsLogData = await SQLHelper.getList("incident_log");
-    if (kDebugMode) {
-      print("We have ${userData.length} users in our database");
-      print("We have ${categoryData.length} categories in our database");
-      print("We have ${intFurnitureData.length} internal furniture in our database");
-      print("We have ${extFurnitureData.length} external furniture in our database");
-      print("We have ${userLogData.length} user logs in our database");
-      print("We have ${incidentsLogData.length} incidents logs in our database");
-    }
-  }
-
-  void createDemo() async {
-    final otherCategoryData = await SQLHelper.createCategory("Other", "Portable personal computers");
-    final phoneCategoryData = await SQLHelper.createCategory("Phone", "Mobile phone devices");
-    final pcCategoryData = await SQLHelper.createCategory("PC", "Personal computer");
-    final laptopCategoryData = await SQLHelper.createCategory("Laptop", "Portable personal computers");
-    final user1 = await SQLHelper.createUser(User.demo1());
-    final user2 = await SQLHelper.createUser(User.demo2());
-    final user3 = await SQLHelper.createUser(User.demo3());
-    final extDevice1 = await SQLHelper.createEquipmentExt(EquipmentExt.demo1());
-    final extDevice2 = await SQLHelper.createEquipmentExt(EquipmentExt.demo2());
-    final intDevice1 = await SQLHelper.createEquipmentInt(EquipmentInt.demo1());
-    final intDevice2 = await SQLHelper.createEquipmentInt(EquipmentInt.demo2());
-    final intDevice3 = await SQLHelper.createEquipmentInt(EquipmentInt.demo3());
-    final intDevice4 = await SQLHelper.createEquipmentInt(EquipmentInt.demo4());
-
-    if (kDebugMode) {
-      print("Created category $otherCategoryData in database");
-      print("Created category $phoneCategoryData in database");
-      print("Created category $pcCategoryData in database");
-      print("Created category $laptopCategoryData in database");
-      print("Created user $user1 in database");
-      print("Created user $user2 in database");
-      print("Created user $user3 in database");
-      print("Created ext device $extDevice1 in database");
-      print("Created ext device $extDevice2 in database");
-      print("Created int device $intDevice1 in database");
-      print("Created int device $intDevice2 in database");
-      print("Created int device $intDevice3 in database");
-      print("Created int device $intDevice4 in database");
-    }
+    //demoController.createDemo();
+    demoController.loadItemsDemo();
   }
 
   Widget mainView() {
     switch(appState){
       case AppState.loginScreen: {
         return LoginView(
-            alertText: alertText,
+            loginController: loginController,
             login: () => login(),
-            usernameController: usernameController,
-            passwordController: passwordController);
+        );
       }
       case AppState.mainView: {
         return MainView(
-            user: loginUser,
+            user: loginController.loginUser,
             changeState: (AppState state) => changeState(state),
             logout: () => logout());
       }
       case AppState.entrancesAndExits: {
         return EntranceAndExitsView(
-            user: loginUser,
+            user: loginController.loginUser,
             userList: userList,
             changeState: (AppState state) => changeState(state),
             viewUserDetails: (User user) => viewUserDetails(user),
@@ -168,7 +118,7 @@ class _MyAppState extends State<MyApp> {
         final selectedUser = this.selectedUser;
         if (selectedUser != null) {
           return UserDetailsView(
-              user: loginUser,
+              user: loginController.loginUser,
               selectedUser: selectedUser,
               extList: extList,
               intList: intList,
@@ -181,7 +131,7 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.userEntrance: {
         return UserEntranceView(
-            user: loginUser,
+            user: loginController.loginUser,
             selectedUser: selectedUser,
             userList: filteredUserList,
             intList: intList,
@@ -202,7 +152,7 @@ class _MyAppState extends State<MyApp> {
         final selectedUser = this.selectedUser;
         if (selectedUser != null) {
           return UserExitView(
-              user: loginUser,
+              user: loginController.loginUser,
               selectedUser: selectedUser,
               intList: intList,
               extList: extList,
@@ -219,7 +169,7 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.createIncident: {
         return CreateIncidentView(
-            user: loginUser,
+            user: loginController.loginUser,
             changeState: (AppState state) => changeState(state),
             logout: () => logout(),
             incidentController: incidentController,
@@ -228,7 +178,7 @@ class _MyAppState extends State<MyApp> {
       case AppState.incidentLog: {
         return LogListView(
             title: "Incidents",
-            user: loginUser,
+            user: loginController.loginUser,
             logList: incidentsList,
             changeState: (AppState state) => changeState(state),
             viewLogDetails: viewLogDetails,
@@ -238,7 +188,7 @@ class _MyAppState extends State<MyApp> {
       case AppState.userLog: {
         return LogListView(
             title: "Entrance and Exit",
-            user: loginUser,
+            user: loginController.loginUser,
             logList: userLogList,
             changeState: (AppState state) => changeState(state),
             viewLogDetails: viewLogDetails,
@@ -247,7 +197,7 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.logDetails: {
         return LogDetailsView(
-            user: loginUser,
+            user: loginController.loginUser,
             selectedLog: selectedLog,
             changeState: (AppState state) => changeState(state),
             logout: () => logout(),
@@ -256,7 +206,7 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.internalFurniture: {
         return IntFurnitureView(
-            user: loginUser,
+            user: loginController.loginUser,
             intList: intList,
             changeState: (AppState state) => changeState(state),
             viewInternalFurnitureDetails: viewInternalFurnitureDetails,
@@ -268,7 +218,7 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.externalFurniture: {
         return ExtFurnitureView(
-            user: loginUser,
+            user: loginController.loginUser,
             extList: extList,
             changeState: changeState,
             viewExternalFurnitureDetails: viewExternalFurnitureDetails,
@@ -279,7 +229,7 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.externalCreate: {
         return CreateExternalView(
-            user: loginUser,
+            user: loginController.loginUser,
             selectedUser: selectedUser,
             externalController: externalController,
             userList: userList,
@@ -290,7 +240,7 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.internalCreate: {
         return CreateInternalView(
-            user: loginUser,
+            user: loginController.loginUser,
             selectedUser: selectedUser,
             selectedCategory: selectedCategory,
             internalController: internalController,
@@ -314,51 +264,22 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       lastState = appState;
       appState = state;
-      alertText = "";
       incidentController.reset();
     });
   }
 
   void login() async {
-    List<Map<String, dynamic>> data = await SQLHelper.loginUser(usernameController.text, passwordController.text);
-    if(data.length == 1) {
-      setUserInfo(data[0]);
-      setState(() {
-        appState = AppState.mainView;
-        alertText = "";
-      });
+    final logged = await loginController.login();
+    if (logged) {
+      changeState(AppState.mainView);
     } else {
-      setState(() {
-        alertText = "Login Failed: Your user ID or password is incorrect";
-      });
+      setState(() {});
     }
   }
 
   void logout() {
-    setState(() {
-      loginUser = User.empty();
-      selectedUser = null;
-      appState = AppState.loginScreen;
-      usernameController.text = "";
-      passwordController.text = "";
-      alertText = "";
-    });
-  }
-
-  void setUserInfo(Map<String, dynamic> data) {
-    setState(() {
-      loginUser = User(
-          id: data["id"],
-          username: data["username"],
-          firstName: data["first_name"],
-          lastName: data["last_name"],
-          password: data["password"],
-          entranceTime: data["entrance_time"],
-          internal: data["internal"],
-          external: data["external"],
-          access: data["access"]
-      );
-    });
+    loginController.logout();
+    changeState(AppState.loginScreen);
   }
 
   void refreshList() async {
@@ -622,13 +543,13 @@ class _MyAppState extends State<MyApp> {
           id: 0,
           title: "${selectedUser.username} Has entered Office at ${selectedUser
               .entranceTime}",
-          createdBy: loginUser.username,
+          createdBy: loginController.loginUser.username,
           description: descriptionString,
           createdAt: ""
       );
       final userLogData = await SQLHelper.createLog(logData, "user_log");
 
-      incidentController.create(loginUser);
+      incidentController.create(loginController.loginUser);
 
       if (kDebugMode) {
         print("Updated User $userData");
@@ -678,13 +599,13 @@ class _MyAppState extends State<MyApp> {
               .now()
               .minute
               .toString()}",
-          createdBy: loginUser.username,
+          createdBy: loginController.loginUser.username,
           description: descriptionString,
           createdAt: ""
       );
       final userLogData = await SQLHelper.createLog(logData, "user_log");
 
-      incidentController.create(loginUser);
+      incidentController.create(loginController.loginUser);
 
       if (kDebugMode) {
         print("Updated User $userData");

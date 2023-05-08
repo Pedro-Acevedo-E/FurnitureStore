@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/controllers/login_controller.dart';
 
 class LoginView extends StatelessWidget {
-  final String alertText;
+  final LoginController loginController;
   final VoidCallback login;
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
 
-  const LoginView({super.key, required this.alertText, required this.login, required this.usernameController, required this.passwordController});
+  const LoginView({
+    super.key,
+    required this.loginController,
+    required this.login
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class LoginView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextField(
-                        controller: usernameController,
+                        controller: loginController.usernameController,
                         textAlign: TextAlign.center,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -32,7 +35,7 @@ class LoginView extends StatelessWidget {
                       ),
                       const Padding(padding: EdgeInsets.all(10)),
                       TextField(
-                        controller: passwordController,
+                        controller: loginController.passwordController,
                         textAlign: TextAlign.center,
                         obscureText: true,
 
@@ -47,7 +50,7 @@ class LoginView extends StatelessWidget {
                           child: const Text("Login", style: TextStyle(fontSize: 18))
                       ),
                       const Padding(padding: EdgeInsets.all(10)),
-                      Text(alertText, style: const TextStyle(color: Colors.red), textAlign: TextAlign.center),
+                      Text(loginController.alertText, style: const TextStyle(color: Colors.red), textAlign: TextAlign.center),
                     ],
                   ),
               ),
