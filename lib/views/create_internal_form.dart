@@ -46,7 +46,7 @@ class CreateInternalView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              const Text("New External Furniture"),
+              const Text("New Internal Furniture"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),

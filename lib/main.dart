@@ -10,6 +10,7 @@ import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/create_external_form.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/create_internal_form.dart';
+import 'package:furniture_store/views/delete_external_furniture_view.dart';
 import 'package:furniture_store/views/delete_internal_furniture_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/ext_furniture_list_view.dart';
@@ -228,7 +229,7 @@ class _MyAppState extends State<MyApp> {
             extList: extList,
             changeState: changeState,
             viewExternalFurnitureDetails: viewExternalFurnitureDetails,
-            deleteExternalFurniture: deleteExternalFurniture,
+            viewDeleteExternalFurniture: viewDeleteExternalFurniture,
             editExternalFurniture: editExternalFurniture,
             viewCreateExternalFurniture: viewCreateExternalFurniture,
             logout: logout);
@@ -293,6 +294,19 @@ class _MyAppState extends State<MyApp> {
               selectedInt: selectedInt,
               changeState: changeState,
               deleteInternalFurniture: deleteInternalFurniture,
+              logout: logout);
+        } else {
+          return const Text("Error");
+        }
+      }
+      case AppState.externalDelete: {
+        final selectedExt = this.selectedExt;
+        if (selectedExt != null) {
+          return DeleteExternalView(
+              user: loginController.loginUser,
+              selectedExt: selectedExt,
+              changeState: changeState,
+              deleteExternalFurniture: deleteExternalFurniture,
               logout: logout);
         } else {
           return const Text("Error");
@@ -482,11 +496,16 @@ class _MyAppState extends State<MyApp> {
     });
     changeState(AppState.externalEdit);
   }
-  void deleteExternalFurniture(EquipmentExt data) {
+
+  void viewDeleteExternalFurniture(EquipmentExt data) {
     setState(() {
       selectedExt = data;
     });
     changeState(AppState.externalDelete);
+  }
+  void deleteExternalFurniture(EquipmentExt data) {
+    externalController.delete(data);
+    changeState(AppState.externalFurniture);
   }
 
   void viewCreateExternalFurniture() {
