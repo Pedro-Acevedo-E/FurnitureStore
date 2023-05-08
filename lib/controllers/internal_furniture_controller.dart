@@ -77,6 +77,34 @@ class InternalController {
         print("Created ExtEquipment $internalData");
       }
     }
+  }
 
+  void delete(EquipmentInt? intEquipment) async {
+    if (intEquipment != null) {
+      final delete = await SQLHelper.deleteItem(intEquipment.id, "equipment_int");
+      if (intEquipment.user != "") {
+        final userData = await SQLHelper.getUser(intEquipment.user);
+        final equipmentList = await SQLHelper.getList("equipment_int");
+        var hasInternal = false;
+        for(var i = 0;  i < equipmentList.length; i++) {
+          if (userData.elementAt(0)["username"] == equipmentList.elementAt(i)["user"]) {
+            hasInternal = true;
+          }
+        }
+        if(hasInternal == false) {
+          final update = await SQLHelper.updateUser(userData.elementAt(0)["id"], User(
+              id: userData.elementAt(0)["id"],
+              username: userData.elementAt(0)["username"],
+              firstName: userData.elementAt(0)["first_name"],
+              lastName: userData.elementAt(0)["last_name"],
+              password: userData.elementAt(0)["password"],
+              entranceTime: userData.elementAt(0)["entrance_time"],
+              internal: "no",
+              external: userData.elementAt(0)["external"],
+              access: userData.elementAt(0)["access"]
+          ));
+        }
+      }
+    }
   }
 }

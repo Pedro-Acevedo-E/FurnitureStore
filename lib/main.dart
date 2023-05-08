@@ -10,6 +10,7 @@ import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/create_external_form.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/create_internal_form.dart';
+import 'package:furniture_store/views/delete_internal_furniture_view.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/ext_furniture_list_view.dart';
 import 'package:furniture_store/views/external_furniture_details.dart';
@@ -215,7 +216,7 @@ class _MyAppState extends State<MyApp> {
             intList: intList,
             changeState: (AppState state) => changeState(state),
             viewInternalFurnitureDetails: viewInternalFurnitureDetails,
-            deleteInternalFurniture: deleteInternalFurniture,
+            viewDeleteInternalFurniture: viewDeleteInternalFurniture,
             editInternalFurniture: editInternalFurniture,
             viewCreateInternalFurniture: viewCreateInternalFurniture,
             logout: () => logout()
@@ -280,6 +281,19 @@ class _MyAppState extends State<MyApp> {
               changeState: changeState,
               logout: logout
           );
+        } else {
+          return const Text("Error");
+        }
+      }
+      case AppState.internalDelete: {
+        final selectedInt = this.selectedInt;
+        if (selectedInt != null) {
+          return DeleteInternalView(
+              user: loginController.loginUser,
+              selectedInt: selectedInt,
+              changeState: changeState,
+              deleteInternalFurniture: deleteInternalFurniture,
+              logout: logout);
         } else {
           return const Text("Error");
         }
@@ -426,11 +440,16 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.internalEdit);
   }
 
-  void deleteInternalFurniture(EquipmentInt data) {
+  void viewDeleteInternalFurniture(EquipmentInt data) {
     setState(() {
       selectedInt = data;
     });
     changeState(AppState.internalDelete);
+  }
+
+  void deleteInternalFurniture(EquipmentInt data) {
+    internalController.delete(data);
+    changeState(AppState.internalFurniture);
   }
 
   void viewCreateInternalFurniture() {
