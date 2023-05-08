@@ -7,7 +7,7 @@ import '../models.dart';
 
 class UserEntranceView extends StatelessWidget {
   final User user;
-  final User selectedUser;
+  final User? selectedUser;
   final List<User> userList;
   final List<EquipmentInt> intList;
   final Function(AppState val) changeState;
@@ -132,7 +132,7 @@ class UserEntranceView extends StatelessWidget {
   Widget getIntListWidgets() {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < intList.length; i++){
-      if (selectedUser.username == intList[i].user) {
+      if (selectedUser?.username == intList[i].user) {
         list.add(
             Row(children: [
               const Spacer(),

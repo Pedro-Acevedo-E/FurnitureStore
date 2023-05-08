@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   List<EquipmentExt> extList = [];
   List<EquipmentInt> intList = [];
   User loginUser = User.empty();
-  User selectedUser = User.empty();
+  User? selectedUser;
   AppState lastState = AppState.loginScreen;
 
   //login
@@ -154,14 +154,19 @@ class _MyAppState extends State<MyApp> {
             logout: () => logout());
       }
       case AppState.userDetails: {
-        return UserDetailsView(
-            user: loginUser,
-            selectedUser: selectedUser,
-            extList: extList,
-            intList: intList,
-            changeState: (AppState state) => changeState(state),
-            logout: () => logout(),
-            lastState: lastState);
+        final selectedUser = this.selectedUser;
+        if (selectedUser != null) {
+          return UserDetailsView(
+              user: loginUser,
+              selectedUser: selectedUser,
+              extList: extList,
+              intList: intList,
+              changeState: (AppState state) => changeState(state),
+              logout: () => logout(),
+              lastState: lastState);
+        } else {
+          return const Text("Error");
+        }
       }
       case AppState.userEntrance: {
         return UserEntranceView(
@@ -184,19 +189,24 @@ class _MyAppState extends State<MyApp> {
             descriptionControllerList: descriptionControllerList);
       }
       case AppState.userExit: {
-        return UserExitView(
-            user: loginUser,
-            selectedUser: selectedUser,
-            intList: intList,
-            extList: extList,
-            changeState: (AppState state) => changeState(state),
-            logout: () => logout(),
-            createExit: () => createExit(),
-            toggleIncidentForm: () => toggleIncidentForm(),
-            showIncidentForm: showIncidentForm,
-            incidentTitleController: incidentTitleController,
-            incidentDescriptionController: incidentDescriptionController
-        );
+        final selectedUser = this.selectedUser;
+        if (selectedUser != null) {
+          return UserExitView(
+              user: loginUser,
+              selectedUser: selectedUser,
+              intList: intList,
+              extList: extList,
+              changeState: (AppState state) => changeState(state),
+              logout: () => logout(),
+              createExit: () => createExit(),
+              toggleIncidentForm: () => toggleIncidentForm(),
+              showIncidentForm: showIncidentForm,
+              incidentTitleController: incidentTitleController,
+              incidentDescriptionController: incidentDescriptionController
+          );
+        } else {
+          return const Text("Error");
+        }
       }
       case AppState.createIncident: {
         return CreateIncidentView(
@@ -270,6 +280,8 @@ class _MyAppState extends State<MyApp> {
       lastState = appState;
       appState = state;
       alertText = "";
+      incidentTitleController.text = "";
+      incidentDescriptionController.text = "";
     });
   }
 
@@ -291,7 +303,7 @@ class _MyAppState extends State<MyApp> {
   void logout() {
     setState(() {
       loginUser = User.empty();
-      selectedUser = User.empty();
+      selectedUser = null;
       appState = AppState.loginScreen;
       usernameController.text = "";
       passwordController.text = "";
@@ -468,7 +480,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       showIncidentForm = false;
       filteredUserList = tempUserList;
-      selectedUser = filteredUserList[0];
+      selectedUser = null;
       formList = [];
       nameControllerList = [];
       descriptionControllerList = [];
@@ -496,48 +508,61 @@ class _MyAppState extends State<MyApp> {
   }
 
   void createEntrance() async {
-    selectedUser.entranceTime = "${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}";
-    var descriptionString = "User entered Office";
+    final selectedUser = this.selectedUser;
+    if (selectedUser != null) {
+      selectedUser.entranceTime = "${DateTime
+          .now()
+          .hour
+          .toString()}:${DateTime
+          .now()
+          .minute
+          .toString()}";
+      var descriptionString = "User entered Office";
 
-    if (formList.isNotEmpty) {
-      selectedUser.external = "yes";
-      for(var i = 0; i < formList.length;i++) {
-        final tempEquipmentExt = EquipmentExt(
-            id: 0,
-            user: selectedUser.username,
-            name: nameControllerList[i].text,
-            description: descriptionControllerList[i].text,
-            createdAt: ""
-        );
-        descriptionString = "$descriptionString \nWith external equipment ${tempEquipmentExt.name}";
-        final data = await SQLHelper.createEquipmentExt(tempEquipmentExt);
-        if (kDebugMode) {
-          print("Created External Equipment $data");
+      if (formList.isNotEmpty) {
+        selectedUser.external = "yes";
+        for (var i = 0; i < formList.length; i++) {
+          final tempEquipmentExt = EquipmentExt(
+              id: 0,
+              user: selectedUser.username,
+              name: nameControllerList[i].text,
+              description: descriptionControllerList[i].text,
+              createdAt: ""
+          );
+          descriptionString =
+          "$descriptionString \nWith external equipment ${tempEquipmentExt
+              .name}";
+          final data = await SQLHelper.createEquipmentExt(tempEquipmentExt);
+          if (kDebugMode) {
+            print("Created External Equipment $data");
+          }
         }
       }
+
+      updateInternal(selectedUser, "Office");
+
+      final userData = await SQLHelper.updateUser(
+          selectedUser.id, selectedUser);
+
+      final logData = Log(
+          id: 0,
+          title: "${selectedUser.username} Has entered Office at ${selectedUser
+              .entranceTime}",
+          createdBy: loginUser.username,
+          description: descriptionString,
+          createdAt: ""
+      );
+      final userLogData = await SQLHelper.createLog(logData, "user_log");
+
+      createIncident();
+
+      if (kDebugMode) {
+        print("Updated User $userData");
+        print("Created User Log $userLogData");
+      }
+
+      changeState(AppState.entrancesAndExits);
     }
-
-    updateInternal(selectedUser, "Office");
-
-    final userData = await SQLHelper.updateUser(selectedUser.id, selectedUser);
-
-    final logData = Log(
-        id: 0,
-        title: "${selectedUser.username} Has entered Office at ${selectedUser.entranceTime}",
-        createdBy: loginUser.username,
-        description: descriptionString,
-        createdAt: ""
-    );
-    final userLogData = await SQLHelper.createLog(logData, "user_log");
-
-    createIncident();
-
-    if (kDebugMode) {
-      print("Updated User $userData");
-      print("Created User Log $userLogData");
-    }
-
-    changeState(AppState.entrancesAndExits);
   }
 
   void viewUserExit(User user) async {
@@ -551,39 +576,50 @@ class _MyAppState extends State<MyApp> {
   }
 
   void createExit() async {
-    selectedUser.entranceTime = "";
-    var descriptionString = "User Exited Office";
-    if(selectedUser.external == "yes" || selectedUser.external == "Yes") {
-      selectedUser.external = "no";
-      for(var i = 0; i < extList.length; i++) {
-        if(extList[i].user == selectedUser.username) {
-          descriptionString = "$descriptionString \nExited with ${extList[i].name}";
-          SQLHelper.deleteItem(extList[i].id, "equipment_ext");
+    final selectedUser = this.selectedUser;
+    if (selectedUser != null) {
+      selectedUser.entranceTime = "";
+      var descriptionString = "User Exited Office";
+      if (selectedUser.external == "yes" || selectedUser.external == "Yes") {
+        selectedUser.external = "no";
+        for (var i = 0; i < extList.length; i++) {
+          if (extList[i].user == selectedUser.username) {
+            descriptionString =
+            "$descriptionString \nExited with ${extList[i].name}";
+            SQLHelper.deleteItem(extList[i].id, "equipment_ext");
+          }
         }
       }
+
+      updateInternal(selectedUser, "Outside");
+
+      final userData = await SQLHelper.updateUser(
+          selectedUser.id, selectedUser);
+
+      final logData = Log(
+          id: 0,
+          title: "${selectedUser.username} Has exited Office at ${DateTime
+              .now()
+              .hour
+              .toString()}:${DateTime
+              .now()
+              .minute
+              .toString()}",
+          createdBy: loginUser.username,
+          description: descriptionString,
+          createdAt: ""
+      );
+      final userLogData = await SQLHelper.createLog(logData, "user_log");
+
+      createIncident();
+
+      if (kDebugMode) {
+        print("Updated User $userData");
+        print("Created User Log $userLogData");
+      }
+
+      changeState(AppState.entrancesAndExits);
     }
-
-    updateInternal(selectedUser, "Outside");
-
-    final userData = await SQLHelper.updateUser(selectedUser.id, selectedUser);
-
-    final logData = Log(
-        id: 0,
-        title: "${selectedUser.username} Has exited Office at ${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}",
-        createdBy: loginUser.username,
-        description: descriptionString,
-        createdAt: ""
-    );
-    final userLogData = await SQLHelper.createLog(logData, "user_log");
-
-    createIncident();
-
-    if (kDebugMode) {
-      print("Updated User $userData");
-      print("Created User Log $userLogData");
-    }
-
-    changeState(AppState.entrancesAndExits);
   }
 
   void updateInternal(User user, String location) async {
