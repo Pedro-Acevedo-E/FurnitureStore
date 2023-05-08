@@ -2,10 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:furniture_store/controllers/external_furniture_controller.dart';
+import 'package:furniture_store/controllers/internal_furniture_controller.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/create_external_form.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
+import 'package:furniture_store/views/create_internal_form.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/ext_furniture_list_view.dart';
 import 'package:furniture_store/views/input_form.dart';
@@ -41,6 +43,10 @@ class _MyAppState extends State<MyApp> {
   List<User> userList = [];
   List<EquipmentExt> extList = [];
   List<EquipmentInt> intList = [];
+  List<EquipmentCategory> categoryList = [];
+  List<Log> incidentsList = [];
+  List<Log> userLogList = [];
+
   User loginUser = User.empty();
   User? selectedUser;
   AppState lastState = AppState.loginScreen;
@@ -60,10 +66,9 @@ class _MyAppState extends State<MyApp> {
 
   final externalController = ExternalController();
   final incidentController = IncidentController();
+  final internalController = InternalController();
 
   //logs
-  List<Log> incidentsList = [];
-  List<Log> userLogList = [];
   Log selectedLog = Log.empty();
 
   EquipmentInt selectedInt = EquipmentInt.empty();
@@ -257,6 +262,7 @@ class _MyAppState extends State<MyApp> {
             viewInternalFurnitureDetails: viewInternalFurnitureDetails,
             deleteInternalFurniture: deleteInternalFurniture,
             editInternalFurniture: editInternalFurniture,
+            viewCreateInternalFurniture: viewCreateInternalFurniture,
             logout: () => logout()
         );
       }
@@ -281,6 +287,21 @@ class _MyAppState extends State<MyApp> {
             selectUser: (User user) => selectUser(user),
             logout: logout,
             changeState: changeState);
+      }
+      case AppState.internalCreate: {
+        return CreateInternalView(
+            user: loginUser,
+            selectedUser: selectedUser,
+            selectedCategory: selectedCategory,
+            internalController: internalController,
+            userList: userList,
+            categoryList: categoryList,
+            createInternalFurniture: createInternalFurniture,
+            selectUser: (User user) => selectUser(user),
+            selectCategory: (EquipmentCategory cat) => selectCategory(cat),
+            logout: logout,
+            changeState: changeState
+        );
       }
       default: {
         return Text(appState.toString());
@@ -346,6 +367,7 @@ class _MyAppState extends State<MyApp> {
     final intE = await SQLHelper.getList("equipment_int");
     final iLog = await SQLHelper.getList("incident_log");
     final uLog = await SQLHelper.getList("user_log");
+    final cat = await SQLHelper.getList("category");
 
     List<User> tempUserList = [];
     for(var i = 0; i < data.length; i++) {
@@ -406,6 +428,14 @@ class _MyAppState extends State<MyApp> {
           description: iLog.elementAt(i)["description"],
           createdAt: iLog.elementAt(i)["created_at"].toString()));
     }
+    List<EquipmentCategory> tempCatList = [];
+    for(var i = 0; i < cat.length; i++) {
+      tempCatList.add(EquipmentCategory(
+          id: cat.elementAt(i)["id"],
+          name: cat.elementAt(i)["name"],
+          description: cat.elementAt(i)["description"])
+      );
+    }
 
     setState(() {
       userList = tempUserList;
@@ -413,6 +443,7 @@ class _MyAppState extends State<MyApp> {
       intList = tempIntList;
       incidentsList = iTempLog;
       userLogList = uTempLog;
+      categoryList = tempCatList;
     });
   }
 
@@ -455,12 +486,16 @@ class _MyAppState extends State<MyApp> {
       selectedUser = null;
       selectedCategory = null;
     });
-    changeState(AppState.externalCreate);
+    changeState(AppState.internalCreate);
   }
 
   void createInternalFurniture() {
-    //create stuff
-    changeState(AppState.externalFurniture);
+    final selectedCategory = this.selectedCategory;
+    if (selectedCategory != null) {
+      internalController.create(selectedUser, selectedCategory);
+      internalController.reset();
+      changeState(AppState.internalFurniture);
+    }
   }
 
   void viewExternalFurnitureDetails(EquipmentExt data) {
@@ -686,6 +721,12 @@ class _MyAppState extends State<MyApp> {
   void selectUser(User user) {
     setState(() {
       selectedUser = user;
+    });
+  }
+
+  void selectCategory(EquipmentCategory category) {
+    setState(() {
+      selectedCategory = category;
     });
   }
 }

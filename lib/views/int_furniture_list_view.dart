@@ -10,6 +10,7 @@ class IntFurnitureView extends StatelessWidget {
   final Function(EquipmentInt item) viewInternalFurnitureDetails;
   final Function(EquipmentInt item) deleteInternalFurniture;
   final Function(EquipmentInt item) editInternalFurniture;
+  final VoidCallback viewCreateInternalFurniture;
   final VoidCallback logout;
 
   const IntFurnitureView({
@@ -20,6 +21,7 @@ class IntFurnitureView extends StatelessWidget {
     required this.viewInternalFurnitureDetails,
     required this.deleteInternalFurniture,
     required this.editInternalFurniture,
+    required this.viewCreateInternalFurniture,
     required this.logout,
   });
 
@@ -54,7 +56,7 @@ class IntFurnitureView extends StatelessWidget {
           ),
         ),
         floatingActionButton: user.access == "admin" ? FloatingActionButton(
-          onPressed: () => changeState(AppState.internalCreate),
+          onPressed: viewCreateInternalFurniture,
           tooltip: "New Internal furniture",
           child: const Icon(Icons.add)
         ): const SizedBox.shrink(),
