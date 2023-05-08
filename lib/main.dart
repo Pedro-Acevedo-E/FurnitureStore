@@ -18,6 +18,7 @@ import 'package:furniture_store/views/user_details_view.dart';
 import 'package:furniture_store/views/user_entrance_view.dart';
 import 'package:furniture_store/views/user_exit_view.dart';
 
+import 'controllers/incident_controller.dart';
 import 'models.dart';
 
 void main() {
@@ -56,10 +57,9 @@ class _MyAppState extends State<MyApp> {
   List<TextEditingController> nameControllerList = [];
   List<TextEditingController> descriptionControllerList = [];
   bool showIncidentForm = false;
-  final incidentTitleController = TextEditingController();
-  final incidentDescriptionController = TextEditingController();
 
   final externalController = ExternalController();
+  final incidentController = IncidentController();
 
   //logs
   List<Log> incidentsList = [];
@@ -188,8 +188,7 @@ class _MyAppState extends State<MyApp> {
             createEntrance: () => createEntrance(),
             toggleIncidentForm: () => toggleIncidentForm(),
             showIncidentForm: showIncidentForm,
-            incidentTitleController: incidentTitleController,
-            incidentDescriptionController: incidentDescriptionController,
+            incidentController: incidentController,
             formList: formList,
             nameControllerList: nameControllerList,
             descriptionControllerList: descriptionControllerList);
@@ -207,8 +206,7 @@ class _MyAppState extends State<MyApp> {
               createExit: () => createExit(),
               toggleIncidentForm: () => toggleIncidentForm(),
               showIncidentForm: showIncidentForm,
-              incidentTitleController: incidentTitleController,
-              incidentDescriptionController: incidentDescriptionController
+              incidentController: incidentController,
           );
         } else {
           return const Text("Error");
@@ -219,9 +217,7 @@ class _MyAppState extends State<MyApp> {
             user: loginUser,
             changeState: (AppState state) => changeState(state),
             logout: () => logout(),
-            incidentTitleController: incidentTitleController,
-            incidentDescriptionController: incidentDescriptionController,
-            createIncident: () => createIncident()
+            incidentController: incidentController,
         );
       }
       case AppState.incidentLog: {
@@ -298,8 +294,7 @@ class _MyAppState extends State<MyApp> {
       lastState = appState;
       appState = state;
       alertText = "";
-      incidentTitleController.text = "";
-      incidentDescriptionController.text = "";
+      incidentController.reset();
     });
   }
 
@@ -529,8 +524,7 @@ class _MyAppState extends State<MyApp> {
       formList = [];
       nameControllerList = [];
       descriptionControllerList = [];
-      incidentTitleController.text = "";
-      incidentDescriptionController.text = "";
+      incidentController.reset();
     });
     //add if to check if filtered list is empty to show that there R no members outside
     changeState(AppState.userEntrance);
@@ -599,7 +593,7 @@ class _MyAppState extends State<MyApp> {
       );
       final userLogData = await SQLHelper.createLog(logData, "user_log");
 
-      createIncident();
+      incidentController.create(loginUser);
 
       if (kDebugMode) {
         print("Updated User $userData");
@@ -614,8 +608,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       selectedUser = user;
       showIncidentForm = false;
-      incidentDescriptionController.text = "";
-      incidentDescriptionController.text = "";
+      incidentController.reset();
     });
     changeState(AppState.userExit);
   }
@@ -656,7 +649,7 @@ class _MyAppState extends State<MyApp> {
       );
       final userLogData = await SQLHelper.createLog(logData, "user_log");
 
-      createIncident();
+      incidentController.create(loginUser);
 
       if (kDebugMode) {
         print("Updated User $userData");
@@ -679,26 +672,9 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void createIncident() async {
-    if(incidentTitleController.text.isNotEmpty && incidentDescriptionController.text.isNotEmpty) {
-      final incidentLogData = Log(
-          id: 0,
-          title: incidentTitleController.text,
-          createdBy: loginUser.username,
-          description: incidentDescriptionController.text,
-          createdAt: ""
-      );
-      final incidentData = await SQLHelper.createLog(incidentLogData, "incident_log");
-      if (kDebugMode) {
-        print("Created Incident Log $incidentData");
-      }
-    }
-  }
-
   void toggleIncidentForm() {
     setState(() {
-      incidentDescriptionController.text = "";
-      incidentTitleController.text = "";
+      incidentController.reset();
       if (showIncidentForm == true) {
         showIncidentForm = false;
       } else {

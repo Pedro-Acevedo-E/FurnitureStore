@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/controllers/incident_controller.dart';
 import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
@@ -15,8 +16,7 @@ class UserExitView extends StatelessWidget {
   final VoidCallback createExit;
   final VoidCallback toggleIncidentForm;
   final bool showIncidentForm;
-  final TextEditingController incidentTitleController;
-  final TextEditingController incidentDescriptionController;
+  final IncidentController incidentController;
 
   const UserExitView({
     super.key,
@@ -29,8 +29,7 @@ class UserExitView extends StatelessWidget {
     required this.createExit,
     required this.toggleIncidentForm,
     required this.showIncidentForm,
-    required this.incidentTitleController,
-    required this.incidentDescriptionController,
+    required this.incidentController,
   });
 
   @override
@@ -132,8 +131,8 @@ class UserExitView extends StatelessWidget {
             const Spacer(),
           ]),
           ExternalFurnitureForm(
-              nameController: incidentTitleController,
-              descriptionController: incidentDescriptionController
+              nameController: incidentController.incidentTitleController,
+              descriptionController: incidentController.incidentDescriptionController
           ),
         ],
       );

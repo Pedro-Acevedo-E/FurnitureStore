@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/controllers/incident_controller.dart';
 import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
@@ -9,18 +10,14 @@ class CreateIncidentView extends StatelessWidget {
   final User user;
   final Function(AppState val) changeState;
   final VoidCallback logout;
-  final TextEditingController incidentTitleController;
-  final TextEditingController incidentDescriptionController;
-  final VoidCallback createIncident;
+  final IncidentController incidentController;
 
   const CreateIncidentView({
     super.key,
     required this.user,
     required this.changeState,
     required this.logout,
-    required this.incidentTitleController,
-    required this.incidentDescriptionController,
-    required this.createIncident
+    required this.incidentController,
   });
 
   @override
@@ -63,13 +60,13 @@ class CreateIncidentView extends StatelessWidget {
 
   Widget getIncidentWidget() {
     return ExternalFurnitureForm(
-        nameController: incidentTitleController,
-        descriptionController: incidentDescriptionController
+        nameController: incidentController.incidentTitleController,
+        descriptionController: incidentController.incidentDescriptionController
     );
   }
 
   void registerIncident() async {
-    createIncident();
+    incidentController.create(user);
     changeState(AppState.mainView);
   }
 }

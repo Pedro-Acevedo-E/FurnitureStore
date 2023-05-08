@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/controllers/incident_controller.dart';
 import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
@@ -18,8 +19,7 @@ class UserEntranceView extends StatelessWidget {
   final VoidCallback createEntrance;
   final VoidCallback toggleIncidentForm;
   final bool showIncidentForm;
-  final TextEditingController incidentTitleController;
-  final TextEditingController incidentDescriptionController;
+  final IncidentController incidentController;
   final List<Widget> formList;
   final List<TextEditingController> nameControllerList;
   final List<TextEditingController> descriptionControllerList;
@@ -38,8 +38,7 @@ class UserEntranceView extends StatelessWidget {
     required this.createEntrance,
     required this.toggleIncidentForm,
     required this.showIncidentForm,
-    required this.incidentTitleController,
-    required this.incidentDescriptionController,
+    required this.incidentController,
     required this.formList,
     required this.nameControllerList,
     required this.descriptionControllerList
@@ -156,8 +155,8 @@ class UserEntranceView extends StatelessWidget {
             const Spacer(),
           ]),
           ExternalFurnitureForm(
-              nameController: incidentTitleController,
-              descriptionController: incidentDescriptionController
+              nameController: incidentController.incidentTitleController,
+              descriptionController: incidentController.incidentDescriptionController
           ),
         ],
       );
