@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:furniture_store/controllers/category_controller.dart';
 import 'package:furniture_store/controllers/demo_controller.dart';
 import 'package:furniture_store/controllers/external_furniture_controller.dart';
 import 'package:furniture_store/controllers/internal_furniture_controller.dart';
@@ -70,8 +71,6 @@ class _MyAppState extends State<MyApp> {
 
   final demoController = DemoController();
   final loginController = LoginController();
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
   var alertText = "";
 
   //entrance & exits
@@ -85,6 +84,7 @@ class _MyAppState extends State<MyApp> {
   final incidentController = IncidentController();
   final internalController = InternalController();
   final userController = UserController();
+  final categoryController = CategoryController();
 
   @override
   Widget build(BuildContext context) {
@@ -624,6 +624,34 @@ class _MyAppState extends State<MyApp> {
       userController.access.text = "user";
     });
     changeState(AppState.userCreate);
+  }
+
+  //Category
+  void viewCategoryDetails(EquipmentCategory cat) {
+    setState(() {
+      selectedCategory = cat;
+    });
+    changeState(AppState.categoryDetails);
+  }
+  void viewEditCategory(EquipmentCategory? cat) {
+    setState(() {
+      categoryController.reset();
+      selectedCategory = cat;
+    });
+    changeState(AppState.categoryEdit);
+
+  }
+  void viewDeleteCategory(EquipmentCategory? cat) {
+    setState(() {
+      selectedCategory = cat;
+    });
+    changeState(AppState.categoryDelete);
+  }
+  void viewCreateCategory() {
+    setState(() {
+      categoryController.reset();
+    });
+    changeState(AppState.categoryCreate);
   }
 
   //End CRUD operations ############################################################

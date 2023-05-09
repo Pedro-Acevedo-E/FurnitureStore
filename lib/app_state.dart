@@ -29,6 +29,11 @@ enum AppState {
   userEdit,
   userCreate,
 
+  categoryDetails,
+  categoryDelete,
+  categoryEdit,
+  categoryCreate,
+
   internalDetails,
   internalDelete,
   internalEdit,
