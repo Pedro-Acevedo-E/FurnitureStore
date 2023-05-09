@@ -37,6 +37,7 @@ import 'package:furniture_store/views/main_view.dart';
 import 'package:furniture_store/views/user_details_view.dart';
 import 'package:furniture_store/views/user_entrance_view.dart';
 import 'package:furniture_store/views/user_exit_view.dart';
+import 'package:furniture_store/views/user_furniture_view.dart';
 import 'package:furniture_store/views/user_list_view.dart';
 
 import 'controllers/incident_controller.dart';
@@ -464,6 +465,15 @@ class _MyAppState extends State<MyApp> {
             selectedCategory: selectedCategory!,
             changeState: changeState,
             categoryController: categoryController,
+            logout: logout
+        );
+      }
+      case AppState.checkFurniture: {
+        return UserFurnitureView(
+            user: loginController.loginUser,
+            extList: extList,
+            intList: intList,
+            changeState: changeState,
             logout: logout
         );
       }
