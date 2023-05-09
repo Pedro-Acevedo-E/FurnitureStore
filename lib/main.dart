@@ -14,8 +14,10 @@ import 'package:furniture_store/views/create_internal_form.dart';
 import 'package:furniture_store/views/create_user_form.dart';
 import 'package:furniture_store/views/delete_external_furniture_view.dart';
 import 'package:furniture_store/views/delete_internal_furniture_view.dart';
+import 'package:furniture_store/views/delete_user_view.dart';
 import 'package:furniture_store/views/edit_external_form.dart';
 import 'package:furniture_store/views/edit_internal_form.dart';
+import 'package:furniture_store/views/edit_user_form.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/ext_furniture_list_view.dart';
 import 'package:furniture_store/views/external_furniture_details.dart';
@@ -379,12 +381,41 @@ class _MyAppState extends State<MyApp> {
       case AppState.userCreate: {
         return CreateUserView(
             user: loginController.loginUser,
-            selectedCategory: selectedCategory,
             userController: userController,
             logout: logout,
             changeState: changeState,
             selectAccess: selectAccess
         );
+      }
+      case AppState.userEdit:
+        {
+          final selectedUser = this.selectedUser;
+          if (selectedUser != null) {
+            return EditUserView(
+                user: loginController.loginUser,
+                selectedUser: selectedUser,
+                userController: userController,
+                logout: logout,
+                changeState: changeState,
+                selectAccess: selectAccess
+            );
+          } else {
+            return const Text("Error");
+          }
+        }
+      case AppState.userDelete: {
+        final selectedUser = this.selectedUser;
+        if(selectedUser != null) {
+          return DeleteUserView(
+              user: loginController.loginUser,
+              selectedUser: selectedUser,
+              changeState: changeState,
+              userController: userController,
+              logout: logout
+          );
+        } else {
+          return const Text("Error");
+        }
       }
       default: {
         return Text(appState.toString());
@@ -576,8 +607,10 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       userController.reset();
       selectedUser = user;
+      userController.access.text = selectedUser?.access != null ? selectedUser!.access : "user";
     });
     changeState(AppState.userEdit);
+
   }
   void viewDeleteUser(User? user) {
     setState(() {
@@ -587,7 +620,6 @@ class _MyAppState extends State<MyApp> {
   }
   void viewCreateUser() {
     setState(() {
-      selectedCategory = null;
       userController.reset();
       userController.access.text = "user";
     });

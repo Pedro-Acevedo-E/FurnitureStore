@@ -4,22 +4,28 @@ import '../app_state.dart';
 import '../controllers/user_controller.dart';
 import '../models.dart';
 
-class CreateUserView extends StatelessWidget {
+class EditUserView extends StatelessWidget {
   final User user;
+  final User selectedUser;
   final UserController userController;
   final VoidCallback logout;
   final Function(AppState val) changeState;
   final Function(String val) selectAccess;
   final List<String> accessList = ["user", "admin", "security"];
 
-  CreateUserView({
+  EditUserView({
     super.key,
     required this.user,
+    required this.selectedUser,
     required this.userController,
     required this.logout,
     required this.changeState,
     required this.selectAccess,
-  });
+  }){
+    userController.username.text = selectedUser.username;
+    userController.firstName.text = selectedUser.firstName;
+    userController.lastName.text = selectedUser.lastName;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +39,7 @@ class CreateUserView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              const Text("New User"),
+              Text("Edit: ${selectedUser.username}"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
@@ -45,6 +51,27 @@ class CreateUserView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 90),
+              Row(
+                  children: [
+                    const Spacer(),
+                    const Text("Select Access: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Spacer(),
+                    DropdownButton(
+                      value: userController.access.text,
+                      icon: const Icon(Icons.arrow_downward),
+                      items: accessList.map((String value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        electAccess(value);
+                      },
+                    ),
+                    const Spacer(),
+                  ]),
+              const SizedBox(height: 20),
               TextField(
                 controller: userController.username,
                 textAlign: TextAlign.center,
@@ -72,50 +99,9 @@ class CreateUserView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              TextField(
-                controller: userController.password,
-                textAlign: TextAlign.center,
-                obscureText: true,
-                textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                    hintText: "Enter Password"
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: userController.passwordConfirm,
-                textAlign: TextAlign.center,
-                obscureText: true,
-                textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                    hintText: "Confirm Password"
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                  children: [
-                    const Spacer(),
-                    const Text("Select Access: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    const Spacer(),
-                    DropdownButton(
-                      value: userController.access.text,
-                      icon: const Icon(Icons.arrow_downward),
-                      items: accessList.map((String value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? value) {
-                        electAccess(value);
-                      },
-                    ),
-                    const Spacer(),
-                  ]),
-              const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: createUser,
-                child: const Text("Create", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                onPressed: updateUser,
+                child: const Text("Update", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 90),
             ],
@@ -131,10 +117,8 @@ class CreateUserView extends StatelessWidget {
     }
   }
 
-  void createUser() async {
-    if (userController.password.text == userController.passwordConfirm.text && userController.username.text.isNotEmpty) {
-      userController.create();
-      changeState(AppState.userList);
-    }
+  void updateUser() {
+    userController.update(selectedUser);
+    changeState(AppState.userList);
   }
 }

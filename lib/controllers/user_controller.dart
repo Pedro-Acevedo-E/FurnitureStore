@@ -48,17 +48,17 @@ class UserController {
     }
   }
 
-  void update(int id, String password) async {
+  void update(User user) async {
     final data = User(
         id: 0,
         username: username.text,
         firstName: firstName.text,
         lastName: lastName.text,
-        password: password,
-        entranceTime: entranceTime.text,
+        password: user.password,
+        entranceTime: user.entranceTime,
         access: access.text
     );
-    final result = await SQLHelper.updateUser(id, data);
+    final result = await SQLHelper.updateUser(user.id, data);
     if (kDebugMode) {
       print("Updated User $result");
     }
