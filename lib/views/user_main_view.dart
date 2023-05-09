@@ -5,13 +5,11 @@ import '../app_state.dart';
 import '../models.dart';
 
 class UserMainView extends StatelessWidget {
-  final User user;
   final Function(AppState val) changeState;
   final VoidCallback logout;
 
   const UserMainView({
     super.key,
-    required this.user,
     required this.changeState,
     required this.logout
   });
@@ -24,7 +22,7 @@ class UserMainView extends StatelessWidget {
         ElevatedButton(
             style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
             onPressed: () => changeState(AppState.checkFurniture),
-            child: const Text("Check Furniture")
+            child: const Text("Your Furniture")
         ),
       ],
     );

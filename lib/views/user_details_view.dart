@@ -39,8 +39,6 @@ class UserDetailsView extends StatelessWidget {
               ),
               Text("Details of: ${selectedUser.username}"),
               const Spacer(),
-              PopupMenuButtonView(changeState: changeState, logout: logout),
-              const Padding(padding: EdgeInsets.only(right: 10)),
             ],
           ),
         ),

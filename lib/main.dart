@@ -350,6 +350,16 @@ class _MyAppState extends State<MyApp> {
           return const Text("Error");
         }
       }
+      case AppState.profile: {
+        return UserDetailsView(
+            user: loginController.loginUser,
+            selectedUser: loginController.loginUser,
+            extList: extList,
+            intList: intList,
+            changeState: changeState,
+            logout: logout,
+            lastState: lastState);
+      }
       default: {
         return Text(appState.toString());
       }

@@ -46,12 +46,9 @@ class MainView extends StatelessWidget {
     List<Widget> list = <Widget>[];
     if (user.access == "admin") {
       list.add(Column(children: [
-        const Text("Admin Functions"),
         AdminMainView(changeState: changeState, logout: logout),
-        const Text("Security Functions"),
         SecurityMainView(changeState: changeState, logout: logout),
-        const Text("User Functions"),
-        UserMainView(user: user, changeState: changeState, logout: logout)
+        UserMainView(changeState: changeState, logout: logout)
       ]));
     }
     if (user.access == "security") {
@@ -59,13 +56,13 @@ class MainView extends StatelessWidget {
         const Text("Security Functions"),
         SecurityMainView(changeState: changeState, logout: logout),
         const Text("User Functions"),
-        UserMainView(user: user, changeState: changeState, logout: logout)
+        UserMainView(changeState: changeState, logout: logout)
       ]));
     }
     if (user.access == "user") {
       list.add(Column(children: [
         const Text("User Functions"),
-        UserMainView(user: user, changeState: changeState, logout: logout)
+        UserMainView(changeState: changeState, logout: logout)
       ]));
     }
     return Column(children: list);
