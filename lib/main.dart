@@ -9,13 +9,18 @@ import 'package:furniture_store/controllers/login_controller.dart';
 import 'package:furniture_store/controllers/user_controller.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
+import 'package:furniture_store/views/category_details.dart';
+import 'package:furniture_store/views/category_list_view.dart';
+import 'package:furniture_store/views/create_category_form.dart';
 import 'package:furniture_store/views/create_external_form.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/create_internal_form.dart';
 import 'package:furniture_store/views/create_user_form.dart';
+import 'package:furniture_store/views/delete_category_view.dart';
 import 'package:furniture_store/views/delete_external_furniture_view.dart';
 import 'package:furniture_store/views/delete_internal_furniture_view.dart';
 import 'package:furniture_store/views/delete_user_view.dart';
+import 'package:furniture_store/views/edit_category_form.dart';
 import 'package:furniture_store/views/edit_external_form.dart';
 import 'package:furniture_store/views/edit_internal_form.dart';
 import 'package:furniture_store/views/edit_user_form.dart';
@@ -416,6 +421,51 @@ class _MyAppState extends State<MyApp> {
         } else {
           return const Text("Error");
         }
+      }
+      case AppState.categoryList: {
+        return CategoryView(
+            user: loginController.loginUser,
+            categoryList: categoryList,
+            changeState: changeState,
+            viewCategoryDetails: viewCategoryDetails,
+            viewDeleteCategory: viewDeleteCategory,
+            viewEditCategory: viewEditCategory,
+            viewCreateCategory: viewCreateCategory,
+            logout: logout
+        );
+      }
+      case AppState.categoryCreate: {
+        return CreateCategoryView(
+            user: loginController.loginUser,
+            categoryController: categoryController,
+            logout: logout,
+            changeState: changeState
+        );
+      }
+      case AppState.categoryDetails: {
+        return CategoryDetailsView(
+            user: loginController.loginUser,
+            selectedCategory: selectedCategory!,
+            changeState: changeState,
+            logout: logout
+        );
+      }
+      case AppState.categoryEdit: {
+        return EditCategoryView(
+            user: loginController.loginUser,
+            selectedCategory: selectedCategory!,
+            categoryController: categoryController,
+            logout: logout, changeState: changeState
+        );
+      }
+      case AppState.categoryDelete: {
+        return DeleteCategoryView(
+            user: loginController.loginUser,
+            selectedCategory: selectedCategory!,
+            changeState: changeState,
+            categoryController: categoryController,
+            logout: logout
+        );
       }
       default: {
         return Text(appState.toString());
