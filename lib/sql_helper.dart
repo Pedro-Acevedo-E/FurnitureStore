@@ -13,8 +13,6 @@ class SQLHelper{
         last_name TEXT,
         password TEXT NOT NULL,
         entrance_time TEXT,
-        internal TEXT,
-        external TEXT,
         access TEXT
       )
       """);
@@ -72,8 +70,6 @@ class SQLHelper{
       'last_name': "",
       'password': "1234",
       'entrance_time': "",
-      'internal': "no",
-      'external': "no",
       'access': "admin"
     };
     final dataSecurity = {
@@ -82,8 +78,6 @@ class SQLHelper{
       'last_name': "",
       'password': "1234",
       'entrance_time': "",
-      'internal': "no",
-      'external': "no",
       'access': "security"
     };
     final dataUser = {
@@ -92,12 +86,10 @@ class SQLHelper{
       'last_name': "",
       'password': "1234",
       'entrance_time': "",
-      'internal': "no",
-      'external': "no",
       'access': "user"
     };
     final dataCategory = {
-      "name" : "other",
+      "name" : "Other",
       "description" : "Other registered equipment"
     };
     await database.insert(
@@ -144,8 +136,6 @@ class SQLHelper{
       'last_name': user.lastName,
       'password': user.password,
       'entrance_time': user.entranceTime,
-      'internal': user.internal,
-      'external': user.external,
       'access': user.access
     };
 
@@ -183,7 +173,7 @@ class SQLHelper{
       'user': equipment.user,
       'location': equipment.location,
       'status': equipment.status,
-      'product_id': equipment.location,
+      'product_id': equipment.productId,
       'name': equipment.name,
       'description': equipment.description,
       'category': equipment.category,
@@ -276,8 +266,6 @@ class SQLHelper{
       'last_name': user.lastName,
       'password': user.password,
       'entrance_time': user.entranceTime,
-      'internal': user.internal,
-      'external': user.external,
       'access': user.access
     };
     
@@ -292,7 +280,7 @@ class SQLHelper{
       'user': equipment.user,
       'location': equipment.location,
       'status': equipment.status,
-      'product_id': equipment.location,
+      'product_id': equipment.productId,
       'name': equipment.name,
       'description': equipment.description,
       'category': equipment.category,

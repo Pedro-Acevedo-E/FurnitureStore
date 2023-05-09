@@ -57,16 +57,6 @@ class EntranceAndExitsView extends StatelessWidget {
                       ),
                       Spacer(flex: 1),
                       Expanded(
-                          flex: 3,
-                          child: Text("Int")
-                      ),
-                      Spacer(),
-                      Expanded(
-                          flex: 3,
-                          child: Text("Ext")
-                      ),
-                      Spacer(),
-                      Expanded(
                           flex: 6,
                           child: Text("Entrance")
                       ),
@@ -108,16 +98,6 @@ class EntranceAndExitsView extends StatelessWidget {
                 child: Text(users[i].username)
             ),
             const Spacer(flex: 5),
-            Expanded(
-                flex: 3,
-                child: Text(users[i].internal)
-            ),
-            const Spacer(flex: 2),
-            Expanded(
-                flex: 3,
-                child: Text(users[i].external)
-            ),
-            const Spacer(flex: 3),
             Expanded(
                 flex: 6,
                 child: Text(users[i].entranceTime)

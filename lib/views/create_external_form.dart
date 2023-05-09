@@ -11,7 +11,6 @@ class CreateExternalView extends StatelessWidget {
   final User? selectedUser;
   final ExternalController externalController;
   final List<User> userList;
-  final VoidCallback createExternalFurniture;
   final Function(User user) selectUser;
   final VoidCallback logout;
   final Function(AppState val) changeState;
@@ -22,7 +21,6 @@ class CreateExternalView extends StatelessWidget {
     required this.selectedUser,
     required this.externalController,
     required this.userList,
-    required this.createExternalFurniture,
     required this.selectUser,
     required this.logout,
     required this.changeState,
@@ -93,7 +91,7 @@ class CreateExternalView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: createExternalFurniture,
+                onPressed: voidCreateExternal,
                 child: const Text("Create", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 90),
@@ -102,6 +100,15 @@ class CreateExternalView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  voidCreateExternal() {
+    final selectedUser = this.selectedUser;
+    if (selectedUser != null) {
+      externalController.create(selectedUser);
+      externalController.reset();
+      changeState(AppState.externalFurniture);
+    }
   }
 
   void electUser(User? value) {

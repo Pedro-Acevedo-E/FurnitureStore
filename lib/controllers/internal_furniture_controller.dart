@@ -32,9 +32,8 @@ class InternalController {
     location.text = "";
   }
 
-  void create(User? user, EquipmentCategory category) async {
+  void create(User? user, String category) async {
     if (user != null) {
-      user.internal = "yes";
       final data = EquipmentInt(
           id: 0,
           user: user.username,
@@ -43,7 +42,7 @@ class InternalController {
           productId: productId.text,
           name: name.text,
           description: description.text,
-          category: category.name,
+          category: category,
           model: model.text,
           weight: weight.text,
           dimensions: dimensions.text,
@@ -51,10 +50,8 @@ class InternalController {
           color_2: color2.text,
           notes: notes.text,
           createdAt: "");
-      final update = await SQLHelper.updateUser(user.id, user);
       final internalData = await SQLHelper.createEquipmentInt(data);
       if (kDebugMode) {
-        print("Updated user $update");
         print("Created ExtEquipment $internalData");
       }
     } else {
@@ -66,7 +63,7 @@ class InternalController {
           productId: productId.text,
           name: name.text,
           description: description.text,
-          category: category.name,
+          category: category,
           model: model.text,
           weight: weight.text,
           dimensions: dimensions.text,
@@ -84,29 +81,6 @@ class InternalController {
   void delete(EquipmentInt? intEquipment) async {
     if (intEquipment != null) {
       final delete = await SQLHelper.deleteItem(intEquipment.id, "equipment_int");
-      if (intEquipment.user != "") {
-        final userData = await SQLHelper.getUser(intEquipment.user);
-        final equipmentList = await SQLHelper.getList("equipment_int");
-        var hasInternal = false;
-        for(var i = 0;  i < equipmentList.length; i++) {
-          if (userData.elementAt(0)["username"] == equipmentList.elementAt(i)["user"]) {
-            hasInternal = true;
-          }
-        }
-        if(hasInternal == false) {
-          final update = await SQLHelper.updateUser(userData.elementAt(0)["id"], User(
-              id: userData.elementAt(0)["id"],
-              username: userData.elementAt(0)["username"],
-              firstName: userData.elementAt(0)["first_name"],
-              lastName: userData.elementAt(0)["last_name"],
-              password: userData.elementAt(0)["password"],
-              entranceTime: userData.elementAt(0)["entrance_time"],
-              internal: "no",
-              external: userData.elementAt(0)["external"],
-              access: userData.elementAt(0)["access"]
-          ));
-        }
-      }
     }
   }
 
@@ -128,30 +102,7 @@ class InternalController {
         notes: notes.text,
         createdAt: selectedInt.createdAt
     );
-    final result = await SQLHelper.updateEquipmentInt(selectedInt.id, data);
 
-    if (selectedInt.user != "") {
-      final userData = await SQLHelper.getUser(selectedInt.user);
-      final equipmentList = await SQLHelper.getList("equipment_int");
-      var hasInternal = false;
-      for(var i = 0;  i < equipmentList.length; i++) {
-        if (userData.elementAt(0)["username"] == equipmentList.elementAt(i)["user"]) {
-          hasInternal = true;
-        }
-      }
-      if(hasInternal == false) {
-        final update = await SQLHelper.updateUser(userData.elementAt(0)["id"], User(
-            id: userData.elementAt(0)["id"],
-            username: userData.elementAt(0)["username"],
-            firstName: userData.elementAt(0)["first_name"],
-            lastName: userData.elementAt(0)["last_name"],
-            password: userData.elementAt(0)["password"],
-            entranceTime: userData.elementAt(0)["entrance_time"],
-            internal: "no",
-            external: userData.elementAt(0)["external"],
-            access: userData.elementAt(0)["access"]
-        ));
-      }
-    }
+    final result = await SQLHelper.updateEquipmentInt(selectedInt.id, data);
   }
 }

@@ -34,8 +34,6 @@ class LoginController {
           lastName: data["last_name"],
           password: data["password"],
           entranceTime: data["entrance_time"],
-          internal: data["internal"],
-          external: data["external"],
           access: data["access"]
       );
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/controllers/external_furniture_controller.dart';
 import 'package:furniture_store/views/details_row.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
@@ -9,7 +10,7 @@ class DeleteExternalView extends StatelessWidget {
   final User user;
   final EquipmentExt selectedExt;
   final Function(AppState val) changeState;
-  final Function(EquipmentExt item) deleteExternalFurniture;
+  final ExternalController externalController;
   final VoidCallback logout;
 
   const DeleteExternalView({
@@ -17,7 +18,7 @@ class DeleteExternalView extends StatelessWidget {
     required this.user,
     required this.selectedExt,
     required this.changeState,
-    required this.deleteExternalFurniture,
+    required this.externalController,
     required this.logout,
   });
 
@@ -63,6 +64,7 @@ class DeleteExternalView extends StatelessWidget {
   }
 
   void deleteInternal() {
-    deleteExternalFurniture(selectedExt);
+    externalController.delete(selectedExt);
+    changeState(AppState.externalFurniture);
   }
 }

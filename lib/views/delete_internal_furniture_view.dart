@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/controllers/internal_furniture_controller.dart';
 import 'package:furniture_store/views/details_row.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
@@ -9,7 +10,7 @@ class DeleteInternalView extends StatelessWidget {
   final User user;
   final EquipmentInt selectedInt;
   final Function(AppState val) changeState;
-  final Function(EquipmentInt item) deleteInternalFurniture;
+  final InternalController internalController;
   final VoidCallback logout;
 
   const DeleteInternalView({
@@ -17,7 +18,7 @@ class DeleteInternalView extends StatelessWidget {
     required this.user,
     required this.selectedInt,
     required this.changeState,
-    required this.deleteInternalFurniture,
+    required this.internalController,
     required this.logout,
   });
 
@@ -63,6 +64,7 @@ class DeleteInternalView extends StatelessWidget {
   }
 
   void deleteInternal() {
-    deleteInternalFurniture(selectedInt);
+    internalController.delete(selectedInt);
+    changeState(AppState.internalFurniture);
   }
 }

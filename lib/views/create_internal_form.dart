@@ -13,7 +13,6 @@ class CreateInternalView extends StatelessWidget {
   final InternalController internalController;
   final List<User> userList;
   final List<EquipmentCategory> categoryList;
-  final VoidCallback createInternalFurniture;
   final Function(User user) selectUser;
   final Function(EquipmentCategory category) selectCategory;
   final VoidCallback logout;
@@ -27,7 +26,6 @@ class CreateInternalView extends StatelessWidget {
     required this.internalController,
     required this.userList,
     required this.categoryList,
-    required this.createInternalFurniture,
     required this.selectUser,
     required this.selectCategory,
     required this.logout,
@@ -193,7 +191,7 @@ class CreateInternalView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: createInternalFurniture,
+                onPressed: createInternal,
                 child: const Text("Create", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 90),
@@ -213,6 +211,19 @@ class CreateInternalView extends StatelessWidget {
   void electCategory(EquipmentCategory? value) {
     if(value != null) {
       selectCategory(value);
+    }
+  }
+
+  void createInternal() async {
+    final selectedCategory = this.selectedCategory;
+    if (selectedCategory != null) {
+      internalController.create(selectedUser, selectedCategory.name);
+      internalController.reset();
+      changeState(AppState.internalFurniture);
+    } else {
+      internalController.create(selectedUser, "Other");
+      internalController.reset();
+      changeState(AppState.internalFurniture);
     }
   }
 }

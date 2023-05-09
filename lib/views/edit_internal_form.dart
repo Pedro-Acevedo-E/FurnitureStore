@@ -240,10 +240,16 @@ class EditInternalView extends StatelessWidget {
     final selectedCategory = this.selectedCategory;
     if (selectedUser != null && selectedCategory != null) {
       internalController.update(selectedInt, selectedUser.username, selectedCategory.name);
-      changeState(AppState.internalFurniture);
-    } else {
-      internalController.update(selectedInt, "", "Other");
-      changeState(AppState.internalFurniture);
     }
+    else if (selectedUser != null) {
+      internalController.update(selectedInt, selectedUser.username, "Other");
+    }
+    else if (selectedCategory != null) {
+      internalController.update(selectedInt, "", selectedCategory.name);
+    }
+    else {
+      internalController.update(selectedInt, "", "Other");
+    }
+    changeState(AppState.internalFurniture);
   }
 }

@@ -242,7 +242,6 @@ class _MyAppState extends State<MyApp> {
             selectedUser: selectedUser,
             externalController: externalController,
             userList: userList,
-            createExternalFurniture: createExternalFurniture,
             selectUser: (User user) => selectUser(user),
             logout: logout,
             changeState: changeState);
@@ -255,7 +254,6 @@ class _MyAppState extends State<MyApp> {
             internalController: internalController,
             userList: userList,
             categoryList: categoryList,
-            createInternalFurniture: createInternalFurniture,
             selectUser: (User user) => selectUser(user),
             selectCategory: (EquipmentCategory cat) => selectCategory(cat),
             logout: logout,
@@ -295,7 +293,7 @@ class _MyAppState extends State<MyApp> {
               user: loginController.loginUser,
               selectedInt: selectedInt,
               changeState: changeState,
-              deleteInternalFurniture: deleteInternalFurniture,
+              internalController: internalController,
               logout: logout);
         } else {
           return const Text("Error");
@@ -308,7 +306,7 @@ class _MyAppState extends State<MyApp> {
               user: loginController.loginUser,
               selectedExt: selectedExt,
               changeState: changeState,
-              deleteExternalFurniture: deleteExternalFurniture,
+              externalController: externalController,
               logout: logout);
         } else {
           return const Text("Error");
@@ -398,8 +396,6 @@ class _MyAppState extends State<MyApp> {
           lastName: data.elementAt(i)["last_name"],
           password: data.elementAt(i)["password"],
           entranceTime: data.elementAt(i)["entrance_time"],
-          internal: data.elementAt(i)["internal"],
-          external: data.elementAt(i)["external"],
           access: data.elementAt(i)["access"]));
     }
     List<EquipmentExt> tempExtList = [];
@@ -487,7 +483,6 @@ class _MyAppState extends State<MyApp> {
     });
     changeState(AppState.internalDetails);
   }
-
   void viewEditInternalFurniture(EquipmentInt data) {
     setState(() {
       internalController.reset();
@@ -497,19 +492,12 @@ class _MyAppState extends State<MyApp> {
     });
     changeState(AppState.internalEdit);
   }
-
   void viewDeleteInternalFurniture(EquipmentInt data) {
     setState(() {
       selectedInt = data;
     });
     changeState(AppState.internalDelete);
   }
-
-  void deleteInternalFurniture(EquipmentInt data) {
-    internalController.delete(data);
-    changeState(AppState.internalFurniture);
-  }
-
   void viewCreateInternalFurniture() {
     setState(() {
       selectedUser = null;
@@ -519,15 +507,6 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.internalCreate);
   }
 
-  void createInternalFurniture() {
-    final selectedCategory = this.selectedCategory;
-    if (selectedCategory != null) {
-      internalController.create(selectedUser, selectedCategory);
-      internalController.reset();
-      changeState(AppState.internalFurniture);
-    }
-  }
-
   //External
   void viewExternalFurnitureDetails(EquipmentExt data) {
     setState(() {
@@ -535,7 +514,6 @@ class _MyAppState extends State<MyApp> {
     });
     changeState(AppState.externalDetails);
   }
-
   void viewEditExternalFurniture(EquipmentExt data) {
     setState(() {
       externalController.reset();
@@ -544,34 +522,18 @@ class _MyAppState extends State<MyApp> {
     });
     changeState(AppState.externalEdit);
   }
-
   void viewDeleteExternalFurniture(EquipmentExt data) {
     setState(() {
       selectedExt = data;
     });
     changeState(AppState.externalDelete);
   }
-
-  void deleteExternalFurniture(EquipmentExt data) {
-    externalController.delete(data);
-    changeState(AppState.externalFurniture);
-  }
-
   void viewCreateExternalFurniture() {
     setState(() {
       externalController.reset();
       selectedUser = null;
     });
     changeState(AppState.externalCreate);
-  }
-
-  void createExternalFurniture() {
-    final selectedUser = this.selectedUser;
-    if (selectedUser != null) {
-      externalController.create(selectedUser);
-      externalController.reset();
-      changeState(AppState.externalFurniture);
-    }
   }
 
   //End CRUD operations ############################################################
@@ -587,8 +549,6 @@ class _MyAppState extends State<MyApp> {
           lastName: data.elementAt(i)["last_name"],
           password: data.elementAt(i)["password"],
           entranceTime: data.elementAt(i)["entrance_time"],
-          internal: data.elementAt(i)["internal"],
-          external: data.elementAt(i)["external"],
           access: data.elementAt(i)["access"]));
     }
 
@@ -624,17 +584,10 @@ class _MyAppState extends State<MyApp> {
   void createEntrance() async {
     final selectedUser = this.selectedUser;
     if (selectedUser != null) {
-      selectedUser.entranceTime = "${DateTime
-          .now()
-          .hour
-          .toString()}:${DateTime
-          .now()
-          .minute
-          .toString()}";
+      selectedUser.entranceTime = "${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}";
       var descriptionString = "User entered Office";
 
       if (formList.isNotEmpty) {
-        selectedUser.external = "yes";
         for (var i = 0; i < formList.length; i++) {
           final tempEquipmentExt = EquipmentExt(
               id: 0,
@@ -643,9 +596,7 @@ class _MyAppState extends State<MyApp> {
               description: descriptionControllerList[i].text,
               createdAt: ""
           );
-          descriptionString =
-          "$descriptionString \nWith external equipment ${tempEquipmentExt
-              .name}";
+          descriptionString = "$descriptionString \nWith external equipment ${tempEquipmentExt.name}";
           final data = await SQLHelper.createEquipmentExt(tempEquipmentExt);
           if (kDebugMode) {
             print("Created External Equipment $data");
@@ -655,8 +606,7 @@ class _MyAppState extends State<MyApp> {
 
       updateInternal(selectedUser, "Office");
 
-      final userData = await SQLHelper.updateUser(
-          selectedUser.id, selectedUser);
+      final userData = await SQLHelper.updateUser(selectedUser.id, selectedUser);
 
       final logData = Log(
           id: 0,
@@ -693,14 +643,10 @@ class _MyAppState extends State<MyApp> {
     if (selectedUser != null) {
       selectedUser.entranceTime = "";
       var descriptionString = "User Exited Office";
-      if (selectedUser.external == "yes" || selectedUser.external == "Yes") {
-        selectedUser.external = "no";
-        for (var i = 0; i < extList.length; i++) {
-          if (extList[i].user == selectedUser.username) {
-            descriptionString =
-            "$descriptionString \nExited with ${extList[i].name}";
-            SQLHelper.deleteItem(extList[i].id, "equipment_ext");
-          }
+      for (var i = 0; i < extList.length; i++) {
+        if (extList[i].user == selectedUser.username) {
+          descriptionString = "$descriptionString \nExited with ${extList[i].name}";
+          SQLHelper.deleteItem(extList[i].id, "equipment_ext");
         }
       }
 

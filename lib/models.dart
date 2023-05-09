@@ -5,8 +5,6 @@ class User {
   final String lastName;
   final String password;
   String entranceTime;
-  String internal;
-  String external;
   final String access;
 
   User({
@@ -16,25 +14,23 @@ class User {
     required this.lastName,
     required this.password,
     required this.entranceTime,
-    required this.internal,
-    required this.external,
     required this.access
   });
 
   static User empty(){
-    return User(id: 0, username: "", firstName: "", lastName: "", password: "", entranceTime: "", internal: "", external: "", access: "");
+    return User(id: 0, username: "", firstName: "", lastName: "", password: "", entranceTime: "", access: "");
   }
 
   static User demo1(){
-    return User(id: 0, username: "PedroAcevedo", firstName: "Pedro", lastName: "Acevedo", password: "1234", entranceTime: "", internal: "yes", external: "no", access: "user");
+    return User(id: 0, username: "PedroAcevedo", firstName: "Pedro", lastName: "Acevedo", password: "1234", entranceTime: "", access: "user");
   }
 
   static User demo2(){
-    return User(id: 0, username: "FernandoMorales", firstName: "Fernando", lastName: "Morales", password: "1234", entranceTime: "12:50", internal: "no", external: "yes", access: "user");
+    return User(id: 0, username: "FernandoMorales", firstName: "Fernando", lastName: "Morales", password: "1234", entranceTime: "12:50", access: "user");
   }
 
   static User demo3(){
-    return User(id: 0, username: "CarlosHernandez", firstName: "Carlos", lastName: "Hernandez", password: "1234", entranceTime: "08:20", internal: "yes", external: "yes", access: "user");
+    return User(id: 0, username: "CarlosHernandez", firstName: "Carlos", lastName: "Hernandez", password: "1234", entranceTime: "08:20", access: "user");
   }
 
 }
