@@ -9,7 +9,7 @@ class ExtFurnitureView extends StatelessWidget {
   final Function(AppState val) changeState;
   final Function(EquipmentExt item) viewExternalFurnitureDetails;
   final Function(EquipmentExt item) viewDeleteExternalFurniture;
-  final Function(EquipmentExt item) editExternalFurniture;
+  final Function(EquipmentExt item) viewEditExternalFurniture;
   final VoidCallback viewCreateExternalFurniture;
   final VoidCallback logout;
 
@@ -20,7 +20,7 @@ class ExtFurnitureView extends StatelessWidget {
     required this.changeState,
     required this.viewExternalFurnitureDetails,
     required this.viewDeleteExternalFurniture,
-    required this.editExternalFurniture,
+    required this.viewEditExternalFurniture,
     required this.viewCreateExternalFurniture,
     required this.logout,
   });
@@ -199,7 +199,7 @@ class ExtFurnitureView extends StatelessWidget {
   }
 
   void edit(EquipmentExt item) {
-    editExternalFurniture(item);
+    viewEditExternalFurniture(item);
   }
 
 }

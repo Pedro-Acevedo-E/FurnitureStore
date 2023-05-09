@@ -308,6 +308,19 @@ class SQLHelper{
     return result;
   }
 
+  static Future<int> updateEquipmentExt(int id, EquipmentExt equipment) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      'user': equipment.user,
+      'name': equipment.name,
+      'description': equipment.description
+    };
+
+    final result = await db.update('equipment_ext', data, where: "id = ?", whereArgs: [id]);
+    return result;
+  }
+
   static Future<int> updateCategory(int id, String name, String description) async {
     final db = await SQLHelper.db();
 

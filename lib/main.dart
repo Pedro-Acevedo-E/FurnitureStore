@@ -12,6 +12,8 @@ import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/create_internal_form.dart';
 import 'package:furniture_store/views/delete_external_furniture_view.dart';
 import 'package:furniture_store/views/delete_internal_furniture_view.dart';
+import 'package:furniture_store/views/edit_external_form.dart';
+import 'package:furniture_store/views/edit_internal_form.dart';
 import 'package:furniture_store/views/entrance_exits_view.dart';
 import 'package:furniture_store/views/ext_furniture_list_view.dart';
 import 'package:furniture_store/views/external_furniture_details.dart';
@@ -218,7 +220,7 @@ class _MyAppState extends State<MyApp> {
             changeState: (AppState state) => changeState(state),
             viewInternalFurnitureDetails: viewInternalFurnitureDetails,
             viewDeleteInternalFurniture: viewDeleteInternalFurniture,
-            editInternalFurniture: editInternalFurniture,
+            viewEditInternalFurniture: viewEditInternalFurniture,
             viewCreateInternalFurniture: viewCreateInternalFurniture,
             logout: () => logout()
         );
@@ -230,7 +232,7 @@ class _MyAppState extends State<MyApp> {
             changeState: changeState,
             viewExternalFurnitureDetails: viewExternalFurnitureDetails,
             viewDeleteExternalFurniture: viewDeleteExternalFurniture,
-            editExternalFurniture: editExternalFurniture,
+            viewEditExternalFurniture: viewEditExternalFurniture,
             viewCreateExternalFurniture: viewCreateExternalFurniture,
             logout: logout);
       }
@@ -308,6 +310,44 @@ class _MyAppState extends State<MyApp> {
               changeState: changeState,
               deleteExternalFurniture: deleteExternalFurniture,
               logout: logout);
+        } else {
+          return const Text("Error");
+        }
+      }
+      case AppState.internalEdit: {
+        final selectedInt = this.selectedInt;
+        if (selectedInt != null) {
+          return EditInternalView(
+              user: loginController.loginUser,
+              selectedUser: selectedUser,
+              selectedInt: selectedInt,
+              selectedCategory: selectedCategory,
+              internalController: internalController,
+              userList: userList,
+              categoryList: categoryList,
+              selectUser: selectUser,
+              selectCategory: selectCategory,
+              logout: logout,
+              changeState: changeState
+          );
+        } else {
+          return const Text("Error");
+        }
+      }
+      case AppState.externalEdit: {
+        final selectedExt = this.selectedExt;
+        if (selectedExt != null) {
+          return EditExternalView(
+              user: loginController.loginUser,
+              selectedUser: selectedUser,
+              selectedExt: selectedExt,
+              userList: userList,
+              externalController:
+              externalController,
+              logout: logout,
+              changeState: changeState,
+              selectUser: selectUser
+          );
         } else {
           return const Text("Error");
         }
@@ -427,7 +467,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  //CRUD operations############################################################
+  //CRUD
   void viewUserDetails(User user) {
     selectUser(user);
     changeState(AppState.userDetails);
@@ -440,6 +480,7 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.logDetails);
   }
 
+  //Internal
   void viewInternalFurnitureDetails(EquipmentInt data) {
     setState(() {
        selectedInt = data;
@@ -447,9 +488,12 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.internalDetails);
   }
 
-  void editInternalFurniture(EquipmentInt data) {
+  void viewEditInternalFurniture(EquipmentInt data) {
     setState(() {
+      internalController.reset();
       selectedInt = data;
+      selectedUser = null;
+      selectedCategory = null;
     });
     changeState(AppState.internalEdit);
   }
@@ -470,6 +514,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       selectedUser = null;
       selectedCategory = null;
+      internalController.reset();
     });
     changeState(AppState.internalCreate);
   }
@@ -483,6 +528,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  //External
   void viewExternalFurnitureDetails(EquipmentExt data) {
     setState(() {
       selectedExt = data;
@@ -490,8 +536,10 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.externalDetails);
   }
 
-  void editExternalFurniture(EquipmentExt data) {
+  void viewEditExternalFurniture(EquipmentExt data) {
     setState(() {
+      externalController.reset();
+      selectedUser = null;
       selectedExt = data;
     });
     changeState(AppState.externalEdit);
@@ -503,6 +551,7 @@ class _MyAppState extends State<MyApp> {
     });
     changeState(AppState.externalDelete);
   }
+
   void deleteExternalFurniture(EquipmentExt data) {
     externalController.delete(data);
     changeState(AppState.externalFurniture);
@@ -510,6 +559,7 @@ class _MyAppState extends State<MyApp> {
 
   void viewCreateExternalFurniture() {
     setState(() {
+      externalController.reset();
       selectedUser = null;
     });
     changeState(AppState.externalCreate);

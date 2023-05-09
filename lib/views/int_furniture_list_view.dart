@@ -9,7 +9,7 @@ class IntFurnitureView extends StatelessWidget {
   final Function(AppState val) changeState;
   final Function(EquipmentInt item) viewInternalFurnitureDetails;
   final Function(EquipmentInt item) viewDeleteInternalFurniture;
-  final Function(EquipmentInt item) editInternalFurniture;
+  final Function(EquipmentInt item) viewEditInternalFurniture;
   final VoidCallback viewCreateInternalFurniture;
   final VoidCallback logout;
 
@@ -20,7 +20,7 @@ class IntFurnitureView extends StatelessWidget {
     required this.changeState,
     required this.viewInternalFurnitureDetails,
     required this.viewDeleteInternalFurniture,
-    required this.editInternalFurniture,
+    required this.viewEditInternalFurniture,
     required this.viewCreateInternalFurniture,
     required this.logout,
   });
@@ -193,12 +193,13 @@ class IntFurnitureView extends StatelessWidget {
   void viewDetails(EquipmentInt item) {
     viewInternalFurnitureDetails(item);
   }
+
   void delete(EquipmentInt item) {
     viewDeleteInternalFurniture(item);
   }
 
   void edit(EquipmentInt item) {
-    editInternalFurniture(item);
+    viewEditInternalFurniture(item);
   }
 
 }

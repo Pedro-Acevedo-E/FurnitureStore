@@ -15,6 +15,7 @@ class InternalController {
   final color1 = TextEditingController();
   final color2 = TextEditingController();
   final notes = TextEditingController();
+  final location = TextEditingController();
 
 
   void reset() {
@@ -28,6 +29,7 @@ class InternalController {
     color1.text = "";
     color2.text = "";
     notes.text = "";
+    location.text = "";
   }
 
   void create(User? user, EquipmentCategory category) async {
@@ -104,6 +106,51 @@ class InternalController {
               access: userData.elementAt(0)["access"]
           ));
         }
+      }
+    }
+  }
+
+  void update(EquipmentInt selectedInt, String user, String category) async {
+    final data = EquipmentInt(
+        id: selectedInt.id,
+        user: user,
+        location: location.text,
+        status: status.text,
+        productId: productId.text,
+        name: name.text,
+        description: description.text,
+        category: category,
+        model: model.text,
+        weight: weight.text,
+        dimensions: dimensions.text,
+        color_1: color1.text,
+        color_2: color2.text,
+        notes: notes.text,
+        createdAt: selectedInt.createdAt
+    );
+    final result = await SQLHelper.updateEquipmentInt(selectedInt.id, data);
+
+    if (selectedInt.user != "") {
+      final userData = await SQLHelper.getUser(selectedInt.user);
+      final equipmentList = await SQLHelper.getList("equipment_int");
+      var hasInternal = false;
+      for(var i = 0;  i < equipmentList.length; i++) {
+        if (userData.elementAt(0)["username"] == equipmentList.elementAt(i)["user"]) {
+          hasInternal = true;
+        }
+      }
+      if(hasInternal == false) {
+        final update = await SQLHelper.updateUser(userData.elementAt(0)["id"], User(
+            id: userData.elementAt(0)["id"],
+            username: userData.elementAt(0)["username"],
+            firstName: userData.elementAt(0)["first_name"],
+            lastName: userData.elementAt(0)["last_name"],
+            password: userData.elementAt(0)["password"],
+            entranceTime: userData.elementAt(0)["entrance_time"],
+            internal: "no",
+            external: userData.elementAt(0)["external"],
+            access: userData.elementAt(0)["access"]
+        ));
       }
     }
   }
