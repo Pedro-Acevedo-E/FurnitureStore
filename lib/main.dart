@@ -11,6 +11,7 @@ import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/create_external_form.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/create_internal_form.dart';
+import 'package:furniture_store/views/create_user_form.dart';
 import 'package:furniture_store/views/delete_external_furniture_view.dart';
 import 'package:furniture_store/views/delete_internal_furniture_view.dart';
 import 'package:furniture_store/views/edit_external_form.dart';
@@ -28,6 +29,7 @@ import 'package:furniture_store/views/main_view.dart';
 import 'package:furniture_store/views/user_details_view.dart';
 import 'package:furniture_store/views/user_entrance_view.dart';
 import 'package:furniture_store/views/user_exit_view.dart';
+import 'package:furniture_store/views/user_list_view.dart';
 
 import 'controllers/incident_controller.dart';
 import 'models.dart';
@@ -362,6 +364,28 @@ class _MyAppState extends State<MyApp> {
             logout: logout,
             lastState: lastState);
       }
+      case AppState.userList: {
+        return UserListView(
+            user: loginController.loginUser,
+            userList: userList,
+            changeState: changeState,
+            viewUserDetails: viewUserDetails,
+            viewDeleteUser: viewDeleteUser,
+            viewEditUser: viewEditUser,
+            viewCreateUser: viewCreateUser,
+            logout: logout
+        );
+      }
+      case AppState.userCreate: {
+        return CreateUserView(
+            user: loginController.loginUser,
+            selectedCategory: selectedCategory,
+            userController: userController,
+            logout: logout,
+            changeState: changeState,
+            selectAccess: selectAccess
+        );
+      }
       default: {
         return Text(appState.toString());
       }
@@ -563,9 +587,11 @@ class _MyAppState extends State<MyApp> {
   }
   void viewCreateUser() {
     setState(() {
+      selectedCategory = null;
       userController.reset();
+      userController.access.text = "user";
     });
-    changeState(AppState.userList);
+    changeState(AppState.userCreate);
   }
 
   //End CRUD operations ############################################################
@@ -745,6 +771,12 @@ class _MyAppState extends State<MyApp> {
   void selectCategory(EquipmentCategory category) {
     setState(() {
       selectedCategory = category;
+    });
+  }
+
+  void selectAccess(String access) {
+    setState(() {
+      userController.access.text = access;
     });
   }
 }

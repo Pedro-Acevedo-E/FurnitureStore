@@ -38,7 +38,6 @@ class LoginView extends StatelessWidget {
                         controller: loginController.passwordController,
                         textAlign: TextAlign.center,
                         obscureText: true,
-
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: "Password"

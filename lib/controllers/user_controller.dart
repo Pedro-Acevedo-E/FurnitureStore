@@ -22,10 +22,10 @@ class UserController {
     passwordConfirm.text = "";
     entranceTime.text = "";
     access.text = "";
+    alertText = "";
   }
 
   void create() async {
-    if (password.text == passwordConfirm.text && username.text.isNotEmpty) {
       final data = User(
           id: 0,
           username: username.text,
@@ -39,7 +39,6 @@ class UserController {
       if (kDebugMode) {
         print("Created User $createUser");
       }
-    }
   }
 
   void delete(int id) async {
