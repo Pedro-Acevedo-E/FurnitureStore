@@ -5,6 +5,7 @@ import 'package:furniture_store/controllers/demo_controller.dart';
 import 'package:furniture_store/controllers/external_furniture_controller.dart';
 import 'package:furniture_store/controllers/internal_furniture_controller.dart';
 import 'package:furniture_store/controllers/login_controller.dart';
+import 'package:furniture_store/controllers/user_controller.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
 import 'package:furniture_store/views/create_external_form.dart';
@@ -79,6 +80,7 @@ class _MyAppState extends State<MyApp> {
   final externalController = ExternalController();
   final incidentController = IncidentController();
   final internalController = InternalController();
+  final userController = UserController();
 
   @override
   Widget build(BuildContext context) {
@@ -474,11 +476,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   //CRUD
-  void viewUserDetails(User user) {
-    selectUser(user);
-    changeState(AppState.userDetails);
-  }
-
   void viewLogDetails(Log log) {
     setState(() {
       selectedLog = log;
@@ -544,6 +541,31 @@ class _MyAppState extends State<MyApp> {
       selectedUser = null;
     });
     changeState(AppState.externalCreate);
+  }
+
+  //User
+  void viewUserDetails(User user) {
+    selectUser(user);
+    changeState(AppState.userDetails);
+  }
+  void viewEditUser(User? user) {
+    setState(() {
+      userController.reset();
+      selectedUser = user;
+    });
+    changeState(AppState.externalEdit);
+  }
+  void viewDeleteUser(User? user) {
+    setState(() {
+      selectedUser = user;
+    });
+    changeState(AppState.userDelete);
+  }
+  void viewCreateUser() {
+    setState(() {
+      userController.reset();
+    });
+    changeState(AppState.userList);
   }
 
   //End CRUD operations ############################################################

@@ -17,7 +17,6 @@ class ExternalController {
     final data = EquipmentExt(id: 0, user: user.username, name: name.text, description: description.text, createdAt: "");
     final externalData = await SQLHelper.createEquipmentExt(data);
     if (kDebugMode) {
-      print("Updated user $update");
       print("Created ExtEquipment $externalData");
     }
   }

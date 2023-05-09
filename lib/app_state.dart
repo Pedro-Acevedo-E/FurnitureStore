@@ -25,6 +25,9 @@ enum AppState {
 
   //CRUD
   userDetails,
+  userDelete,
+  userEdit,
+  userCreate,
 
   internalDetails,
   internalDelete,
