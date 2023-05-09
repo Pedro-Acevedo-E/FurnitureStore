@@ -95,7 +95,12 @@ class UserExitView extends StatelessWidget {
         list.add(
             Row(children: [
               const Spacer(),
-              Text("Item ${intList[i].id}: ${intList[i].name} ${intList[i].description}", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
+              Expanded(
+                  flex: 7,
+                  child: Text("Item ${intList[i].id}: ${intList[i].name}\n${intList[i].description}",
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal)
+                  ),
+              ),
               const Spacer(),
             ])
         );
@@ -111,7 +116,12 @@ class UserExitView extends StatelessWidget {
         list.add(
             Row(children: [
               const Spacer(),
-              Text("Item ${extList[i].id}: ${extList[i].name} ${extList[i].description}", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
+              Expanded(
+                flex: 7,
+                child: Text("Item ${extList[i].id}: ${extList[i].name}\n${extList[i].description}",
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal)
+                ),
+              ),
               const Spacer(),
             ])
         );

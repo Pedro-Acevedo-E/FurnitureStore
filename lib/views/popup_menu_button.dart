@@ -21,9 +21,6 @@ class PopupMenuButtonView extends StatelessWidget {
             case PopupSelection.profile: {
               changeState(AppState.profile);
             } break;
-            case PopupSelection.settings: {
-              changeState(AppState.settings);
-            } break;
             case PopupSelection.logout: {
               logout();
             } break;
@@ -36,9 +33,6 @@ class PopupMenuButtonView extends StatelessWidget {
           const PopupMenuItem(
               value: PopupSelection.profile,
               child: Text("Profile")),
-          const PopupMenuItem(
-              value: PopupSelection.settings,
-              child: Text("Settings")),
           const PopupMenuItem(
               value: PopupSelection.logout,
               child: Text("Logout")),
