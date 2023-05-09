@@ -135,7 +135,11 @@ class UserEntranceView extends StatelessWidget {
         list.add(
             Row(children: [
               const Spacer(),
-              Text("Item ${intList[i].id}: ${intList[i].name} ${intList[i].description}", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
+              Expanded(
+                flex: 8,
+                child: Text("Item ${intList[i].id}: ${intList[i].name}\n${intList[i].description}",
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
+              ),
               const Spacer(),
             ])
         );

@@ -53,6 +53,7 @@ class EditExternalView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 90),
+              Text("Current user: ${selectedExt.user}"),
               Row(
                   children: [
                     const Spacer(),

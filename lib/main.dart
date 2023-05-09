@@ -577,7 +577,7 @@ class _MyAppState extends State<MyApp> {
       userController.reset();
       selectedUser = user;
     });
-    changeState(AppState.externalEdit);
+    changeState(AppState.userEdit);
   }
   void viewDeleteUser(User? user) {
     setState(() {

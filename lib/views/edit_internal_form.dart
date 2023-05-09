@@ -68,6 +68,7 @@ class EditInternalView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 90),
+              Text(selectedInt.user.isNotEmpty ? "Current user: ${selectedInt.user}" : ""),
               Row(
                   children: [
                     const Spacer(),
@@ -89,6 +90,7 @@ class EditInternalView extends StatelessWidget {
                     const Spacer(),
                   ]),
               const SizedBox(height: 20),
+              Text(selectedInt.category.isNotEmpty ? "Current category: ${selectedInt.category}" : ""),
               Row(
                   children: [
                     const Spacer(),
