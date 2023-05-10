@@ -14,7 +14,7 @@ class IncidentController {
   }
 
   void create(User user) async {
-    if(incidentTitleController.text.isNotEmpty && incidentDescriptionController.text.isNotEmpty) {
+    if(incidentTitleController.text.isNotEmpty) {
       final incidentLogData = Log(
           id: 0,
           title: incidentTitleController.text,
