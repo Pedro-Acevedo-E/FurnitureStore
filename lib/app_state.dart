@@ -6,6 +6,7 @@ enum AppState {
   //admin
   userList,
   categoryList,
+  brandList,
 
   //security
   entrancesAndExits,
@@ -43,6 +44,11 @@ enum AppState {
   externalDelete,
   externalEdit,
   externalCreate,
+
+  brandDetails,
+  brandDelete,
+  brandCreate,
+  brandEdit,
 
   profile,
   settings,

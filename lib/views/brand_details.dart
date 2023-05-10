@@ -4,13 +4,13 @@ import '../app_state.dart';
 import '../models.dart';
 import 'details_row.dart';
 
-class CategoryDetailsView extends StatelessWidget {
+class BrandDetailsView extends StatelessWidget {
   final User user;
   final EquipmentCategory selectedCategory;
   final Function(AppState val) changeState;
   final VoidCallback logout;
 
-  const CategoryDetailsView({
+  const BrandDetailsView({
     super.key,
     required this.user,
     required this.selectedCategory,
@@ -26,11 +26,11 @@ class CategoryDetailsView extends StatelessWidget {
           title: Row(
             children: [
               IconButton(
-                  onPressed: () => changeState(AppState.categoryList),
+                  onPressed: () => changeState(AppState.brandList),
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              const Text("Category details"),
+              const Text("Brand details"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),

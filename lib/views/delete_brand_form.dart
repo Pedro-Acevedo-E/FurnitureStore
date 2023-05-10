@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/views/details_row.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
-import '../app_state.dart';
-import '../models.dart';
-import 'details_row.dart';
 
-class CategoryDetailsView extends StatelessWidget {
+import '../app_state.dart';
+import '../controllers/brand_controller.dart';
+import '../models.dart';
+
+class DeleteBrandView extends StatelessWidget {
   final User user;
   final EquipmentCategory selectedCategory;
   final Function(AppState val) changeState;
+  final BrandController brandController;
   final VoidCallback logout;
 
-  const CategoryDetailsView({
+  const DeleteBrandView({
     super.key,
     required this.user,
     required this.selectedCategory,
     required this.changeState,
+    required this.brandController,
     required this.logout,
   });
 
@@ -26,11 +30,11 @@ class CategoryDetailsView extends StatelessWidget {
           title: Row(
             children: [
               IconButton(
-                  onPressed: () => changeState(AppState.categoryList),
+                  onPressed: () => changeState(AppState.brandList),
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              const Text("Category details"),
+              Text("Delete: ${selectedCategory.name}"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
@@ -42,15 +46,24 @@ class CategoryDetailsView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Padding(padding: EdgeInsets.only(top: 20)),
-              const Text("Brand Data:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text("Are you sure you want to delete?:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
               DetailsRowView(field: "ID", value: selectedCategory.id.toString()),
-              DetailsRowView(field: "Title", value: selectedCategory.name),
-              DetailsRowView(field: "Description", value: selectedCategory.description),
+              DetailsRowView(field: "Name", value: selectedCategory.name),
+              ElevatedButton(
+                onPressed: deleteCategory,
+                child: const Text("Delete", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ),
+              const SizedBox(height: 90),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void deleteCategory() {
+    brandController.delete(selectedCategory.id);
+    changeState(AppState.brandList);
   }
 }

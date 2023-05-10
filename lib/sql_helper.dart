@@ -64,6 +64,12 @@ class SQLHelper{
         description TEXT
       )
       """);
+    await database.execute("""CREATE TABLE brand(
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        name TEXT NOT NULL UNIQUE,
+        description TEXT
+      )
+      """);
     final dataAdmin = {
       'username': "admin",
       'first_name': "admin",
@@ -92,6 +98,10 @@ class SQLHelper{
       "name" : "Other",
       "description" : "Other registered equipment"
     };
+    final dataBrand = {
+      "name" : "Other",
+      "description" : "Other registered equipment"
+    };
     await database.insert(
         'user',
         dataAdmin,
@@ -109,6 +119,11 @@ class SQLHelper{
     await database.insert(
         'category',
         dataCategory,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );
+    await database.insert(
+        'brand',
+        dataBrand,
         conflictAlgorithm: sql.ConflictAlgorithm.replace
     );
   }
@@ -229,6 +244,23 @@ class SQLHelper{
     return id;
   }
 
+  static Future<int> createBrand(String name, String description) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      'name': name,
+      'description': description
+    };
+
+    final id = await db.insert(
+        'brand',
+        data,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace
+    );
+
+    return id;
+  }
+
   //READ LIST
   static Future<List<Map<String, dynamic>>> getList(String from) async {
     final db = await SQLHelper.db();
@@ -318,6 +350,18 @@ class SQLHelper{
     };
 
     final result = await db.update('category', data, where: "id = ?", whereArgs: [id]);
+    return result;
+  }
+
+  static Future<int> updateBrand(int id, String name, String description) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      'name': name,
+      'description': description
+    };
+
+    final result = await db.update('brand', data, where: "id = ?", whereArgs: [id]);
     return result;
   }
 

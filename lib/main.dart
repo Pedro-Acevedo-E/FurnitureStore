@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:furniture_store/controllers/brand_controller.dart';
 import 'package:furniture_store/controllers/category_controller.dart';
 import 'package:furniture_store/controllers/demo_controller.dart';
 import 'package:furniture_store/controllers/external_furniture_controller.dart';
@@ -9,17 +10,22 @@ import 'package:furniture_store/controllers/login_controller.dart';
 import 'package:furniture_store/controllers/user_controller.dart';
 import 'package:furniture_store/sql_helper.dart';
 import 'package:furniture_store/app_state.dart';
+import 'package:furniture_store/views/brand_details.dart';
+import 'package:furniture_store/views/brand_list_view.dart';
 import 'package:furniture_store/views/category_details.dart';
 import 'package:furniture_store/views/category_list_view.dart';
+import 'package:furniture_store/views/create_brand_form.dart';
 import 'package:furniture_store/views/create_category_form.dart';
 import 'package:furniture_store/views/create_external_form.dart';
 import 'package:furniture_store/views/create_incident_view.dart';
 import 'package:furniture_store/views/create_internal_form.dart';
 import 'package:furniture_store/views/create_user_form.dart';
+import 'package:furniture_store/views/delete_brand_form.dart';
 import 'package:furniture_store/views/delete_category_view.dart';
 import 'package:furniture_store/views/delete_external_furniture_view.dart';
 import 'package:furniture_store/views/delete_internal_furniture_view.dart';
 import 'package:furniture_store/views/delete_user_view.dart';
+import 'package:furniture_store/views/edit_brand_form.dart';
 import 'package:furniture_store/views/edit_category_form.dart';
 import 'package:furniture_store/views/edit_external_form.dart';
 import 'package:furniture_store/views/edit_internal_form.dart';
@@ -66,6 +72,7 @@ class _MyAppState extends State<MyApp> {
   List<EquipmentExt> extList = [];
   List<EquipmentInt> intList = [];
   List<EquipmentCategory> categoryList = [];
+  List<EquipmentCategory> brandList = [];
   List<Log> incidentsList = [];
   List<Log> userLogList = [];
 
@@ -91,6 +98,7 @@ class _MyAppState extends State<MyApp> {
   final internalController = InternalController();
   final userController = UserController();
   final categoryController = CategoryController();
+  final brandController = BrandController();
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +110,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    //demoController.createDemo();
+    demoController.createDemo();
     demoController.loadItemsDemo();
   }
 
@@ -468,6 +476,52 @@ class _MyAppState extends State<MyApp> {
             logout: logout
         );
       }
+      case AppState.brandList: {
+        return BrandView(
+            user: loginController.loginUser,
+            brandList: brandList,
+            changeState: changeState,
+            viewBrandDetails: viewBrandDetails,
+            viewDeleteBrand: viewDeleteBrand,
+            viewEditBrand: viewEditBrand,
+            viewCreateBrand: viewCreateBrand,
+            logout: logout
+        );
+      }
+      case AppState.brandCreate: {
+        return CreateBrandView(
+            user: loginController.loginUser,
+            brandController: brandController,
+            logout: logout,
+            changeState: changeState
+        );
+      }
+      case AppState.brandDetails: {
+        return BrandDetailsView(
+            user: loginController.loginUser,
+            selectedCategory: selectedCategory!,
+            changeState: changeState,
+            logout: logout
+        );
+      }
+      case AppState.brandEdit: {
+        return EditBrandView(
+            user: loginController.loginUser,
+            selectedCategory: selectedCategory!,
+            brandController: brandController,
+            logout: logout,
+            changeState: changeState
+        );
+      }
+      case AppState.brandDelete: {
+        return DeleteBrandView(
+            user: loginController.loginUser,
+            selectedCategory: selectedCategory!,
+            changeState: changeState,
+            brandController: brandController,
+            logout: logout
+        );
+      }
       case AppState.checkFurniture: {
         return UserFurnitureView(
             user: loginController.loginUser,
@@ -513,6 +567,7 @@ class _MyAppState extends State<MyApp> {
     final iLog = await SQLHelper.getList("incident_log");
     final uLog = await SQLHelper.getList("user_log");
     final cat = await SQLHelper.getList("category");
+    final brnd = await SQLHelper.getList("brand");
 
     List<User> tempUserList = [];
     for(var i = 0; i < data.length; i++) {
@@ -579,6 +634,14 @@ class _MyAppState extends State<MyApp> {
           description: cat.elementAt(i)["description"])
       );
     }
+    List<EquipmentCategory> tempBrndList = [];
+    for(var i = 0; i < brnd.length; i++) {
+      tempBrndList.add(EquipmentCategory(
+          id: brnd.elementAt(i)["id"],
+          name: brnd.elementAt(i)["name"],
+          description: brnd.elementAt(i)["description"])
+      );
+    }
 
     setState(() {
       userList = tempUserList;
@@ -587,6 +650,7 @@ class _MyAppState extends State<MyApp> {
       incidentsList = iTempLog;
       userLogList = uTempLog;
       categoryList = tempCatList;
+      brandList = tempBrndList;
     });
   }
 
@@ -712,6 +776,34 @@ class _MyAppState extends State<MyApp> {
       categoryController.reset();
     });
     changeState(AppState.categoryCreate);
+  }
+
+  //Brands
+  void viewBrandDetails(EquipmentCategory brand) {
+    setState(() {
+      selectedCategory = brand;
+    });
+    changeState(AppState.brandDetails);
+  }
+  void viewEditBrand(EquipmentCategory? brand) {
+    setState(() {
+      brandController.reset();
+      selectedCategory = brand;
+    });
+    changeState(AppState.brandEdit);
+
+  }
+  void viewDeleteBrand(EquipmentCategory? brand) {
+    setState(() {
+      selectedCategory = brand;
+    });
+    changeState(AppState.brandDelete);
+  }
+  void viewCreateBrand() {
+    setState(() {
+      brandController.reset();
+    });
+    changeState(AppState.brandCreate);
   }
 
   //End CRUD operations ############################################################

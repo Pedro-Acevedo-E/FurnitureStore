@@ -49,7 +49,7 @@ class DeleteCategoryView extends StatelessWidget {
               const Text("Are you sure you want to delete?:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
               DetailsRowView(field: "ID", value: selectedCategory.id.toString()),
-              DetailsRowView(field: "Username", value: selectedCategory.name),
+              DetailsRowView(field: "Name", value: selectedCategory.name),
               ElevatedButton(
                 onPressed: deleteCategory,
                 child: const Text("Delete", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),

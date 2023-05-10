@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furniture_store/views/popup_menu_button.dart';
-
 import '../app_state.dart';
-import '../models.dart';
 
 class AdminMainView extends StatelessWidget {
   final Function(AppState val) changeState;
@@ -28,6 +25,11 @@ class AdminMainView extends StatelessWidget {
             style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
             onPressed: () => changeState(AppState.categoryList),
             child: const Text("Categories")
+        ),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(fixedSize: const Size(200, 40)),
+            onPressed: () => changeState(AppState.brandList),
+            child: const Text("Brands")
         ),
       ],
     );
