@@ -7,19 +7,15 @@ import '../../controllers/external_furniture_controller.dart';
 import '../../models.dart';
 
 class CreateExternalView extends StatelessWidget {
-  final User? selectedUser;
   final ExternalController externalController;
   final List<User> userList;
-  final Function(User user) selectUser;
   final VoidCallback logout;
   final Function(AppState val) changeState;
 
   const CreateExternalView({
     super.key,
-    required this.selectedUser,
     required this.externalController,
     required this.userList,
-    required this.selectUser,
     required this.logout,
     required this.changeState,
   });
@@ -54,7 +50,7 @@ class CreateExternalView extends StatelessWidget {
                     const Text("Select User: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     DropdownButton(
-                      value: selectedUser,
+                      value: externalController.selectedUser,
                       icon: const Icon(Icons.arrow_downward),
                       items: userList.map((User value) {
                         return DropdownMenuItem(
@@ -101,7 +97,7 @@ class CreateExternalView extends StatelessWidget {
   }
 
   voidCreateExternal() {
-    final selectedUser = this.selectedUser;
+    final selectedUser = externalController.selectedUser;
     if (selectedUser != null) {
       externalController.create(selectedUser);
       externalController.reset();
@@ -111,7 +107,7 @@ class CreateExternalView extends StatelessWidget {
 
   void electUser(User? value) {
     if(value != null) {
-      selectUser(value);
+      externalController.selectUser(value);
     }
   }
 }

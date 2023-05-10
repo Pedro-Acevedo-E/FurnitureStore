@@ -83,8 +83,7 @@ class _MyAppState extends State<MyApp> {
   Log? selectedLog;
 
   final demoController = DemoController();
-
-  final externalController = ExternalController();
+  late final ExternalController externalController;
   final incidentController = IncidentController();
   final internalController = InternalController();
   final userController = UserController();
@@ -106,6 +105,7 @@ class _MyAppState extends State<MyApp> {
     //demoController.createDemo();
     demoController.loadItemsDemo();
     entrancesAndExitsController = EntrancesAndExitsController(loginController.loginUser, (state) => changeState(state), refresh);
+    externalController = ExternalController((state) => changeState(state), refresh);
     loginController = LoginController((state) => changeState(state), refresh);
   }
 
@@ -211,26 +211,6 @@ class _MyAppState extends State<MyApp> {
             viewCreateInternalFurniture: viewCreateInternalFurniture,
         );
       }
-      case AppState.externalFurniture: {
-        return ExtFurnitureView(
-            loginController: loginController,
-            extList: extList,
-            changeState: changeState,
-            viewExternalFurnitureDetails: viewExternalFurnitureDetails,
-            viewDeleteExternalFurniture: viewDeleteExternalFurniture,
-            viewEditExternalFurniture: viewEditExternalFurniture,
-            viewCreateExternalFurniture: viewCreateExternalFurniture
-        );
-      }
-      case AppState.externalCreate: {
-        return CreateExternalView(
-            selectedUser: selectedUser,
-            externalController: externalController,
-            userList: userList,
-            selectUser: (User user) => selectUser(user),
-            logout: loginController.logout,
-            changeState: changeState);
-      }
       case AppState.internalCreate: {
         return CreateInternalView(
             selectedUser: selectedUser,
@@ -248,34 +228,20 @@ class _MyAppState extends State<MyApp> {
         );
       }
       case AppState.internalDetails: {
-          return InternalDetailsView(
-              selectedInt: selectedInt!,
-              changeState: changeState,
-              logout: loginController.logout
-          );
-      }
-      case AppState.externalDetails: {
-          return ExternalDetailsView(
-              selectedExt: selectedExt!,
-              changeState: changeState,
-              logout: loginController.logout
-          );
+        return InternalDetailsView(
+            selectedInt: selectedInt!,
+            changeState: changeState,
+            logout: loginController.logout
+        );
       }
       case AppState.internalDelete: {
-          return DeleteInternalView(
-              selectedInt: selectedInt!,
-              changeState: changeState,
-              internalController: internalController,
-              logout: loginController.logout);
+        return DeleteInternalView(
+            selectedInt: selectedInt!,
+            changeState: changeState,
+            internalController: internalController,
+            logout: loginController.logout);
 
       }
-      case AppState.externalDelete: {
-          return DeleteExternalView(
-              selectedExt: selectedExt!,
-              changeState: changeState,
-              externalController: externalController,
-              logout: loginController.logout);
-        }
       case AppState.internalEdit: {
         final selectedInt = this.selectedInt;
         if (selectedInt != null) {
@@ -298,17 +264,41 @@ class _MyAppState extends State<MyApp> {
           return const Text("Error");
         }
       }
-      case AppState.externalEdit: {
-          return EditExternalView(
-              selectedUser: selectedUser,
-              selectedExt: selectedExt!,
-              userList: userList,
-              externalController:
-              externalController,
-              logout: loginController.logout,
+      case AppState.externalFurniture: {
+        return ExtFurnitureView(
+            loginController: loginController,
+            externalController: externalController,
+            extList: extList,
+            changeState: changeState
+        );
+      }
+      case AppState.externalCreate: {
+        return CreateExternalView(
+            externalController: externalController,
+            userList: userList,
+            logout: loginController.logout,
+            changeState: changeState);
+      }
+      case AppState.externalDetails: {
+          return ExternalDetailsView(
+              selectedExt: externalController.selectedExt!,
               changeState: changeState,
-              selectUser: selectUser
+              logout: loginController.logout
           );
+      }
+      case AppState.externalEdit: {
+        return EditExternalView(
+            userList: userList,
+            externalController: externalController,
+            logout: loginController.logout,
+            changeState: changeState,
+        );
+      }
+      case AppState.externalDelete: {
+        return DeleteExternalView(
+            changeState: changeState,
+            externalController: externalController,
+            logout: loginController.logout);
       }
       case AppState.profile: {
         return UserDetailsView(
@@ -603,35 +593,6 @@ class _MyAppState extends State<MyApp> {
       internalController.reset();
     });
     changeState(AppState.internalCreate);
-  }
-
-  //External
-  void viewExternalFurnitureDetails(EquipmentExt data) {
-    setState(() {
-      selectedExt = data;
-    });
-    changeState(AppState.externalDetails);
-  }
-  void viewEditExternalFurniture(EquipmentExt data) {
-    setState(() {
-      externalController.reset();
-      selectedUser = null;
-      selectedExt = data;
-    });
-    changeState(AppState.externalEdit);
-  }
-  void viewDeleteExternalFurniture(EquipmentExt data) {
-    setState(() {
-      selectedExt = data;
-    });
-    changeState(AppState.externalDelete);
-  }
-  void viewCreateExternalFurniture() {
-    setState(() {
-      externalController.reset();
-      selectedUser = null;
-    });
-    changeState(AppState.externalCreate);
   }
 
   //User

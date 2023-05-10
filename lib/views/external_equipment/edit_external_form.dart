@@ -5,26 +5,20 @@ import '../../controllers/external_furniture_controller.dart';
 import '../../models.dart';
 
 class EditExternalView extends StatelessWidget {
-  final User? selectedUser;
-  final EquipmentExt selectedExt;
   final List<User> userList;
   final ExternalController externalController;
   final VoidCallback logout;
   final Function(AppState val) changeState;
-  final Function(User user) selectUser;
 
   EditExternalView({
     super.key,
-    required this.selectedUser,
-    required this.selectedExt,
     required this.userList,
     required this.externalController,
     required this.logout,
     required this.changeState,
-    required this.selectUser,
   }){
-    externalController.name.text = selectedExt.name;
-    externalController.description.text = selectedExt.description;
+    externalController.name.text = externalController.selectedExt!.name;
+    externalController.description.text = externalController.selectedExt!.description;
   }
 
   @override
@@ -39,7 +33,7 @@ class EditExternalView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              Text("Edit: ${selectedExt.name}"),
+              Text("Edit: ${externalController.selectedExt!.name}"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
@@ -51,14 +45,14 @@ class EditExternalView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 90),
-              Text("Current user: ${selectedExt.user}"),
+              Text("Current user: ${externalController.selectedExt!.user}"),
               Row(
                   children: [
                     const Spacer(),
                     const Text("Select User: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     DropdownButton(
-                      value: selectedUser,
+                      value: externalController.selectedUser,
                       icon: const Icon(Icons.arrow_downward),
                       items: userList.map((User value) {
                         return DropdownMenuItem(
@@ -103,17 +97,17 @@ class EditExternalView extends StatelessWidget {
     );
   }
 
-  void electUser(User? value) {
-    if(value != null) {
-      selectUser(value);
+  void editExternal() async {
+    final selectedUser = externalController.selectedUser;
+    if (selectedUser != null) {
+      externalController.update(externalController.selectedExt, selectedUser.username);
+      changeState(AppState.externalFurniture);
     }
   }
 
-  void editExternal() async {
-    final selectedUser = this.selectedUser;
-    if (selectedUser != null) {
-      externalController.update(selectedExt, selectedUser.username);
-      changeState(AppState.externalFurniture);
+  void electUser(User? value) {
+    if(value != null) {
+      externalController.selectUser(value);
     }
   }
 }

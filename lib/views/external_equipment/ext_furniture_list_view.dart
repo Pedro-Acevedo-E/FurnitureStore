@@ -2,26 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:furniture_store/controllers/login_controller.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 import '../../app_state.dart';
+import '../../controllers/external_furniture_controller.dart';
 import '../../models.dart';
 
 class ExtFurnitureView extends StatelessWidget {
   final LoginController loginController;
+  final ExternalController externalController;
   final List<EquipmentExt> extList;
   final Function(AppState val) changeState;
-  final Function(EquipmentExt item) viewExternalFurnitureDetails;
-  final Function(EquipmentExt item) viewDeleteExternalFurniture;
-  final Function(EquipmentExt item) viewEditExternalFurniture;
-  final VoidCallback viewCreateExternalFurniture;
 
   const ExtFurnitureView({
     super.key,
     required this.loginController,
+    required this.externalController,
     required this.extList,
-    required this.changeState,
-    required this.viewExternalFurnitureDetails,
-    required this.viewDeleteExternalFurniture,
-    required this.viewEditExternalFurniture,
-    required this.viewCreateExternalFurniture,
+    required this.changeState
   });
 
   @override
@@ -55,7 +50,7 @@ class ExtFurnitureView extends StatelessWidget {
           ),
         ),
         floatingActionButton: loginController.loginUser.access == "admin" ? FloatingActionButton(
-            onPressed: viewCreateExternalFurniture,
+            onPressed: externalController.viewCreateExternalFurniture,
             tooltip: "New External furniture",
             child: const Icon(Icons.add)
         ): const SizedBox.shrink(),
@@ -190,15 +185,15 @@ class ExtFurnitureView extends StatelessWidget {
   }
 
   void viewDetails(EquipmentExt item) {
-    viewExternalFurnitureDetails(item);
+    externalController.viewExternalFurnitureDetails(item);
   }
 
   void delete(EquipmentExt item) {
-    viewDeleteExternalFurniture(item);
+    externalController.viewDeleteExternalFurniture(item);
   }
 
   void edit(EquipmentExt item) {
-    viewEditExternalFurniture(item);
+    externalController.viewEditExternalFurniture(item);
   }
 
 }
