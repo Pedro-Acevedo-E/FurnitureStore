@@ -526,34 +526,6 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.userDetails);
   }
 
-  //Category
-  void viewCategoryDetails(EquipmentCategory cat) {
-    setState(() {
-      selectedCategory = cat;
-    });
-    changeState(AppState.categoryDetails);
-  }
-  void viewEditCategory(EquipmentCategory? cat) {
-    setState(() {
-      categoryController.reset();
-      selectedCategory = cat;
-    });
-    changeState(AppState.categoryEdit);
-
-  }
-  void viewDeleteCategory(EquipmentCategory? cat) {
-    setState(() {
-      selectedCategory = cat;
-    });
-    changeState(AppState.categoryDelete);
-  }
-  void viewCreateCategory() {
-    setState(() {
-      categoryController.reset();
-    });
-    changeState(AppState.categoryCreate);
-  }
-
   void selectUser(User user) {
     setState(() {
       selectedUser = user;
