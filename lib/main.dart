@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
   final demoController = DemoController();
   late final ExternalController externalController;
   final incidentController = IncidentController();
-  final internalController = InternalController();
+  late final InternalController internalController;
   final userController = UserController();
   final categoryController = CategoryController();
   final brandController = BrandController();
@@ -106,6 +106,7 @@ class _MyAppState extends State<MyApp> {
     demoController.loadItemsDemo();
     entrancesAndExitsController = EntrancesAndExitsController(loginController.loginUser, (state) => changeState(state), refresh);
     externalController = ExternalController((state) => changeState(state), refresh);
+    internalController = InternalController((state) => changeState(state), refresh);
     loginController = LoginController((state) => changeState(state), refresh);
   }
 
@@ -205,64 +206,42 @@ class _MyAppState extends State<MyApp> {
             loginController: loginController,
             intList: intList,
             changeState: (AppState state) => changeState(state),
-            viewInternalFurnitureDetails: viewInternalFurnitureDetails,
-            viewDeleteInternalFurniture: viewDeleteInternalFurniture,
-            viewEditInternalFurniture: viewEditInternalFurniture,
-            viewCreateInternalFurniture: viewCreateInternalFurniture,
+            internalController: internalController
         );
       }
       case AppState.internalCreate: {
         return CreateInternalView(
-            selectedUser: selectedUser,
-            selectedCategory: selectedCategory,
-            selectedBrand: selectedBrand,
             internalController: internalController,
             userList: userList,
             categoryList: categoryList,
             brandList: brandList,
-            selectUser: selectUser,
-            selectCategory: selectCategory,
-            selectBrand: selectBrand,
             logout: loginController.logout,
             changeState: changeState
         );
       }
       case AppState.internalDetails: {
         return InternalDetailsView(
-            selectedInt: selectedInt!,
+            selectedInt: internalController.selectedInt!,
             changeState: changeState,
             logout: loginController.logout
         );
       }
       case AppState.internalDelete: {
         return DeleteInternalView(
-            selectedInt: selectedInt!,
             changeState: changeState,
             internalController: internalController,
             logout: loginController.logout);
 
       }
       case AppState.internalEdit: {
-        final selectedInt = this.selectedInt;
-        if (selectedInt != null) {
           return EditInternalView(
-              selectedUser: selectedUser,
-              selectedBrand: selectedBrand,
-              selectedInt: selectedInt,
-              selectedCategory: selectedCategory,
               internalController: internalController,
               userList: userList,
               categoryList: categoryList,
               brandList: brandList,
-              selectUser: selectUser,
-              selectCategory: selectCategory,
-              selectBrand: selectBrand,
               logout: loginController.logout,
               changeState: changeState
           );
-        } else {
-          return const Text("Error");
-        }
       }
       case AppState.externalFurniture: {
         return ExtFurnitureView(
@@ -560,39 +539,6 @@ class _MyAppState extends State<MyApp> {
       selectedLog = log;
     });
     changeState(AppState.logDetails);
-  }
-
-  //Internal
-  void viewInternalFurnitureDetails(EquipmentInt data) {
-    setState(() {
-       selectedInt = data;
-    });
-    changeState(AppState.internalDetails);
-  }
-  void viewEditInternalFurniture(EquipmentInt data) {
-    setState(() {
-      internalController.reset();
-      selectedInt = data;
-      selectedUser = null;
-      selectedCategory = null;
-      selectedBrand = null;
-    });
-    changeState(AppState.internalEdit);
-  }
-  void viewDeleteInternalFurniture(EquipmentInt data) {
-    setState(() {
-      selectedInt = data;
-    });
-    changeState(AppState.internalDelete);
-  }
-  void viewCreateInternalFurniture() {
-    setState(() {
-      selectedUser = null;
-      selectedCategory = null;
-      selectedBrand = null;
-      internalController.reset();
-    });
-    changeState(AppState.internalCreate);
   }
 
   //User

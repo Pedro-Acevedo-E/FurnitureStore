@@ -2,9 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:furniture_store/models.dart';
 
+import '../app_state.dart';
 import '../sql_helper.dart';
 
 class InternalController {
+  User? selectedUser;
+  EquipmentInt? selectedInt;
+  EquipmentCategory? selectedBrand;
+  EquipmentCategory? selectedCategory;
   final status = TextEditingController();
   final productId = TextEditingController();
   final name = TextEditingController();
@@ -15,7 +20,10 @@ class InternalController {
   final color2 = TextEditingController();
   final notes = TextEditingController();
   final location = TextEditingController();
+  late final Function(AppState state) changeState;
+  late final VoidCallback refresh;
 
+  InternalController(this.changeState, this.refresh);
 
   void reset() {
     status.text = "";
@@ -102,5 +110,45 @@ class InternalController {
     );
 
     final result = await SQLHelper.updateEquipmentInt(selectedInt.id, data);
+  }
+
+  //Internal
+  void viewInternalFurnitureDetails(EquipmentInt data) {
+    selectedInt = data;
+    changeState(AppState.internalDetails);
+  }
+  void viewEditInternalFurniture(EquipmentInt data) {
+      reset();
+      selectedInt = data;
+      selectedUser = null;
+      selectedCategory = null;
+      selectedBrand = null;
+      changeState(AppState.internalEdit);
+  }
+  void viewDeleteInternalFurniture(EquipmentInt data) {
+      selectedInt = data;
+      changeState(AppState.internalDelete);
+  }
+  void viewCreateInternalFurniture() {
+      selectedUser = null;
+      selectedCategory = null;
+      selectedBrand = null;
+      reset();
+      changeState(AppState.internalCreate);
+  }
+
+  void selectUser(User user) {
+    selectedUser = user;
+    refresh();
+  }
+
+  void selectCategory(EquipmentCategory category) {
+    selectedCategory = category;
+    refresh();
+  }
+
+  void selectBrand(EquipmentCategory category) {
+    selectedBrand = category;
+    refresh();
   }
 }

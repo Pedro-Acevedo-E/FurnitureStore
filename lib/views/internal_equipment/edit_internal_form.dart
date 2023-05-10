@@ -5,46 +5,32 @@ import '../../controllers/internal_furniture_controller.dart';
 import '../../models.dart';
 
 class EditInternalView extends StatelessWidget {
-  final User? selectedUser;
-  final EquipmentInt selectedInt;
-  final EquipmentCategory? selectedCategory;
-  final EquipmentCategory? selectedBrand;
   final InternalController internalController;
   final List<User> userList;
   final List<EquipmentCategory> categoryList;
   final List<EquipmentCategory> brandList;
-  final Function(User user) selectUser;
-  final Function(EquipmentCategory category) selectCategory;
-  final Function(EquipmentCategory category) selectBrand;
   final VoidCallback logout;
   final Function(AppState val) changeState;
 
   EditInternalView({
     super.key,
-    required this.selectedUser,
-    required this.selectedBrand,
-    required this.selectedInt,
-    required this.selectedCategory,
     required this.internalController,
     required this.userList,
     required this.categoryList,
     required this.brandList,
-    required this.selectUser,
-    required this.selectCategory,
-    required this.selectBrand,
     required this.logout,
     required this.changeState,
   }){
-    internalController.name.text = selectedInt.name;
-    internalController.productId.text = selectedInt.productId;
-    internalController.notes.text = selectedInt.notes;
-    internalController.dimensions.text = selectedInt.dimensions;
-    internalController.weight.text = selectedInt.weight;
-    internalController.status.text = selectedInt.status;
-    internalController.color2.text = selectedInt.color_2;
-    internalController.color1.text = selectedInt.color_1;
-    internalController.description.text = selectedInt.description;
-    internalController.location.text = selectedInt.location;
+    internalController.name.text = internalController.selectedInt!.name;
+    internalController.productId.text = internalController.selectedInt!.productId;
+    internalController.notes.text = internalController.selectedInt!.notes;
+    internalController.dimensions.text = internalController.selectedInt!.dimensions;
+    internalController.weight.text = internalController.selectedInt!.weight;
+    internalController.status.text = internalController.selectedInt!.status;
+    internalController.color2.text = internalController.selectedInt!.color_2;
+    internalController.color1.text = internalController.selectedInt!.color_1;
+    internalController.description.text = internalController.selectedInt!.description;
+    internalController.location.text = internalController.selectedInt!.location;
   }
 
   @override
@@ -59,7 +45,7 @@ class EditInternalView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              Text("Edit: ${selectedInt.name}"),
+              Text("Edit: ${internalController.selectedInt!.name}"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
@@ -71,14 +57,14 @@ class EditInternalView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 90),
-              Text(selectedInt.user.isNotEmpty ? "Current user: ${selectedInt.user}" : ""),
+              Text(internalController.selectedInt!.user.isNotEmpty ? "Current user: ${internalController.selectedInt!.user}" : ""),
               Row(
                   children: [
                     const Spacer(),
                     const Text("Select User: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     DropdownButton(
-                      value: selectedUser,
+                      value: internalController.selectedUser,
                       icon: const Icon(Icons.arrow_downward),
                       items: userList.map((User value) {
                         return DropdownMenuItem(
@@ -93,14 +79,14 @@ class EditInternalView extends StatelessWidget {
                     const Spacer(),
                   ]),
               const SizedBox(height: 20),
-              Text(selectedInt.category.isNotEmpty ? "Current category: ${selectedInt.category}" : ""),
+              Text(internalController.selectedInt!.category.isNotEmpty ? "Current category: ${internalController.selectedInt!.category}" : ""),
               Row(
                   children: [
                     const Spacer(),
                     const Text("Select Category: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     DropdownButton(
-                      value: selectedCategory,
+                      value: internalController.selectedCategory,
                       icon: const Icon(Icons.arrow_downward),
                       items: categoryList.map((EquipmentCategory value) {
                         return DropdownMenuItem(
@@ -115,14 +101,14 @@ class EditInternalView extends StatelessWidget {
                     const Spacer(),
                   ]),
               const SizedBox(height: 20),
-              Text(selectedInt.model.isNotEmpty ? "Current Brand: ${selectedInt.model}" : ""),
+              Text(internalController.selectedInt!.model.isNotEmpty ? "Current Brand: ${internalController.selectedInt!.model}" : ""),
               Row(
                   children: [
                     const Spacer(),
                     const Text("Select Brand: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     DropdownButton(
-                      value: selectedBrand,
+                      value: internalController.selectedBrand,
                       icon: const Icon(Icons.arrow_downward),
                       items: brandList.map((EquipmentCategory value) {
                         return DropdownMenuItem(
@@ -243,28 +229,28 @@ class EditInternalView extends StatelessWidget {
 
   void electUser(User? value) {
     if(value != null) {
-      selectUser(value);
+      internalController.selectUser(value);
     }
   }
 
   void electCategory(EquipmentCategory? value) {
     if(value != null) {
-      selectCategory(value);
+      internalController.selectCategory(value);
     }
   }
 
   void electBrand(EquipmentCategory? value) {
     if(value != null) {
-      selectBrand(value);
+      internalController.selectBrand(value);
     }
   }
 
   void editInternal() {
     internalController.update(
-        selectedInt,
-        selectedUser != null ? selectedUser!.username : "",
-        selectedCategory != null ? selectedCategory!.name : "Other",
-        selectedBrand != null ? selectedBrand!.name : "Other"
+        internalController.selectedInt!,
+        internalController.selectedUser != null ? internalController.selectedUser!.username : "",
+        internalController.selectedCategory != null ? internalController.selectedCategory!.name : "Other",
+        internalController.selectedBrand != null ? internalController.selectedBrand!.name : "Other"
     );
     changeState(AppState.internalFurniture);
   }

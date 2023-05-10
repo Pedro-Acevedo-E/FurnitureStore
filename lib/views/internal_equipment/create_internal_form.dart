@@ -6,31 +6,19 @@ import '../../controllers/internal_furniture_controller.dart';
 import '../../models.dart';
 
 class CreateInternalView extends StatelessWidget {
-  final User? selectedUser;
-  final EquipmentCategory? selectedCategory;
-  final EquipmentCategory? selectedBrand;
   final InternalController internalController;
   final List<User> userList;
   final List<EquipmentCategory> categoryList;
   final List<EquipmentCategory> brandList;
-  final Function(User user) selectUser;
-  final Function(EquipmentCategory category) selectCategory;
-  final Function(EquipmentCategory category) selectBrand;
   final VoidCallback logout;
   final Function(AppState val) changeState;
 
   const CreateInternalView({
     super.key,
-    required this.selectedUser,
-    required this.selectedCategory,
-    required this.selectedBrand,
     required this.internalController,
     required this.userList,
     required this.categoryList,
     required this.brandList,
-    required this.selectUser,
-    required this.selectCategory,
-    required this.selectBrand,
     required this.logout,
     required this.changeState,
   });
@@ -65,7 +53,7 @@ class CreateInternalView extends StatelessWidget {
                     const Text("Select User: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     DropdownButton(
-                      value: selectedUser,
+                      value: internalController.selectedUser,
                       icon: const Icon(Icons.arrow_downward),
                       items: userList.map((User value) {
                         return DropdownMenuItem(
@@ -86,7 +74,7 @@ class CreateInternalView extends StatelessWidget {
                     const Text("Select Category: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     DropdownButton(
-                      value: selectedCategory,
+                      value: internalController.selectedCategory,
                       icon: const Icon(Icons.arrow_downward),
                       items: categoryList.map((EquipmentCategory value) {
                         return DropdownMenuItem(
@@ -107,7 +95,7 @@ class CreateInternalView extends StatelessWidget {
                     const Text("Select Brand: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     DropdownButton(
-                      value: selectedBrand,
+                      value: internalController.selectedBrand,
                       icon: const Icon(Icons.arrow_downward),
                       items: brandList.map((EquipmentCategory value) {
                         return DropdownMenuItem(
@@ -219,27 +207,27 @@ class CreateInternalView extends StatelessWidget {
 
   void electUser(User? value) {
     if(value != null) {
-      selectUser(value);
+      internalController.selectUser(value);
     }
   }
 
   void electCategory(EquipmentCategory? value) {
     if(value != null) {
-      selectCategory(value);
+      internalController.selectCategory(value);
     }
   }
 
   void electBrand(EquipmentCategory? value) {
     if(value != null) {
-      selectBrand(value);
+      internalController.selectBrand(value);
     }
   }
 
   void createInternal() async {
     internalController.create(
-        selectedUser,
-        selectedCategory != null ? selectedCategory!.name : "Other",
-        selectedBrand != null ? selectedBrand!.name : "Other"
+        internalController.selectedUser,
+        internalController.selectedCategory != null ? internalController.selectedCategory!.name : "Other",
+        internalController.selectedBrand != null ? internalController.selectedBrand!.name : "Other"
     );
     changeState(AppState.internalFurniture);
   }

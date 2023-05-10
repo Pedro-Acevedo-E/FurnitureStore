@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/controllers/internal_furniture_controller.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 import '../../app_state.dart';
 import '../../controllers/login_controller.dart';
@@ -8,20 +9,14 @@ class IntFurnitureView extends StatelessWidget {
   final LoginController loginController;
   final List<EquipmentInt> intList;
   final Function(AppState val) changeState;
-  final Function(EquipmentInt item) viewInternalFurnitureDetails;
-  final Function(EquipmentInt item) viewDeleteInternalFurniture;
-  final Function(EquipmentInt item) viewEditInternalFurniture;
-  final VoidCallback viewCreateInternalFurniture;
+  final InternalController internalController;
 
   const IntFurnitureView({
     super.key,
     required this.loginController,
     required this.intList,
     required this.changeState,
-    required this.viewInternalFurnitureDetails,
-    required this.viewDeleteInternalFurniture,
-    required this.viewEditInternalFurniture,
-    required this.viewCreateInternalFurniture,
+    required this.internalController,
   });
 
   @override
@@ -55,7 +50,7 @@ class IntFurnitureView extends StatelessWidget {
           ),
         ),
         floatingActionButton: loginController.loginUser.access == "admin" ? FloatingActionButton(
-          onPressed: viewCreateInternalFurniture,
+          onPressed: internalController.viewCreateInternalFurniture,
           tooltip: "New Internal furniture",
           child: const Icon(Icons.add)
         ): const SizedBox.shrink(),
@@ -190,15 +185,15 @@ class IntFurnitureView extends StatelessWidget {
   }
 
   void viewDetails(EquipmentInt item) {
-    viewInternalFurnitureDetails(item);
+    internalController.viewInternalFurnitureDetails(item);
   }
 
   void delete(EquipmentInt item) {
-    viewDeleteInternalFurniture(item);
+    internalController.viewDeleteInternalFurniture(item);
   }
 
   void edit(EquipmentInt item) {
-    viewEditInternalFurniture(item);
+    internalController.viewEditInternalFurniture(item);
   }
 
 }
