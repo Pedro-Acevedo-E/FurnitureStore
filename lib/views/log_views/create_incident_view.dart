@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/controllers/incident_controller.dart';
+import 'package:furniture_store/controllers/login_controller.dart';
 import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
 import '../../app_state.dart';
-import '../../models.dart';
 
 class CreateIncidentView extends StatelessWidget {
-  final User user;
+  final LoginController loginController;
   final Function(AppState val) changeState;
-  final VoidCallback logout;
   final IncidentController incidentController;
 
   const CreateIncidentView({
     super.key,
-    required this.user,
+    required this.loginController,
     required this.changeState,
-    required this.logout,
     required this.incidentController,
   });
 
@@ -34,7 +32,7 @@ class CreateIncidentView extends StatelessWidget {
               ),
               const Text("New incident"),
               const Spacer(),
-              PopupMenuButtonView(changeState: changeState, logout: logout),
+              PopupMenuButtonView(changeState: changeState, logout: loginController.logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
             ],
           ),
@@ -66,7 +64,7 @@ class CreateIncidentView extends StatelessWidget {
   }
 
   void registerIncident() async {
-    incidentController.create(user);
+    incidentController.create(loginController.loginUser);
     changeState(AppState.mainView);
   }
 }

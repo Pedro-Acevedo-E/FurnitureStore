@@ -5,18 +5,17 @@ import 'package:furniture_store/views/navigation_views/security_main_view.dart';
 import 'package:furniture_store/views/navigation_views/user_main_view.dart';
 
 import '../../app_state.dart';
+import '../../controllers/login_controller.dart';
 import '../../models.dart';
 
 class MainView extends StatelessWidget {
-  final User user;
+  final LoginController loginController;
   final Function(AppState val) changeState;
-  final VoidCallback logout;
 
   const MainView({
     super.key,
-    required this.user,
-    required this.changeState,
-    required this.logout
+    required this.loginController,
+    required this.changeState
   });
 
   @override
@@ -26,16 +25,16 @@ class MainView extends StatelessWidget {
         appBar: AppBar(
           title: Row(
             children: [
-              Text("Welcome ${user.username}"),
+              Text("Welcome ${loginController.loginUser.username}"),
               const Spacer(),
-              PopupMenuButtonView(changeState: changeState, logout: logout),
+              PopupMenuButtonView(changeState: changeState, logout: loginController.logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
             ],
           ),
         ),
         body: Center(
           child: SingleChildScrollView(
-            child: getListWidgets(user),
+            child: getListWidgets(loginController.loginUser),
           ),
         ),
       ),
@@ -46,20 +45,20 @@ class MainView extends StatelessWidget {
     List<Widget> list = <Widget>[];
     if (user.access == "admin") {
       list.add(Column(children: [
-        AdminMainView(changeState: changeState, logout: logout),
-        SecurityMainView(changeState: changeState, logout: logout),
-        UserMainView(changeState: changeState, logout: logout)
+        AdminMainView(changeState: changeState),
+        SecurityMainView(changeState: changeState),
+        UserMainView(changeState: changeState)
       ]));
     }
     if (user.access == "security") {
       list.add(Column(children: [
-        SecurityMainView(changeState: changeState, logout: logout),
-        UserMainView(changeState: changeState, logout: logout)
+        SecurityMainView(changeState: changeState),
+        UserMainView(changeState: changeState)
       ]));
     }
     if (user.access == "user") {
       list.add(Column(children: [
-        UserMainView(changeState: changeState, logout: logout)
+        UserMainView(changeState: changeState)
       ]));
     }
     return Column(children: list);

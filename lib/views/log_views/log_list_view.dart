@@ -6,7 +6,6 @@ import '../../models.dart';
 
 class LogListView extends StatelessWidget {
   final String title;
-  final User user;
   final List<Log> logList;
   final Function(AppState val) changeState;
   final Function(Log log) viewLogDetails;
@@ -15,7 +14,6 @@ class LogListView extends StatelessWidget {
   const LogListView({
     super.key,
     required this.title,
-    required this.user,
     required this.logList,
     required this.changeState,
     required this.viewLogDetails,

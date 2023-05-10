@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/views/details_row.dart';
-import 'package:furniture_store/views/popup_menu_button.dart';
-
 import '../../app_state.dart';
+import '../../controllers/login_controller.dart';
 import '../../models.dart';
 
 class UserDetailsView extends StatelessWidget {
-  final User user;
   final User selectedUser;
   final List<EquipmentExt> extList;
   final List<EquipmentInt> intList;
   final Function(AppState val) changeState;
-  final VoidCallback logout;
   final AppState lastState;
 
   const UserDetailsView({
     super.key,
-    required this.user,
     required this.selectedUser,
     required this.extList,
     required this.intList,
     required this.changeState,
-    required this.logout,
     required this.lastState,
   });
 

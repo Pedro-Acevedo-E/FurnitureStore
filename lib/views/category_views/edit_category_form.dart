@@ -5,7 +5,6 @@ import '../../controllers/category_controller.dart';
 import '../../models.dart';
 
 class EditCategoryView extends StatelessWidget {
-  final User user;
   final EquipmentCategory selectedCategory;
   final CategoryController categoryController;
   final VoidCallback logout;
@@ -13,7 +12,6 @@ class EditCategoryView extends StatelessWidget {
 
   EditCategoryView({
     super.key,
-    required this.user,
     required this.selectedCategory,
     required this.categoryController,
     required this.logout,

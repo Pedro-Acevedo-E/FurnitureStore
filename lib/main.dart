@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:furniture_store/controllers/brand_controller.dart';
@@ -37,7 +34,6 @@ import 'package:furniture_store/views/entrances_and_exits/entrance_exits_view.da
 import 'package:furniture_store/views/external_equipment/ext_furniture_list_view.dart';
 import 'package:furniture_store/views/external_equipment/external_furniture_details.dart';
 import 'package:furniture_store/views/internal_equipment/internal_furniture_details_view.dart';
-import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/internal_equipment/int_furniture_list_view.dart';
 import 'package:furniture_store/views/log_views/log_details_view.dart';
 import 'package:furniture_store/views/log_views/log_list_view.dart';
@@ -87,8 +83,6 @@ class _MyAppState extends State<MyApp> {
   Log? selectedLog;
 
   final demoController = DemoController();
-  final loginController = LoginController();
-  var alertText = "";
 
   final externalController = ExternalController();
   final incidentController = IncidentController();
@@ -97,6 +91,7 @@ class _MyAppState extends State<MyApp> {
   final categoryController = CategoryController();
   final brandController = BrandController();
   late final EntrancesAndExitsController entrancesAndExitsController;
+  var loginController = LoginController.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +106,7 @@ class _MyAppState extends State<MyApp> {
     //demoController.createDemo();
     demoController.loadItemsDemo();
     entrancesAndExitsController = EntrancesAndExitsController(loginController.loginUser, (state) => changeState(state), refresh);
+    loginController = LoginController((state) => changeState(state), refresh);
   }
 
   Widget mainView() {
@@ -118,22 +114,20 @@ class _MyAppState extends State<MyApp> {
       case AppState.loginScreen: {
         return LoginView(
             loginController: loginController,
-            login: () => login(),
         );
       }
       case AppState.mainView: {
         return MainView(
-            user: loginController.loginUser,
-            changeState: (AppState state) => changeState(state),
-            logout: () => logout());
+            loginController: loginController,
+            changeState: (AppState state) => changeState(state)
+        );
       }
       case AppState.entrancesAndExits: {
         return EntranceAndExitsView(
-            user: loginController.loginUser,
             userList: userList,
             changeState: (AppState state) => changeState(state),
+            logout: () => loginController.logout(),
             viewUserDetails: viewUserDetails,
-            logout: () => logout(),
             entrancesAndExitsController: entrancesAndExitsController,
         );
       }
@@ -141,12 +135,10 @@ class _MyAppState extends State<MyApp> {
         final selectedUser = this.selectedUser;
         if (selectedUser != null) {
           return UserDetailsView(
-              user: loginController.loginUser,
               selectedUser: selectedUser,
               extList: extList,
               intList: intList,
               changeState: (AppState state) => changeState(state),
-              logout: () => logout(),
               lastState: lastState);
         } else {
           return const Text("Error");
@@ -154,49 +146,44 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.userEntrance: {
         return UserEntranceView(
-            user: loginController.loginUser,
             intList: intList,
             changeState: (AppState state) => changeState(state),
-            logout: () => logout(),
+            logout: () => loginController.logout(),
             entrancesAndExitsController: entrancesAndExitsController
         );
       }
       case AppState.userExit: {
           return UserExitView(
-              user: loginController.loginUser,
               intList: intList,
               extList: extList,
               changeState: (AppState state) => changeState(state),
-              logout: () => logout(),
+              logout: () => loginController.logout(),
               entrancesAndExitsController: entrancesAndExitsController,
           );
       }
       case AppState.createIncident: {
         return CreateIncidentView(
-            user: loginController.loginUser,
+            loginController: loginController,
             changeState: (AppState state) => changeState(state),
-            logout: () => logout(),
             incidentController: incidentController,
         );
       }
       case AppState.incidentLog: {
         return LogListView(
             title: "Incidents",
-            user: loginController.loginUser,
             logList: incidentsList,
             changeState: (AppState state) => changeState(state),
             viewLogDetails: viewLogDetails,
-            logout: () => logout()
+            logout: () => loginController.logout()
         );
       }
       case AppState.userLog: {
         return LogListView(
             title: "Entrance and Exit",
-            user: loginController.loginUser,
             logList: userLogList,
             changeState: (AppState state) => changeState(state),
             viewLogDetails: viewLogDetails,
-            logout: () => logout()
+            logout: () => loginController.logout()
         );
       }
       case AppState.logDetails: {
@@ -206,7 +193,7 @@ class _MyAppState extends State<MyApp> {
             user: loginController.loginUser,
             selectedLog: selectedLog,
             changeState: (AppState state) => changeState(state),
-            logout: () => logout(),
+            logout: () => loginController.logout(),
             lastState: lastState,
           );
         } else {
@@ -215,40 +202,37 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.internalFurniture: {
         return IntFurnitureView(
-            user: loginController.loginUser,
+            loginController: loginController,
             intList: intList,
             changeState: (AppState state) => changeState(state),
             viewInternalFurnitureDetails: viewInternalFurnitureDetails,
             viewDeleteInternalFurniture: viewDeleteInternalFurniture,
             viewEditInternalFurniture: viewEditInternalFurniture,
             viewCreateInternalFurniture: viewCreateInternalFurniture,
-            logout: () => logout()
         );
       }
       case AppState.externalFurniture: {
         return ExtFurnitureView(
-            user: loginController.loginUser,
+            loginController: loginController,
             extList: extList,
             changeState: changeState,
             viewExternalFurnitureDetails: viewExternalFurnitureDetails,
             viewDeleteExternalFurniture: viewDeleteExternalFurniture,
             viewEditExternalFurniture: viewEditExternalFurniture,
-            viewCreateExternalFurniture: viewCreateExternalFurniture,
-            logout: logout);
+            viewCreateExternalFurniture: viewCreateExternalFurniture
+        );
       }
       case AppState.externalCreate: {
         return CreateExternalView(
-            user: loginController.loginUser,
             selectedUser: selectedUser,
             externalController: externalController,
             userList: userList,
             selectUser: (User user) => selectUser(user),
-            logout: logout,
+            logout: loginController.logout,
             changeState: changeState);
       }
       case AppState.internalCreate: {
         return CreateInternalView(
-            user: loginController.loginUser,
             selectedUser: selectedUser,
             selectedCategory: selectedCategory,
             selectedBrand: selectedBrand,
@@ -259,68 +243,43 @@ class _MyAppState extends State<MyApp> {
             selectUser: selectUser,
             selectCategory: selectCategory,
             selectBrand: selectBrand,
-            logout: logout,
+            logout: loginController.logout,
             changeState: changeState
         );
-
       }
       case AppState.internalDetails: {
-        final selectedInt = this.selectedInt;
-        if (selectedInt != null) {
           return InternalDetailsView(
-              user: loginController.loginUser,
-              selectedInt: selectedInt,
+              selectedInt: selectedInt!,
               changeState: changeState,
-              logout: logout
+              logout: loginController.logout
           );
-        } else {
-          return const Text("Error");
-        }
       }
       case AppState.externalDetails: {
-        final selectedExt = this.selectedExt;
-        if (selectedExt != null) {
           return ExternalDetailsView(
-              user: loginController.loginUser,
-              selectedExt: selectedExt,
+              selectedExt: selectedExt!,
               changeState: changeState,
-              logout: logout
+              logout: loginController.logout
           );
-        } else {
-          return const Text("Error");
-        }
       }
       case AppState.internalDelete: {
-        final selectedInt = this.selectedInt;
-        if (selectedInt != null) {
           return DeleteInternalView(
-              user: loginController.loginUser,
-              selectedInt: selectedInt,
+              selectedInt: selectedInt!,
               changeState: changeState,
               internalController: internalController,
-              logout: logout);
-        } else {
-          return const Text("Error");
-        }
+              logout: loginController.logout);
+
       }
       case AppState.externalDelete: {
-        final selectedExt = this.selectedExt;
-        if (selectedExt != null) {
           return DeleteExternalView(
-              user: loginController.loginUser,
-              selectedExt: selectedExt,
+              selectedExt: selectedExt!,
               changeState: changeState,
               externalController: externalController,
-              logout: logout);
-        } else {
-          return const Text("Error");
+              logout: loginController.logout);
         }
-      }
       case AppState.internalEdit: {
         final selectedInt = this.selectedInt;
         if (selectedInt != null) {
           return EditInternalView(
-              user: loginController.loginUser,
               selectedUser: selectedUser,
               selectedBrand: selectedBrand,
               selectedInt: selectedInt,
@@ -332,7 +291,7 @@ class _MyAppState extends State<MyApp> {
               selectUser: selectUser,
               selectCategory: selectCategory,
               selectBrand: selectBrand,
-              logout: logout,
+              logout: loginController.logout,
               changeState: changeState
           );
         } else {
@@ -340,50 +299,40 @@ class _MyAppState extends State<MyApp> {
         }
       }
       case AppState.externalEdit: {
-        final selectedExt = this.selectedExt;
-        if (selectedExt != null) {
           return EditExternalView(
-              user: loginController.loginUser,
               selectedUser: selectedUser,
-              selectedExt: selectedExt,
+              selectedExt: selectedExt!,
               userList: userList,
               externalController:
               externalController,
-              logout: logout,
+              logout: loginController.logout,
               changeState: changeState,
               selectUser: selectUser
           );
-        } else {
-          return const Text("Error");
-        }
       }
       case AppState.profile: {
         return UserDetailsView(
-            user: loginController.loginUser,
             selectedUser: loginController.loginUser,
             extList: extList,
             intList: intList,
             changeState: changeState,
-            logout: logout,
             lastState: lastState);
       }
       case AppState.userList: {
         return UserListView(
-            user: loginController.loginUser,
             userList: userList,
             changeState: changeState,
             viewUserDetails: viewUserDetails,
             viewDeleteUser: viewDeleteUser,
             viewEditUser: viewEditUser,
             viewCreateUser: viewCreateUser,
-            logout: logout
+            logout: loginController.logout
         );
       }
       case AppState.userCreate: {
         return CreateUserView(
-            user: loginController.loginUser,
             userController: userController,
-            logout: logout,
+            logout: loginController.logout,
             changeState: changeState,
             selectAccess: selectAccess
         );
@@ -393,10 +342,9 @@ class _MyAppState extends State<MyApp> {
           final selectedUser = this.selectedUser;
           if (selectedUser != null) {
             return EditUserView(
-                user: loginController.loginUser,
                 selectedUser: selectedUser,
                 userController: userController,
-                logout: logout,
+                logout: loginController.logout,
                 changeState: changeState,
                 selectAccess: selectAccess
             );
@@ -408,11 +356,10 @@ class _MyAppState extends State<MyApp> {
         final selectedUser = this.selectedUser;
         if(selectedUser != null) {
           return DeleteUserView(
-              user: loginController.loginUser,
               selectedUser: selectedUser,
               changeState: changeState,
               userController: userController,
-              logout: logout
+              logout: loginController.logout
           );
         } else {
           return const Text("Error");
@@ -420,102 +367,92 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.categoryList: {
         return CategoryView(
-            user: loginController.loginUser,
             categoryList: categoryList,
             changeState: changeState,
             viewCategoryDetails: viewCategoryDetails,
             viewDeleteCategory: viewDeleteCategory,
             viewEditCategory: viewEditCategory,
             viewCreateCategory: viewCreateCategory,
-            logout: logout
+            logout: loginController.logout
         );
       }
       case AppState.categoryCreate: {
         return CreateCategoryView(
-            user: loginController.loginUser,
             categoryController: categoryController,
-            logout: logout,
+            logout: loginController.logout,
             changeState: changeState
         );
       }
       case AppState.categoryDetails: {
         return CategoryDetailsView(
-            user: loginController.loginUser,
             selectedCategory: selectedCategory!,
             changeState: changeState,
-            logout: logout
+            logout: loginController.logout
         );
       }
       case AppState.categoryEdit: {
         return EditCategoryView(
-            user: loginController.loginUser,
             selectedCategory: selectedCategory!,
             categoryController: categoryController,
-            logout: logout, changeState: changeState
+            logout: loginController.logout,
+            changeState: changeState
         );
       }
       case AppState.categoryDelete: {
         return DeleteCategoryView(
-            user: loginController.loginUser,
             selectedCategory: selectedCategory!,
             changeState: changeState,
             categoryController: categoryController,
-            logout: logout
+            logout: loginController.logout
         );
       }
       case AppState.brandList: {
         return BrandView(
-            user: loginController.loginUser,
             brandList: brandList,
             changeState: changeState,
             viewBrandDetails: viewBrandDetails,
             viewDeleteBrand: viewDeleteBrand,
             viewEditBrand: viewEditBrand,
             viewCreateBrand: viewCreateBrand,
-            logout: logout
+            logout: loginController.logout
         );
       }
       case AppState.brandCreate: {
         return CreateBrandView(
-            user: loginController.loginUser,
             brandController: brandController,
-            logout: logout,
+            logout: loginController.logout,
             changeState: changeState
         );
       }
       case AppState.brandDetails: {
         return BrandDetailsView(
-            user: loginController.loginUser,
             selectedCategory: selectedCategory!,
             changeState: changeState,
-            logout: logout
+            logout: loginController.logout
         );
       }
       case AppState.brandEdit: {
         return EditBrandView(
-            user: loginController.loginUser,
             selectedCategory: selectedCategory!,
             brandController: brandController,
-            logout: logout,
+            logout: loginController.logout,
             changeState: changeState
         );
       }
       case AppState.brandDelete: {
         return DeleteBrandView(
-            user: loginController.loginUser,
             selectedCategory: selectedCategory!,
             changeState: changeState,
             brandController: brandController,
-            logout: logout
+            logout: loginController.logout
         );
       }
       case AppState.checkFurniture: {
         return UserFurnitureView(
-            user: loginController.loginUser,
+            loginController: loginController,
             extList: extList,
             intList: intList,
             changeState: changeState,
-            logout: logout
         );
       }
       default: {
@@ -531,20 +468,6 @@ class _MyAppState extends State<MyApp> {
       appState = state;
       incidentController.reset();
     });
-  }
-
-  void login() async {
-    final logged = await loginController.login();
-    if (logged) {
-      changeState(AppState.mainView);
-    } else {
-      setState(() {});
-    }
-  }
-
-  void logout() {
-    loginController.logout();
-    changeState(AppState.loginScreen);
   }
 
   void refreshList() async {

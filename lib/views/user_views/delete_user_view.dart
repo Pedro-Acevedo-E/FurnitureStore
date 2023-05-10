@@ -7,7 +7,6 @@ import '../../controllers/user_controller.dart';
 import '../../models.dart';
 
 class DeleteUserView extends StatelessWidget {
-  final User user;
   final User selectedUser;
   final Function(AppState val) changeState;
   final UserController userController;
@@ -15,7 +14,6 @@ class DeleteUserView extends StatelessWidget {
 
   const DeleteUserView({
     super.key,
-    required this.user,
     required this.selectedUser,
     required this.changeState,
     required this.userController,

@@ -7,7 +7,6 @@ import '../../controllers/external_furniture_controller.dart';
 import '../../models.dart';
 
 class CreateExternalView extends StatelessWidget {
-  final User user;
   final User? selectedUser;
   final ExternalController externalController;
   final List<User> userList;
@@ -17,7 +16,6 @@ class CreateExternalView extends StatelessWidget {
 
   const CreateExternalView({
     super.key,
-    required this.user,
     required this.selectedUser,
     required this.externalController,
     required this.userList,

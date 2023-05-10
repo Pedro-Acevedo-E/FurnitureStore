@@ -5,7 +5,6 @@ import '../../controllers/internal_furniture_controller.dart';
 import '../../models.dart';
 
 class EditInternalView extends StatelessWidget {
-  final User user;
   final User? selectedUser;
   final EquipmentInt selectedInt;
   final EquipmentCategory? selectedCategory;
@@ -22,7 +21,6 @@ class EditInternalView extends StatelessWidget {
 
   EditInternalView({
     super.key,
-    required this.user,
     required this.selectedUser,
     required this.selectedBrand,
     required this.selectedInt,

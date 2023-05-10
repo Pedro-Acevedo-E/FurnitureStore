@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:furniture_store/controllers/incident_controller.dart';
 import 'package:furniture_store/models.dart';
-import 'package:furniture_store/views/entrances_and_exits/entrance_exits_view.dart';
 
 import '../app_state.dart';
 import '../sql_helper.dart';

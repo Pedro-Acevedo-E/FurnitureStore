@@ -4,12 +4,10 @@ import '../../app_state.dart';
 
 class SecurityMainView extends StatelessWidget {
   final Function(AppState val) changeState;
-  final VoidCallback logout;
 
   const SecurityMainView({
     super.key,
-    required this.changeState,
-    required this.logout
+    required this.changeState
   });
 
   @override

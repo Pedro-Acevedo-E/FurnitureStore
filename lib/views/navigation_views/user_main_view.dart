@@ -6,12 +6,10 @@ import '../../models.dart';
 
 class UserMainView extends StatelessWidget {
   final Function(AppState val) changeState;
-  final VoidCallback logout;
 
   const UserMainView({
     super.key,
-    required this.changeState,
-    required this.logout
+    required this.changeState
   });
 
   @override

@@ -7,7 +7,6 @@ import '../../app_state.dart';
 import '../../models.dart';
 
 class DeleteCategoryView extends StatelessWidget {
-  final User user;
   final EquipmentCategory selectedCategory;
   final Function(AppState val) changeState;
   final CategoryController categoryController;
@@ -15,7 +14,6 @@ class DeleteCategoryView extends StatelessWidget {
 
   const DeleteCategoryView({
     super.key,
-    required this.user,
     required this.selectedCategory,
     required this.changeState,
     required this.categoryController,

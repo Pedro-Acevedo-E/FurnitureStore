@@ -4,7 +4,6 @@ import '../../app_state.dart';
 import '../../models.dart';
 
 class UserListView extends StatelessWidget {
-  final User user;
   final List<User> userList;
   final Function(AppState val) changeState;
   final Function(User item) viewUserDetails;
@@ -15,7 +14,6 @@ class UserListView extends StatelessWidget {
 
   const UserListView({
     super.key,
-    required this.user,
     required this.userList,
     required this.changeState,
     required this.viewUserDetails,
@@ -111,7 +109,6 @@ class UserListView extends StatelessWidget {
 
   Widget getTitleListWidgets() {
     List<Widget> list = <Widget>[];
-    if(user.access == "admin") {
       return Row(
           children: const [
             Spacer(flex: 1),
@@ -141,28 +138,6 @@ class UserListView extends StatelessWidget {
             ),
           ]
       );
-    } else {
-      return Row(
-          children: const [
-            Spacer(flex: 1),
-            Expanded(
-              flex: 5,
-              child: Text("Name"),
-            ),
-            Spacer(flex: 1),
-            Expanded(
-              flex: 5,
-              child: Text("User"),
-            ),
-            Spacer(flex: 1),
-            Expanded(
-              flex: 5,
-              child: Text("         Details"),
-            ),
-            Spacer(flex: 1),
-          ]
-      );
-    }
   }
 
   void viewDetails(User item) {

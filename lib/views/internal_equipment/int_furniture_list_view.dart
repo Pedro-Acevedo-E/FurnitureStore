@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 import '../../app_state.dart';
+import '../../controllers/login_controller.dart';
 import '../../models.dart';
 
 class IntFurnitureView extends StatelessWidget {
-  final User user;
+  final LoginController loginController;
   final List<EquipmentInt> intList;
   final Function(AppState val) changeState;
   final Function(EquipmentInt item) viewInternalFurnitureDetails;
   final Function(EquipmentInt item) viewDeleteInternalFurniture;
   final Function(EquipmentInt item) viewEditInternalFurniture;
   final VoidCallback viewCreateInternalFurniture;
-  final VoidCallback logout;
 
   const IntFurnitureView({
     super.key,
-    required this.user,
+    required this.loginController,
     required this.intList,
     required this.changeState,
     required this.viewInternalFurnitureDetails,
     required this.viewDeleteInternalFurniture,
     required this.viewEditInternalFurniture,
     required this.viewCreateInternalFurniture,
-    required this.logout,
   });
 
   @override
@@ -39,7 +38,7 @@ class IntFurnitureView extends StatelessWidget {
               ),
               const Text("Internal Furniture"),
               const Spacer(),
-              PopupMenuButtonView(changeState: changeState, logout: logout),
+              PopupMenuButtonView(changeState: changeState, logout: loginController.logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
             ],
           ),
@@ -55,7 +54,7 @@ class IntFurnitureView extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: user.access == "admin" ? FloatingActionButton(
+        floatingActionButton: loginController.loginUser.access == "admin" ? FloatingActionButton(
           onPressed: viewCreateInternalFurniture,
           tooltip: "New Internal furniture",
           child: const Icon(Icons.add)
@@ -66,7 +65,7 @@ class IntFurnitureView extends StatelessWidget {
 
   Widget getIntListWidgets(List<EquipmentInt> eqList) {
     List<Widget> list = <Widget>[];
-    if(user.access == "admin") {
+    if(loginController.loginUser.access == "admin") {
       for(var i = 0; i < eqList.length; i++){
         list.add(Row(
             children: [
@@ -136,7 +135,7 @@ class IntFurnitureView extends StatelessWidget {
 
   Widget getTitleListWidgets() {
     List<Widget> list = <Widget>[];
-    if(user.access == "admin") {
+    if(loginController.loginUser.access == "admin") {
       return Row(
           children: const [
             Spacer(flex: 1),

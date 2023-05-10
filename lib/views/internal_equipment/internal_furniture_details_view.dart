@@ -6,14 +6,12 @@ import '../../app_state.dart';
 import '../../models.dart';
 
 class InternalDetailsView extends StatelessWidget {
-  final User user;
   final EquipmentInt selectedInt;
   final Function(AppState val) changeState;
   final VoidCallback logout;
 
   const InternalDetailsView({
     super.key,
-    required this.user,
     required this.selectedInt,
     required this.changeState,
     required this.logout,

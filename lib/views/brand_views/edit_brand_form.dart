@@ -5,7 +5,6 @@ import '../../controllers/brand_controller.dart';
 import '../../models.dart';
 
 class EditBrandView extends StatelessWidget {
-  final User user;
   final EquipmentCategory selectedCategory;
   final BrandController brandController;
   final VoidCallback logout;
@@ -13,7 +12,6 @@ class EditBrandView extends StatelessWidget {
 
   EditBrandView({
     super.key,
-    required this.user,
     required this.selectedCategory,
     required this.brandController,
     required this.logout,

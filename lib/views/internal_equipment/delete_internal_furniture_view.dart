@@ -7,7 +7,6 @@ import '../../app_state.dart';
 import '../../models.dart';
 
 class DeleteInternalView extends StatelessWidget {
-  final User user;
   final EquipmentInt selectedInt;
   final Function(AppState val) changeState;
   final InternalController internalController;
@@ -15,7 +14,6 @@ class DeleteInternalView extends StatelessWidget {
 
   const DeleteInternalView({
     super.key,
-    required this.user,
     required this.selectedInt,
     required this.changeState,
     required this.internalController,

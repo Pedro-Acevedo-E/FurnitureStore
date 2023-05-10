@@ -4,7 +4,6 @@ import '../../app_state.dart';
 import '../../models.dart';
 
 class BrandView extends StatelessWidget {
-  final User user;
   final List<EquipmentCategory> brandList;
   final Function(AppState val) changeState;
   final Function(EquipmentCategory item) viewBrandDetails;
@@ -15,7 +14,6 @@ class BrandView extends StatelessWidget {
 
   const BrandView({
     super.key,
-    required this.user,
     required this.brandList,
     required this.changeState,
     required this.viewBrandDetails,
@@ -55,11 +53,11 @@ class BrandView extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: user.access == "admin" ? FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
             onPressed: viewCreateBrand,
             tooltip: "New Brand",
             child: const Icon(Icons.add)
-        ) : const SizedBox.shrink(),
+        ),
       ),
     );
   }

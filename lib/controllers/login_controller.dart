@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:furniture_store/models.dart';
 
+import '../app_state.dart';
 import '../sql_helper.dart';
 
 class LoginController {
@@ -8,21 +9,28 @@ class LoginController {
   final passwordController = TextEditingController();
   var alertText = "";
   User loginUser = User.empty();
+  late final Function(AppState state) changeState;
+  late final VoidCallback refresh;
+
+  LoginController(this.changeState, this.refresh);
+
+  LoginController.empty();
 
   void logout() {
     usernameController.text = "";
     passwordController.text = "";
     alertText = "";
+    changeState(AppState.loginScreen);
   }
 
-  Future<bool> login() async {
+  void login() async {
     List<Map<String, dynamic>> data = await SQLHelper.loginUser(usernameController.text, passwordController.text);
     if(data.length == 1) {
       setUserInfo(data[0]);
-      return true;
+      changeState(AppState.mainView);
     } else {
       alertText = "Login Failed: Your user ID or password is incorrect";
-      return false;
+      refresh();
     }
   }
 

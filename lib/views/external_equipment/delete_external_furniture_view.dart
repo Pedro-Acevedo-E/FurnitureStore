@@ -7,7 +7,6 @@ import '../../app_state.dart';
 import '../../models.dart';
 
 class DeleteExternalView extends StatelessWidget {
-  final User user;
   final EquipmentExt selectedExt;
   final Function(AppState val) changeState;
   final ExternalController externalController;
@@ -15,7 +14,6 @@ class DeleteExternalView extends StatelessWidget {
 
   const DeleteExternalView({
     super.key,
-    required this.user,
     required this.selectedExt,
     required this.changeState,
     required this.externalController,

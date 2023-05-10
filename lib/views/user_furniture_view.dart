@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/views/popup_menu_button.dart';
 
 import '../app_state.dart';
+import '../controllers/login_controller.dart';
 import '../models.dart';
 
 class UserFurnitureView extends StatelessWidget {
-  final User user;
+  final LoginController loginController;
   final List<EquipmentExt> extList;
   final List<EquipmentInt> intList;
   final Function(AppState val) changeState;
-  final VoidCallback logout;
 
   const UserFurnitureView({
     super.key,
-    required this.user,
+    required this.loginController,
     required this.extList,
     required this.intList,
     required this.changeState,
-    required this.logout,
   });
 
   @override
@@ -31,7 +31,8 @@ class UserFurnitureView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              Text("${user.username} Registered items"),
+              Text("${loginController.loginUser.username} Registered items"),
+              PopupMenuButtonView(changeState: changeState, logout: loginController.logout),
               const Spacer(),
             ],
           ),
@@ -62,7 +63,7 @@ class UserFurnitureView extends StatelessWidget {
   Widget getExtEquipmentListWidgets(List<EquipmentExt> equipmentList) {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < equipmentList.length; i++){
-      if (equipmentList[i].user == user.username) {
+      if (equipmentList[i].user == loginController.loginUser.username) {
         list.add(
             Row(
                 children: [
@@ -89,7 +90,7 @@ class UserFurnitureView extends StatelessWidget {
   Widget getIntEquipmentListWidgets(List<EquipmentInt> equipmentList) {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < equipmentList.length; i++){
-      if (equipmentList[i].user == user.username) {
+      if (equipmentList[i].user == loginController.loginUser.username) {
         list.add(Row(
             children: [
               const Spacer(flex: 1),

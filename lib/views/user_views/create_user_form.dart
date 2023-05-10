@@ -5,7 +5,6 @@ import '../../controllers/user_controller.dart';
 import '../../models.dart';
 
 class CreateUserView extends StatelessWidget {
-  final User user;
   final UserController userController;
   final VoidCallback logout;
   final Function(AppState val) changeState;
@@ -14,7 +13,6 @@ class CreateUserView extends StatelessWidget {
 
   CreateUserView({
     super.key,
-    required this.user,
     required this.userController,
     required this.logout,
     required this.changeState,

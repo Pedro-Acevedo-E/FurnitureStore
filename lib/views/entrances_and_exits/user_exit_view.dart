@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:furniture_store/controllers/incident_controller.dart';
 import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
@@ -8,7 +7,6 @@ import '../../controllers/entrances_exits_controller.dart';
 import '../../models.dart';
 
 class UserExitView extends StatelessWidget {
-  final User user;
   final List<EquipmentInt> intList;
   final List<EquipmentExt> extList;
   final Function(AppState val) changeState;
@@ -17,7 +15,6 @@ class UserExitView extends StatelessWidget {
 
   const UserExitView({
     super.key,
-    required this.user,
     required this.intList,
     required this.extList,
     required this.changeState,

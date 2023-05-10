@@ -4,7 +4,6 @@ import '../../app_state.dart';
 import '../../models.dart';
 
 class CategoryView extends StatelessWidget {
-  final User user;
   final List<EquipmentCategory> categoryList;
   final Function(AppState val) changeState;
   final Function(EquipmentCategory item) viewCategoryDetails;
@@ -15,7 +14,6 @@ class CategoryView extends StatelessWidget {
 
   const CategoryView({
     super.key,
-    required this.user,
     required this.categoryList,
     required this.changeState,
     required this.viewCategoryDetails,
@@ -29,37 +27,37 @@ class CategoryView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              IconButton(
-                  onPressed: () => changeState(AppState.mainView),
-                  icon: const Icon(Icons.arrow_back),
-                  color: Colors.white
-              ),
-              const Text("Category List"),
-              const Spacer(),
-              PopupMenuButtonView(changeState: changeState, logout: logout),
-              const Padding(padding: EdgeInsets.only(right: 10)),
-            ],
+          appBar: AppBar(
+            title: Row(
+              children: [
+                IconButton(
+                    onPressed: () => changeState(AppState.mainView),
+                    icon: const Icon(Icons.arrow_back),
+                    color: Colors.white
+                ),
+                const Text("Category List"),
+                const Spacer(),
+                PopupMenuButtonView(changeState: changeState, logout: logout),
+                const Padding(padding: EdgeInsets.only(right: 10)),
+              ],
+            ),
           ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              getTitleListWidgets(),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              getCategoryListWidgets(categoryList),
-            ],
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                getTitleListWidgets(),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                getCategoryListWidgets(categoryList),
+              ],
+            ),
           ),
-        ),
-        floatingActionButton: user.access == "admin" ? FloatingActionButton(
-            onPressed: viewCreateCategory,
-            tooltip: "New Internal furniture",
-            child: const Icon(Icons.add)
-        ) : const SizedBox.shrink(),
+          floatingActionButton: FloatingActionButton(
+              onPressed: viewCreateCategory,
+              tooltip: "New Internal furniture",
+              child: const Icon(Icons.add)
+          )
       ),
     );
   }

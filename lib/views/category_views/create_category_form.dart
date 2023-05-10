@@ -5,14 +5,12 @@ import '../../controllers/category_controller.dart';
 import '../../models.dart';
 
 class CreateCategoryView extends StatelessWidget {
-  final User user;
   final CategoryController categoryController;
   final VoidCallback logout;
   final Function(AppState val) changeState;
 
   const CreateCategoryView({
     super.key,
-    required this.user,
     required this.categoryController,
     required this.logout,
     required this.changeState,

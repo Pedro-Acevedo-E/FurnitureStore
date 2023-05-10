@@ -5,14 +5,12 @@ import '../../app_state.dart';
 import '../../models.dart';
 
 class CreateBrandView extends StatelessWidget {
-  final User user;
   final BrandController brandController;
   final VoidCallback logout;
   final Function(AppState val) changeState;
 
   const CreateBrandView({
     super.key,
-    required this.user,
     required this.brandController,
     required this.logout,
     required this.changeState,

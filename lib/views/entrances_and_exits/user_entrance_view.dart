@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/controllers/entrances_exits_controller.dart';
-import 'package:furniture_store/controllers/incident_controller.dart';
 import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
 import '../../app_state.dart';
+import '../../controllers/login_controller.dart';
 import '../../models.dart';
 
 class UserEntranceView extends StatelessWidget {
-  final User user;
   final List<EquipmentInt> intList;
   final Function(AppState val) changeState;
   final VoidCallback logout;
@@ -16,7 +15,6 @@ class UserEntranceView extends StatelessWidget {
 
   const UserEntranceView({
     super.key,
-    required this.user,
     required this.intList,
     required this.changeState,
     required this.logout,

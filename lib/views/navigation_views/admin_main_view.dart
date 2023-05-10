@@ -3,12 +3,10 @@ import '../../app_state.dart';
 
 class AdminMainView extends StatelessWidget {
   final Function(AppState val) changeState;
-  final VoidCallback logout;
 
   const AdminMainView({
     super.key,
-    required this.changeState,
-    required this.logout
+    required this.changeState
   });
 
   @override

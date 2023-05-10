@@ -6,14 +6,12 @@ import '../../app_state.dart';
 import '../../models.dart';
 
 class ExternalDetailsView extends StatelessWidget {
-  final User user;
   final EquipmentExt selectedExt;
   final Function(AppState val) changeState;
   final VoidCallback logout;
 
   const ExternalDetailsView({
     super.key,
-    required this.user,
     required this.selectedExt,
     required this.changeState,
     required this.logout,

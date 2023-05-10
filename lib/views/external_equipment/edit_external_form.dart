@@ -5,7 +5,6 @@ import '../../controllers/external_furniture_controller.dart';
 import '../../models.dart';
 
 class EditExternalView extends StatelessWidget {
-  final User user;
   final User? selectedUser;
   final EquipmentExt selectedExt;
   final List<User> userList;
@@ -16,7 +15,6 @@ class EditExternalView extends StatelessWidget {
 
   EditExternalView({
     super.key,
-    required this.user,
     required this.selectedUser,
     required this.selectedExt,
     required this.userList,

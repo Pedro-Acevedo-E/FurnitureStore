@@ -7,7 +7,6 @@ import '../../controllers/brand_controller.dart';
 import '../../models.dart';
 
 class DeleteBrandView extends StatelessWidget {
-  final User user;
   final EquipmentCategory selectedCategory;
   final Function(AppState val) changeState;
   final BrandController brandController;
@@ -15,7 +14,6 @@ class DeleteBrandView extends StatelessWidget {
 
   const DeleteBrandView({
     super.key,
-    required this.user,
     required this.selectedCategory,
     required this.changeState,
     required this.brandController,

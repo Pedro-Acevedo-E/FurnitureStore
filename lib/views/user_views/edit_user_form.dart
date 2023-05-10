@@ -5,7 +5,6 @@ import '../../controllers/user_controller.dart';
 import '../../models.dart';
 
 class EditUserView extends StatelessWidget {
-  final User user;
   final User selectedUser;
   final UserController userController;
   final VoidCallback logout;
@@ -15,7 +14,6 @@ class EditUserView extends StatelessWidget {
 
   EditUserView({
     super.key,
-    required this.user,
     required this.selectedUser,
     required this.userController,
     required this.logout,

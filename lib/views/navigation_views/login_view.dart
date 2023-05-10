@@ -3,12 +3,10 @@ import 'package:furniture_store/controllers/login_controller.dart';
 
 class LoginView extends StatelessWidget {
   final LoginController loginController;
-  final VoidCallback login;
 
   const LoginView({
     super.key,
     required this.loginController,
-    required this.login
   });
 
   @override
@@ -45,7 +43,7 @@ class LoginView extends StatelessWidget {
                       ),
                       const Padding(padding: EdgeInsets.all(10)),
                       ElevatedButton(
-                          onPressed: login,
+                          onPressed: loginController.login,
                           child: const Text("Login", style: TextStyle(fontSize: 18))
                       ),
                       const Padding(padding: EdgeInsets.all(10)),

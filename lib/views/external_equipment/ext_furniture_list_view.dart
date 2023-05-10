@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/controllers/login_controller.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 import '../../app_state.dart';
 import '../../models.dart';
 
 class ExtFurnitureView extends StatelessWidget {
-  final User user;
+  final LoginController loginController;
   final List<EquipmentExt> extList;
   final Function(AppState val) changeState;
   final Function(EquipmentExt item) viewExternalFurnitureDetails;
   final Function(EquipmentExt item) viewDeleteExternalFurniture;
   final Function(EquipmentExt item) viewEditExternalFurniture;
   final VoidCallback viewCreateExternalFurniture;
-  final VoidCallback logout;
 
   const ExtFurnitureView({
     super.key,
-    required this.user,
+    required this.loginController,
     required this.extList,
     required this.changeState,
     required this.viewExternalFurnitureDetails,
     required this.viewDeleteExternalFurniture,
     required this.viewEditExternalFurniture,
     required this.viewCreateExternalFurniture,
-    required this.logout,
   });
 
   @override
@@ -39,7 +38,7 @@ class ExtFurnitureView extends StatelessWidget {
               ),
               const Text("External Furniture"),
               const Spacer(),
-              PopupMenuButtonView(changeState: changeState, logout: logout),
+              PopupMenuButtonView(changeState: changeState, logout: loginController.logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
             ],
           ),
@@ -55,7 +54,7 @@ class ExtFurnitureView extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: user.access == "admin" ? FloatingActionButton(
+        floatingActionButton: loginController.loginUser.access == "admin" ? FloatingActionButton(
             onPressed: viewCreateExternalFurniture,
             tooltip: "New External furniture",
             child: const Icon(Icons.add)
@@ -66,7 +65,7 @@ class ExtFurnitureView extends StatelessWidget {
 
   Widget getExtListWidgets(List<EquipmentExt> eqList) {
     List<Widget> list = <Widget>[];
-    if(user.access == "admin") {
+    if(loginController.loginUser.access == "admin") {
       for(var i = 0; i < eqList.length; i++){
         list.add(Row(
             children: [
@@ -136,7 +135,7 @@ class ExtFurnitureView extends StatelessWidget {
 
   Widget getTitleListWidgets() {
     List<Widget> list = <Widget>[];
-    if(user.access == "admin") {
+    if(loginController.loginUser.access == "admin") {
       return Row(
           children: const [
             Spacer(flex: 1),

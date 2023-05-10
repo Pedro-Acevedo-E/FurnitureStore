@@ -5,14 +5,12 @@ import '../../models.dart';
 import '../details_row.dart';
 
 class CategoryDetailsView extends StatelessWidget {
-  final User user;
   final EquipmentCategory selectedCategory;
   final Function(AppState val) changeState;
   final VoidCallback logout;
 
   const CategoryDetailsView({
     super.key,
-    required this.user,
     required this.selectedCategory,
     required this.changeState,
     required this.logout,
