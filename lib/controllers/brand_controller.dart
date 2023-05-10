@@ -11,9 +11,8 @@ class BrandController {
   final description = TextEditingController();
   String alertText = "";
   late final Function(AppState state) changeState;
-  late final VoidCallback refresh;
 
-  BrandController(this.changeState, this.refresh);
+  BrandController(this.changeState);
 
   void reset() {
     name.text = "";

@@ -40,7 +40,7 @@ class CategoryDetailsView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Padding(padding: EdgeInsets.only(top: 20)),
-              const Text("Brand Data:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text("Category Data:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
               DetailsRowView(field: "ID", value: selectedCategory.id.toString()),
               DetailsRowView(field: "Title", value: selectedCategory.name),

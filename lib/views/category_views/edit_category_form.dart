@@ -5,21 +5,16 @@ import '../../controllers/category_controller.dart';
 import '../../models.dart';
 
 class EditCategoryView extends StatelessWidget {
-  final EquipmentCategory selectedCategory;
   final CategoryController categoryController;
   final VoidCallback logout;
   final Function(AppState val) changeState;
 
-  EditCategoryView({
+  const EditCategoryView({
     super.key,
-    required this.selectedCategory,
     required this.categoryController,
     required this.logout,
     required this.changeState,
-  }) {
-    categoryController.name.text = selectedCategory.name;
-    categoryController.description.text = selectedCategory.description;
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +72,7 @@ class EditCategoryView extends StatelessWidget {
   }
 
   voidEditCategory() {
-    categoryController.update(selectedCategory);
+    categoryController.update(categoryController.selectedCategory!);
     changeState(AppState.categoryList);
   }
 }

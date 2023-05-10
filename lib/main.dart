@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
   final incidentController = IncidentController();
   late final InternalController internalController;
   late final UserController userController;
-  final categoryController = CategoryController();
+  late final CategoryController categoryController;
   late final BrandController brandController;
   late final EntrancesAndExitsController entrancesAndExitsController;
   var loginController = LoginController.empty();
@@ -108,7 +108,8 @@ class _MyAppState extends State<MyApp> {
     externalController = ExternalController((state) => changeState(state), refresh);
     internalController = InternalController((state) => changeState(state), refresh);
     userController = UserController((state) => changeState(state), refresh);
-    brandController = BrandController((state) => changeState(state), refresh);
+    brandController = BrandController((state) => changeState(state));
+    categoryController = CategoryController((state) => changeState(state));
     loginController = LoginController((state) => changeState(state), refresh);
   }
 
@@ -327,10 +328,7 @@ class _MyAppState extends State<MyApp> {
         return CategoryView(
             categoryList: categoryList,
             changeState: changeState,
-            viewCategoryDetails: viewCategoryDetails,
-            viewDeleteCategory: viewDeleteCategory,
-            viewEditCategory: viewEditCategory,
-            viewCreateCategory: viewCreateCategory,
+            categoryController: categoryController,
             logout: loginController.logout
         );
       }
@@ -343,14 +341,13 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.categoryDetails: {
         return CategoryDetailsView(
-            selectedCategory: selectedCategory!,
+            selectedCategory: categoryController.selectedCategory!,
             changeState: changeState,
             logout: loginController.logout
         );
       }
       case AppState.categoryEdit: {
         return EditCategoryView(
-            selectedCategory: selectedCategory!,
             categoryController: categoryController,
             logout: loginController.logout,
             changeState: changeState
@@ -358,7 +355,6 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.categoryDelete: {
         return DeleteCategoryView(
-            selectedCategory: selectedCategory!,
             changeState: changeState,
             categoryController: categoryController,
             logout: loginController.logout

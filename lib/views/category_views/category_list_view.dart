@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 import '../../app_state.dart';
+import '../../controllers/category_controller.dart';
 import '../../models.dart';
 
 class CategoryView extends StatelessWidget {
   final List<EquipmentCategory> categoryList;
   final Function(AppState val) changeState;
-  final Function(EquipmentCategory item) viewCategoryDetails;
-  final Function(EquipmentCategory item) viewDeleteCategory;
-  final Function(EquipmentCategory item) viewEditCategory;
-  final VoidCallback viewCreateCategory;
+  final CategoryController categoryController;
   final VoidCallback logout;
 
   const CategoryView({
     super.key,
     required this.categoryList,
     required this.changeState,
-    required this.viewCategoryDetails,
-    required this.viewDeleteCategory,
-    required this.viewEditCategory,
-    required this.viewCreateCategory,
+    required this.categoryController,
     required this.logout,
   });
 
@@ -54,7 +49,7 @@ class CategoryView extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-              onPressed: viewCreateCategory,
+              onPressed: categoryController.viewCreateCategory,
               tooltip: "New Internal furniture",
               child: const Icon(Icons.add)
           )
@@ -132,15 +127,15 @@ class CategoryView extends StatelessWidget {
 
 
   void viewDetails(EquipmentCategory item) {
-    viewCategoryDetails(item);
+    categoryController.viewCategoryDetails(item);
   }
 
   void delete(EquipmentCategory item) {
-    viewDeleteCategory(item);
+    categoryController.viewDeleteCategory(item);
   }
 
   void edit(EquipmentCategory item) {
-    viewEditCategory(item);
+    categoryController.viewEditCategory(item);
   }
 
 }

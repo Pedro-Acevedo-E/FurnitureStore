@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 import '../../app_state.dart';
 import '../../controllers/category_controller.dart';
-import '../../models.dart';
 
 class CreateCategoryView extends StatelessWidget {
   final CategoryController categoryController;

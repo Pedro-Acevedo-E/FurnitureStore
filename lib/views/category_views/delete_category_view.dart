@@ -7,14 +7,12 @@ import '../../app_state.dart';
 import '../../models.dart';
 
 class DeleteCategoryView extends StatelessWidget {
-  final EquipmentCategory selectedCategory;
   final Function(AppState val) changeState;
   final CategoryController categoryController;
   final VoidCallback logout;
 
   const DeleteCategoryView({
     super.key,
-    required this.selectedCategory,
     required this.changeState,
     required this.categoryController,
     required this.logout,
@@ -32,7 +30,7 @@ class DeleteCategoryView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              Text("Delete: ${selectedCategory.name}"),
+              Text("Delete: ${categoryController.selectedCategory!.name}"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
@@ -46,8 +44,8 @@ class DeleteCategoryView extends StatelessWidget {
               const Padding(padding: EdgeInsets.only(top: 20)),
               const Text("Are you sure you want to delete?:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
-              DetailsRowView(field: "ID", value: selectedCategory.id.toString()),
-              DetailsRowView(field: "Name", value: selectedCategory.name),
+              DetailsRowView(field: "ID", value: categoryController.selectedCategory!.id.toString()),
+              DetailsRowView(field: "Name", value: categoryController.selectedCategory!.name),
               ElevatedButton(
                 onPressed: deleteCategory,
                 child: const Text("Delete", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -61,7 +59,7 @@ class DeleteCategoryView extends StatelessWidget {
   }
 
   void deleteCategory() {
-    categoryController.delete(selectedCategory.id);
+    categoryController.delete(categoryController.selectedCategory!.id);
     changeState(AppState.categoryList);
   }
 }

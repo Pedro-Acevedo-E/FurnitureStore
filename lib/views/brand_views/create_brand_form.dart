@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:furniture_store/controllers/brand_controller.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 import '../../app_state.dart';
-import '../../models.dart';
 
 class CreateBrandView extends StatelessWidget {
   final BrandController brandController;
