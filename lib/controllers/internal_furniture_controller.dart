@@ -19,7 +19,6 @@ class InternalController {
   final color1 = TextEditingController();
   final color2 = TextEditingController();
   final notes = TextEditingController();
-  final location = TextEditingController();
   late final Function(AppState state) changeState;
   late final VoidCallback refresh;
 
@@ -35,7 +34,6 @@ class InternalController {
     color1.text = "";
     color2.text = "";
     notes.text = "";
-    location.text = "";
   }
 
   void create(User? user, String category, String model) async {
@@ -43,7 +41,7 @@ class InternalController {
       final data = EquipmentInt(
           id: 0,
           user: user.username,
-          location: "Office with ${user.username}",
+          location: user.entranceTime != "" ? "Office with ${user.username}" : "Outside with ${user.username}",
           status: status.text,
           productId: productId.text,
           name: name.text,
@@ -94,7 +92,7 @@ class InternalController {
     final data = EquipmentInt(
         id: selectedInt.id,
         user: user,
-        location: location.text,
+        location: user == selectedInt.user ? selectedInt.location : user != "" ? "Office with $user" : "Office",
         status: status.text,
         productId: productId.text,
         name: name.text,

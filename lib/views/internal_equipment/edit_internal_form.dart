@@ -30,7 +30,6 @@ class EditInternalView extends StatelessWidget {
     internalController.color2.text = internalController.selectedInt!.color_2;
     internalController.color1.text = internalController.selectedInt!.color_1;
     internalController.description.text = internalController.selectedInt!.description;
-    internalController.location.text = internalController.selectedInt!.location;
   }
 
   @override
@@ -129,15 +128,6 @@ class EditInternalView extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
                     hintText: "Condition"
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: internalController.location,
-                textAlign: TextAlign.center,
-                textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                    hintText: "Location"
                 ),
               ),
               const SizedBox(height: 20),
