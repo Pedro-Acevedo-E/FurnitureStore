@@ -8,7 +8,6 @@ class CreateUserView extends StatelessWidget {
   final UserController userController;
   final VoidCallback logout;
   final Function(AppState val) changeState;
-  final Function(String val) selectAccess;
   final List<String> accessList = ["user", "admin", "security"];
 
   CreateUserView({
@@ -16,7 +15,6 @@ class CreateUserView extends StatelessWidget {
     required this.userController,
     required this.logout,
     required this.changeState,
-    required this.selectAccess,
   });
 
   @override
@@ -125,7 +123,7 @@ class CreateUserView extends StatelessWidget {
 
   void electAccess(String? value) {
     if (value != null) {
-      selectAccess(value);
+      userController.selectAccess(value);
     }
   }
 

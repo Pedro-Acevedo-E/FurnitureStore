@@ -5,25 +5,17 @@ import '../../controllers/user_controller.dart';
 import '../../models.dart';
 
 class EditUserView extends StatelessWidget {
-  final User selectedUser;
   final UserController userController;
   final VoidCallback logout;
   final Function(AppState val) changeState;
-  final Function(String val) selectAccess;
   final List<String> accessList = ["user", "admin", "security"];
 
   EditUserView({
     super.key,
-    required this.selectedUser,
     required this.userController,
     required this.logout,
     required this.changeState,
-    required this.selectAccess,
-  }){
-    userController.username.text = selectedUser.username;
-    userController.firstName.text = selectedUser.firstName;
-    userController.lastName.text = selectedUser.lastName;
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +29,7 @@ class EditUserView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              Text("Edit: ${selectedUser.username}"),
+              Text("Edit: ${userController.selectedUser!.username}"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
@@ -111,12 +103,12 @@ class EditUserView extends StatelessWidget {
 
   void electAccess(String? value) {
     if (value != null) {
-      selectAccess(value);
+      userController.selectAccess(value);
     }
   }
 
   void updateUser() {
-    userController.update(selectedUser);
+    userController.update();
     changeState(AppState.userList);
   }
 }

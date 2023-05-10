@@ -4,17 +4,14 @@ import 'package:furniture_store/views/popup_menu_button.dart';
 
 import '../../app_state.dart';
 import '../../controllers/user_controller.dart';
-import '../../models.dart';
 
 class DeleteUserView extends StatelessWidget {
-  final User selectedUser;
   final Function(AppState val) changeState;
   final UserController userController;
   final VoidCallback logout;
 
   const DeleteUserView({
     super.key,
-    required this.selectedUser,
     required this.changeState,
     required this.userController,
     required this.logout,
@@ -32,7 +29,7 @@ class DeleteUserView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              Text("Delete: ${selectedUser.username}"),
+              Text("Delete: ${userController.selectedUser!.username}"),
               const Spacer(),
               PopupMenuButtonView(changeState: changeState, logout: logout),
               const Padding(padding: EdgeInsets.only(right: 10)),
@@ -46,8 +43,8 @@ class DeleteUserView extends StatelessWidget {
               const Padding(padding: EdgeInsets.only(top: 20)),
               const Text("Are you sure you want to delete?:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
-              DetailsRowView(field: "ID", value: selectedUser.id.toString()),
-              DetailsRowView(field: "Username", value: selectedUser.username),
+              DetailsRowView(field: "ID", value: userController.selectedUser!.id.toString()),
+              DetailsRowView(field: "Username", value: userController.selectedUser!.username),
               ElevatedButton(
                 onPressed: deleteUser,
                 child: const Text("Delete", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -61,7 +58,7 @@ class DeleteUserView extends StatelessWidget {
   }
 
   void deleteUser() {
-    userController.delete(selectedUser.id);
+    userController.delete(userController.selectedUser!.id);
     changeState(AppState.userList);
   }
 }

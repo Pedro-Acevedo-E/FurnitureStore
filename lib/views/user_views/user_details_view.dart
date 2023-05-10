@@ -5,7 +5,7 @@ import '../../controllers/login_controller.dart';
 import '../../models.dart';
 
 class UserDetailsView extends StatelessWidget {
-  final User selectedUser;
+  final User? selectedUser;
   final List<EquipmentExt> extList;
   final List<EquipmentInt> intList;
   final Function(AppState val) changeState;
@@ -32,7 +32,7 @@ class UserDetailsView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.white
               ),
-              Text("Details of: ${selectedUser.username}"),
+              Text("Details of: ${selectedUser!.username}"),
               const Spacer(),
             ],
           ),
@@ -44,11 +44,11 @@ class UserDetailsView extends StatelessWidget {
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 const Text("User Data:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 const Padding(padding: EdgeInsets.only(bottom: 20)),
-                DetailsRowView(field: "ID", value: selectedUser.id.toString()),
-                DetailsRowView(field: "Username", value: selectedUser.username),
-                DetailsRowView(field: "FirstName", value: selectedUser.firstName),
-                DetailsRowView(field: "LastName", value: selectedUser.lastName),
-                DetailsRowView(field: "Entrance Time", value: selectedUser.entranceTime),
+                DetailsRowView(field: "ID", value: selectedUser!.id.toString()),
+                DetailsRowView(field: "Username", value: selectedUser!.username),
+                DetailsRowView(field: "FirstName", value: selectedUser!.firstName),
+                DetailsRowView(field: "LastName", value: selectedUser!.lastName),
+                DetailsRowView(field: "Entrance Time", value: selectedUser!.entranceTime),
                 const Text("Internal equipment:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 getIntEquipmentListWidgets(intList),
@@ -57,7 +57,7 @@ class UserDetailsView extends StatelessWidget {
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 getExtEquipmentListWidgets(extList),
                 const Padding(padding: EdgeInsets.only(bottom: 20)),
-                DetailsRowView(field: "Access", value: selectedUser.access),
+                DetailsRowView(field: "Access", value: selectedUser!.access),
               ],
             ),
           ),
@@ -69,7 +69,7 @@ class UserDetailsView extends StatelessWidget {
   Widget getExtEquipmentListWidgets(List<EquipmentExt> equipmentList) {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < equipmentList.length; i++){
-      if (equipmentList[i].user == selectedUser.username) {
+      if (equipmentList[i].user == selectedUser!.username) {
         list.add(
             Row(
                 children: [
@@ -88,7 +88,7 @@ class UserDetailsView extends StatelessWidget {
   Widget getIntEquipmentListWidgets(List<EquipmentInt> equipmentList) {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < equipmentList.length; i++){
-      if (equipmentList[i].user == selectedUser.username) {
+      if (equipmentList[i].user == selectedUser!.username) {
         list.add(Row(
             children: [
               const Spacer(flex: 1),

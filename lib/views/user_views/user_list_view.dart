@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 import '../../app_state.dart';
+import '../../controllers/user_controller.dart';
 import '../../models.dart';
 
 class UserListView extends StatelessWidget {
   final List<User> userList;
   final Function(AppState val) changeState;
-  final Function(User item) viewUserDetails;
-  final Function(User item) viewDeleteUser;
-  final Function(User item) viewEditUser;
-  final VoidCallback viewCreateUser;
+  final UserController userController;
   final VoidCallback logout;
 
   const UserListView({
     super.key,
     required this.userList,
     required this.changeState,
-    required this.viewUserDetails,
-    required this.viewDeleteUser,
-    required this.viewEditUser,
-    required this.viewCreateUser,
+    required this.userController,
     required this.logout,
   });
 
@@ -54,7 +49,7 @@ class UserListView extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-            onPressed: viewCreateUser,
+            onPressed: userController.viewCreateUser,
             tooltip: "New User",
             child: const Icon(Icons.add)
         ),
@@ -141,15 +136,15 @@ class UserListView extends StatelessWidget {
   }
 
   void viewDetails(User item) {
-    viewUserDetails(item);
+    userController.viewUserDetails(item);
   }
 
   void delete(User item) {
-    viewDeleteUser(item);
+    userController.viewDeleteUser(item);
   }
 
   void edit(User item) {
-    viewEditUser(item);
+    userController.viewEditUser(item);
   }
 
 }

@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
   late final ExternalController externalController;
   final incidentController = IncidentController();
   late final InternalController internalController;
-  final userController = UserController();
+  late final UserController userController;
   final categoryController = CategoryController();
   final brandController = BrandController();
   late final EntrancesAndExitsController entrancesAndExitsController;
@@ -107,6 +107,7 @@ class _MyAppState extends State<MyApp> {
     entrancesAndExitsController = EntrancesAndExitsController(loginController.loginUser, (state) => changeState(state), refresh);
     externalController = ExternalController((state) => changeState(state), refresh);
     internalController = InternalController((state) => changeState(state), refresh);
+    userController = UserController((state) => changeState(state), refresh);
     loginController = LoginController((state) => changeState(state), refresh);
   }
 
@@ -142,7 +143,12 @@ class _MyAppState extends State<MyApp> {
               changeState: (AppState state) => changeState(state),
               lastState: lastState);
         } else {
-          return const Text("Error");
+          return UserDetailsView(
+              selectedUser: userController.selectedUser,
+              extList: extList,
+              intList: intList,
+              changeState: (AppState state) => changeState(state),
+              lastState: lastState);
         }
       }
       case AppState.userEntrance: {
@@ -291,10 +297,7 @@ class _MyAppState extends State<MyApp> {
         return UserListView(
             userList: userList,
             changeState: changeState,
-            viewUserDetails: viewUserDetails,
-            viewDeleteUser: viewDeleteUser,
-            viewEditUser: viewEditUser,
-            viewCreateUser: viewCreateUser,
+            userController: userController,
             logout: loginController.logout
         );
       }
@@ -303,36 +306,21 @@ class _MyAppState extends State<MyApp> {
             userController: userController,
             logout: loginController.logout,
             changeState: changeState,
-            selectAccess: selectAccess
         );
       }
-      case AppState.userEdit:
-        {
-          final selectedUser = this.selectedUser;
-          if (selectedUser != null) {
-            return EditUserView(
-                selectedUser: selectedUser,
-                userController: userController,
-                logout: loginController.logout,
-                changeState: changeState,
-                selectAccess: selectAccess
-            );
-          } else {
-            return const Text("Error");
-          }
+      case AppState.userEdit: {
+          return EditUserView(
+            userController: userController,
+            logout: loginController.logout,
+            changeState: changeState,
+          );
         }
       case AppState.userDelete: {
-        final selectedUser = this.selectedUser;
-        if(selectedUser != null) {
           return DeleteUserView(
-              selectedUser: selectedUser,
               changeState: changeState,
               userController: userController,
               logout: loginController.logout
           );
-        } else {
-          return const Text("Error");
-        }
       }
       case AppState.categoryList: {
         return CategoryView(
@@ -545,28 +533,6 @@ class _MyAppState extends State<MyApp> {
   void viewUserDetails(User user) {
     selectUser(user);
     changeState(AppState.userDetails);
-  }
-  void viewEditUser(User? user) {
-    setState(() {
-      userController.reset();
-      selectedUser = user;
-      userController.access.text = selectedUser?.access != null ? selectedUser!.access : "user";
-    });
-    changeState(AppState.userEdit);
-
-  }
-  void viewDeleteUser(User? user) {
-    setState(() {
-      selectedUser = user;
-    });
-    changeState(AppState.userDelete);
-  }
-  void viewCreateUser() {
-    setState(() {
-      userController.reset();
-      userController.access.text = "user";
-    });
-    changeState(AppState.userCreate);
   }
 
   //Category
