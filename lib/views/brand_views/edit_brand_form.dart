@@ -5,21 +5,16 @@ import '../../controllers/brand_controller.dart';
 import '../../models.dart';
 
 class EditBrandView extends StatelessWidget {
-  final EquipmentCategory selectedCategory;
   final BrandController brandController;
   final VoidCallback logout;
   final Function(AppState val) changeState;
 
-  EditBrandView({
+  const EditBrandView({
     super.key,
-    required this.selectedCategory,
     required this.brandController,
     required this.logout,
     required this.changeState,
-  }) {
-    brandController.name.text = selectedCategory.name;
-    brandController.description.text = selectedCategory.description;
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +72,7 @@ class EditBrandView extends StatelessWidget {
   }
 
   voidEditCategory() {
-    brandController.update(selectedCategory);
+    brandController.update(brandController.selectedCategory!);
     changeState(AppState.brandList);
   }
 }

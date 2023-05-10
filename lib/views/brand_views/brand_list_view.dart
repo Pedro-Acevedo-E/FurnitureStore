@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/controllers/brand_controller.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 import '../../app_state.dart';
 import '../../models.dart';
@@ -6,20 +7,14 @@ import '../../models.dart';
 class BrandView extends StatelessWidget {
   final List<EquipmentCategory> brandList;
   final Function(AppState val) changeState;
-  final Function(EquipmentCategory item) viewBrandDetails;
-  final Function(EquipmentCategory item) viewDeleteBrand;
-  final Function(EquipmentCategory item) viewEditBrand;
-  final VoidCallback viewCreateBrand;
+  final BrandController brandController;
   final VoidCallback logout;
 
   const BrandView({
     super.key,
     required this.brandList,
     required this.changeState,
-    required this.viewBrandDetails,
-    required this.viewDeleteBrand,
-    required this.viewEditBrand,
-    required this.viewCreateBrand,
+    required this.brandController,
     required this.logout,
   });
 
@@ -54,7 +49,7 @@ class BrandView extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-            onPressed: viewCreateBrand,
+            onPressed: brandController.viewCreateBrand,
             tooltip: "New Brand",
             child: const Icon(Icons.add)
         ),
@@ -132,15 +127,15 @@ class BrandView extends StatelessWidget {
 
 
   void viewDetails(EquipmentCategory item) {
-    viewBrandDetails(item);
+    brandController.viewBrandDetails(item);
   }
 
   void delete(EquipmentCategory item) {
-    viewDeleteBrand(item);
+    brandController.viewDeleteBrand(item);
   }
 
   void edit(EquipmentCategory item) {
-    viewEditBrand(item);
+    brandController.viewEditBrand(item);
   }
 
 }

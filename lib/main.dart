@@ -88,7 +88,7 @@ class _MyAppState extends State<MyApp> {
   late final InternalController internalController;
   late final UserController userController;
   final categoryController = CategoryController();
-  final brandController = BrandController();
+  late final BrandController brandController;
   late final EntrancesAndExitsController entrancesAndExitsController;
   var loginController = LoginController.empty();
 
@@ -108,6 +108,7 @@ class _MyAppState extends State<MyApp> {
     externalController = ExternalController((state) => changeState(state), refresh);
     internalController = InternalController((state) => changeState(state), refresh);
     userController = UserController((state) => changeState(state), refresh);
+    brandController = BrandController((state) => changeState(state), refresh);
     loginController = LoginController((state) => changeState(state), refresh);
   }
 
@@ -367,10 +368,7 @@ class _MyAppState extends State<MyApp> {
         return BrandView(
             brandList: brandList,
             changeState: changeState,
-            viewBrandDetails: viewBrandDetails,
-            viewDeleteBrand: viewDeleteBrand,
-            viewEditBrand: viewEditBrand,
-            viewCreateBrand: viewCreateBrand,
+            brandController: brandController,
             logout: loginController.logout
         );
       }
@@ -383,14 +381,13 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.brandDetails: {
         return BrandDetailsView(
-            selectedCategory: selectedCategory!,
+            selectedCategory: brandController.selectedCategory!,
             changeState: changeState,
             logout: loginController.logout
         );
       }
       case AppState.brandEdit: {
         return EditBrandView(
-            selectedCategory: selectedCategory!,
             brandController: brandController,
             logout: loginController.logout,
             changeState: changeState
@@ -398,7 +395,6 @@ class _MyAppState extends State<MyApp> {
       }
       case AppState.brandDelete: {
         return DeleteBrandView(
-            selectedCategory: selectedCategory!,
             changeState: changeState,
             brandController: brandController,
             logout: loginController.logout
@@ -529,7 +525,6 @@ class _MyAppState extends State<MyApp> {
     changeState(AppState.logDetails);
   }
 
-  //User
   void viewUserDetails(User user) {
     selectUser(user);
     changeState(AppState.userDetails);
@@ -562,36 +557,6 @@ class _MyAppState extends State<MyApp> {
     });
     changeState(AppState.categoryCreate);
   }
-
-  //Brands
-  void viewBrandDetails(EquipmentCategory brand) {
-    setState(() {
-      selectedCategory = brand;
-    });
-    changeState(AppState.brandDetails);
-  }
-  void viewEditBrand(EquipmentCategory? brand) {
-    setState(() {
-      brandController.reset();
-      selectedCategory = brand;
-    });
-    changeState(AppState.brandEdit);
-
-  }
-  void viewDeleteBrand(EquipmentCategory? brand) {
-    setState(() {
-      selectedCategory = brand;
-    });
-    changeState(AppState.brandDelete);
-  }
-  void viewCreateBrand() {
-    setState(() {
-      brandController.reset();
-    });
-    changeState(AppState.brandCreate);
-  }
-
-  //End CRUD operations ############################################################
 
   void selectUser(User user) {
     setState(() {
