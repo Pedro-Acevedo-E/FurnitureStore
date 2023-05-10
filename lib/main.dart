@@ -80,6 +80,7 @@ class _MyAppState extends State<MyApp> {
   EquipmentInt? selectedInt;
   EquipmentExt? selectedExt;
   EquipmentCategory? selectedCategory;
+  EquipmentCategory? selectedBrand;
   Log? selectedLog;
 
   final demoController = DemoController();
@@ -110,7 +111,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    demoController.createDemo();
+    //demoController.createDemo();
     demoController.loadItemsDemo();
   }
 
@@ -271,14 +272,18 @@ class _MyAppState extends State<MyApp> {
             user: loginController.loginUser,
             selectedUser: selectedUser,
             selectedCategory: selectedCategory,
+            selectedBrand: selectedBrand,
             internalController: internalController,
             userList: userList,
             categoryList: categoryList,
-            selectUser: (User user) => selectUser(user),
-            selectCategory: (EquipmentCategory cat) => selectCategory(cat),
+            brandList: brandList,
+            selectUser: selectUser,
+            selectCategory: selectCategory,
+            selectBrand: selectBrand,
             logout: logout,
             changeState: changeState
         );
+
       }
       case AppState.internalDetails: {
         final selectedInt = this.selectedInt;
@@ -338,13 +343,16 @@ class _MyAppState extends State<MyApp> {
           return EditInternalView(
               user: loginController.loginUser,
               selectedUser: selectedUser,
+              selectedBrand: selectedBrand,
               selectedInt: selectedInt,
               selectedCategory: selectedCategory,
               internalController: internalController,
               userList: userList,
               categoryList: categoryList,
+              brandList: brandList,
               selectUser: selectUser,
               selectCategory: selectCategory,
+              selectBrand: selectBrand,
               logout: logout,
               changeState: changeState
           );
@@ -675,6 +683,7 @@ class _MyAppState extends State<MyApp> {
       selectedInt = data;
       selectedUser = null;
       selectedCategory = null;
+      selectedBrand = null;
     });
     changeState(AppState.internalEdit);
   }
@@ -688,6 +697,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       selectedUser = null;
       selectedCategory = null;
+      selectedBrand = null;
       internalController.reset();
     });
     changeState(AppState.internalCreate);
@@ -983,6 +993,12 @@ class _MyAppState extends State<MyApp> {
   void selectCategory(EquipmentCategory category) {
     setState(() {
       selectedCategory = category;
+    });
+  }
+
+  void selectBrand(EquipmentCategory category) {
+    setState(() {
+      selectedBrand = category;
     });
   }
 

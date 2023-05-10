@@ -9,7 +9,6 @@ class InternalController {
   final productId = TextEditingController();
   final name = TextEditingController();
   final description = TextEditingController();
-  final model = TextEditingController();
   final weight = TextEditingController();
   final dimensions = TextEditingController();
   final color1 = TextEditingController();
@@ -23,7 +22,6 @@ class InternalController {
     productId.text = "";
     name.text = "";
     description.text = "";
-    model.text = "";
     weight.text = "";
     dimensions.text = "";
     color1.text = "";
@@ -32,7 +30,7 @@ class InternalController {
     location.text = "";
   }
 
-  void create(User? user, String category) async {
+  void create(User? user, String category, String model) async {
     if (user != null) {
       final data = EquipmentInt(
           id: 0,
@@ -43,7 +41,7 @@ class InternalController {
           name: name.text,
           description: description.text,
           category: category,
-          model: model.text,
+          model: model,
           weight: weight.text,
           dimensions: dimensions.text,
           color_1: color1.text,
@@ -64,7 +62,7 @@ class InternalController {
           name: name.text,
           description: description.text,
           category: category,
-          model: model.text,
+          model: model,
           weight: weight.text,
           dimensions: dimensions.text,
           color_1: color1.text,
@@ -84,7 +82,7 @@ class InternalController {
     }
   }
 
-  void update(EquipmentInt selectedInt, String user, String category) async {
+  void update(EquipmentInt selectedInt, String user, String category, String model) async {
     final data = EquipmentInt(
         id: selectedInt.id,
         user: user,
@@ -94,7 +92,7 @@ class InternalController {
         name: name.text,
         description: description.text,
         category: category,
-        model: model.text,
+        model: model,
         weight: weight.text,
         dimensions: dimensions.text,
         color_1: color1.text,

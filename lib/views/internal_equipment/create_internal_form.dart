@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
@@ -10,11 +9,14 @@ class CreateInternalView extends StatelessWidget {
   final User user;
   final User? selectedUser;
   final EquipmentCategory? selectedCategory;
+  final EquipmentCategory? selectedBrand;
   final InternalController internalController;
   final List<User> userList;
   final List<EquipmentCategory> categoryList;
+  final List<EquipmentCategory> brandList;
   final Function(User user) selectUser;
   final Function(EquipmentCategory category) selectCategory;
+  final Function(EquipmentCategory category) selectBrand;
   final VoidCallback logout;
   final Function(AppState val) changeState;
 
@@ -23,11 +25,14 @@ class CreateInternalView extends StatelessWidget {
     required this.user,
     required this.selectedUser,
     required this.selectedCategory,
+    required this.selectedBrand,
     required this.internalController,
     required this.userList,
     required this.categoryList,
+    required this.brandList,
     required this.selectUser,
     required this.selectCategory,
+    required this.selectBrand,
     required this.logout,
     required this.changeState,
   });
@@ -98,6 +103,27 @@ class CreateInternalView extends StatelessWidget {
                     const Spacer(),
                   ]),
               const SizedBox(height: 20),
+              Row(
+                  children: [
+                    const Spacer(),
+                    const Text("Select Brand: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Spacer(),
+                    DropdownButton(
+                      value: selectedBrand,
+                      icon: const Icon(Icons.arrow_downward),
+                      items: brandList.map((EquipmentCategory value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value.name),
+                        );
+                      }).toList(),
+                      onChanged: (EquipmentCategory? value) {
+                        electBrand(value);
+                      },
+                    ),
+                    const Spacer(),
+                  ]),
+              const SizedBox(height: 20),
               TextField(
                 controller: internalController.status,
                 textAlign: TextAlign.center,
@@ -154,15 +180,6 @@ class CreateInternalView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
-                controller: internalController.model,
-                textAlign: TextAlign.center,
-                textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                    hintText: "Model"
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
                 controller: internalController.color1,
                 textAlign: TextAlign.center,
                 textInputAction: TextInputAction.done,
@@ -214,16 +231,18 @@ class CreateInternalView extends StatelessWidget {
     }
   }
 
-  void createInternal() async {
-    final selectedCategory = this.selectedCategory;
-    if (selectedCategory != null) {
-      internalController.create(selectedUser, selectedCategory.name);
-      internalController.reset();
-      changeState(AppState.internalFurniture);
-    } else {
-      internalController.create(selectedUser, "Other");
-      internalController.reset();
-      changeState(AppState.internalFurniture);
+  void electBrand(EquipmentCategory? value) {
+    if(value != null) {
+      selectBrand(value);
     }
+  }
+
+  void createInternal() async {
+    internalController.create(
+        selectedUser,
+        selectedCategory != null ? selectedCategory!.name : "Other",
+        selectedBrand != null ? selectedBrand!.name : "Other"
+    );
+    changeState(AppState.internalFurniture);
   }
 }

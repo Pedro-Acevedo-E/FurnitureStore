@@ -9,11 +9,14 @@ class EditInternalView extends StatelessWidget {
   final User? selectedUser;
   final EquipmentInt selectedInt;
   final EquipmentCategory? selectedCategory;
+  final EquipmentCategory? selectedBrand;
   final InternalController internalController;
   final List<User> userList;
   final List<EquipmentCategory> categoryList;
+  final List<EquipmentCategory> brandList;
   final Function(User user) selectUser;
   final Function(EquipmentCategory category) selectCategory;
+  final Function(EquipmentCategory category) selectBrand;
   final VoidCallback logout;
   final Function(AppState val) changeState;
 
@@ -21,13 +24,16 @@ class EditInternalView extends StatelessWidget {
     super.key,
     required this.user,
     required this.selectedUser,
+    required this.selectedBrand,
     required this.selectedInt,
     required this.selectedCategory,
     required this.internalController,
     required this.userList,
     required this.categoryList,
+    required this.brandList,
     required this.selectUser,
     required this.selectCategory,
+    required this.selectBrand,
     required this.logout,
     required this.changeState,
   }){
@@ -39,7 +45,6 @@ class EditInternalView extends StatelessWidget {
     internalController.status.text = selectedInt.status;
     internalController.color2.text = selectedInt.color_2;
     internalController.color1.text = selectedInt.color_1;
-    internalController.model.text = selectedInt.model;
     internalController.description.text = selectedInt.description;
     internalController.location.text = selectedInt.location;
   }
@@ -112,6 +117,28 @@ class EditInternalView extends StatelessWidget {
                     const Spacer(),
                   ]),
               const SizedBox(height: 20),
+              Text(selectedInt.model.isNotEmpty ? "Current Brand: ${selectedInt.model}" : ""),
+              Row(
+                  children: [
+                    const Spacer(),
+                    const Text("Select Brand: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Spacer(),
+                    DropdownButton(
+                      value: selectedBrand,
+                      icon: const Icon(Icons.arrow_downward),
+                      items: brandList.map((EquipmentCategory value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value.name),
+                        );
+                      }).toList(),
+                      onChanged: (EquipmentCategory? value) {
+                        electBrand(value);
+                      },
+                    ),
+                    const Spacer(),
+                  ]),
+              const SizedBox(height: 20),
               TextField(
                 controller: internalController.status,
                 textAlign: TextAlign.center,
@@ -177,15 +204,6 @@ class EditInternalView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
-                controller: internalController.model,
-                textAlign: TextAlign.center,
-                textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                    hintText: "Model"
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
                 controller: internalController.color1,
                 textAlign: TextAlign.center,
                 textInputAction: TextInputAction.done,
@@ -237,21 +255,19 @@ class EditInternalView extends StatelessWidget {
     }
   }
 
+  void electBrand(EquipmentCategory? value) {
+    if(value != null) {
+      selectBrand(value);
+    }
+  }
+
   void editInternal() {
-    final selectedUser = this.selectedUser;
-    final selectedCategory = this.selectedCategory;
-    if (selectedUser != null && selectedCategory != null) {
-      internalController.update(selectedInt, selectedUser.username, selectedCategory.name);
-    }
-    else if (selectedUser != null) {
-      internalController.update(selectedInt, selectedUser.username, "Other");
-    }
-    else if (selectedCategory != null) {
-      internalController.update(selectedInt, "", selectedCategory.name);
-    }
-    else {
-      internalController.update(selectedInt, "", "Other");
-    }
+    internalController.update(
+        selectedInt,
+        selectedUser != null ? selectedUser!.username : "",
+        selectedCategory != null ? selectedCategory!.name : "Other",
+        selectedBrand != null ? selectedBrand!.name : "Other"
+    );
     changeState(AppState.internalFurniture);
   }
 }

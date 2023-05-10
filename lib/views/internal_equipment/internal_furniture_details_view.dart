@@ -53,7 +53,7 @@ class InternalDetailsView extends StatelessWidget {
               DetailsRowView(field: "Name", value: selectedInt.name),
               DetailsRowView(field: "Description", value: selectedInt.description),
               DetailsRowView(field: "Category", value: selectedInt.category),
-              DetailsRowView(field: "Model", value: selectedInt.model),
+              DetailsRowView(field: "Brand", value: selectedInt.model),
               DetailsRowView(field: "Weight", value: selectedInt.weight),
               DetailsRowView(field: "Dimensions", value: selectedInt.dimensions),
               DetailsRowView(field: "Color 1", value: selectedInt.color_1),

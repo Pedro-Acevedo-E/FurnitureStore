@@ -47,7 +47,7 @@ class EntranceAndExitsView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Padding(padding: EdgeInsets.only(top: 20)),
+                const SizedBox(height: 20),
                 Row(
                     children: const [
                       Spacer(),
@@ -72,6 +72,7 @@ class EntranceAndExitsView extends StatelessWidget {
                       ),
                       Spacer(),
                     ]),
+                const SizedBox(height: 20),
                 getUserListWidgets(userList),
               ],
             ),
