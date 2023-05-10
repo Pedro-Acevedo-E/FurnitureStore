@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:furniture_store/controllers/brand_controller.dart';
 import 'package:furniture_store/controllers/category_controller.dart';
 import 'package:furniture_store/controllers/demo_controller.dart';
+import 'package:furniture_store/controllers/entrances_exits_controller.dart';
 import 'package:furniture_store/controllers/external_furniture_controller.dart';
 import 'package:furniture_store/controllers/internal_furniture_controller.dart';
 import 'package:furniture_store/controllers/login_controller.dart';
@@ -87,19 +90,13 @@ class _MyAppState extends State<MyApp> {
   final loginController = LoginController();
   var alertText = "";
 
-  //entrance & exits
-  List<User> filteredUserList = [];
-  List<Widget> formList = [];
-  List<TextEditingController> nameControllerList = [];
-  List<TextEditingController> descriptionControllerList = [];
-  bool showIncidentForm = false;
-
   final externalController = ExternalController();
   final incidentController = IncidentController();
   final internalController = InternalController();
   final userController = UserController();
   final categoryController = CategoryController();
   final brandController = BrandController();
+  late final EntrancesAndExitsController entrancesAndExitsController;
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +110,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     //demoController.createDemo();
     demoController.loadItemsDemo();
+    entrancesAndExitsController = EntrancesAndExitsController(loginController.loginUser, (state) => changeState(state), refresh);
   }
 
   Widget mainView() {
@@ -134,10 +132,10 @@ class _MyAppState extends State<MyApp> {
             user: loginController.loginUser,
             userList: userList,
             changeState: (AppState state) => changeState(state),
-            viewUserDetails: (User user) => viewUserDetails(user),
-            viewUserEntrance: () => viewUserEntrance(),
-            viewUserExit: (User user) => viewUserExit(user),
-            logout: () => logout());
+            viewUserDetails: viewUserDetails,
+            logout: () => logout(),
+            entrancesAndExitsController: entrancesAndExitsController,
+        );
       }
       case AppState.userDetails: {
         final selectedUser = this.selectedUser;
@@ -157,40 +155,21 @@ class _MyAppState extends State<MyApp> {
       case AppState.userEntrance: {
         return UserEntranceView(
             user: loginController.loginUser,
-            selectedUser: selectedUser,
-            userList: filteredUserList,
             intList: intList,
             changeState: (AppState state) => changeState(state),
-            selectUser: (User user) => selectUser(user),
             logout: () => logout(),
-            addForm: () => addForm(),
-            removeForm: () => removeForm(),
-            createEntrance: () => createEntrance(),
-            toggleIncidentForm: () => toggleIncidentForm(),
-            showIncidentForm: showIncidentForm,
-            incidentController: incidentController,
-            formList: formList,
-            nameControllerList: nameControllerList,
-            descriptionControllerList: descriptionControllerList);
+            entrancesAndExitsController: entrancesAndExitsController
+        );
       }
       case AppState.userExit: {
-        final selectedUser = this.selectedUser;
-        if (selectedUser != null) {
           return UserExitView(
               user: loginController.loginUser,
-              selectedUser: selectedUser,
               intList: intList,
               extList: extList,
               changeState: (AppState state) => changeState(state),
               logout: () => logout(),
-              createExit: () => createExit(),
-              toggleIncidentForm: () => toggleIncidentForm(),
-              showIncidentForm: showIncidentForm,
-              incidentController: incidentController,
+              entrancesAndExitsController: entrancesAndExitsController,
           );
-        } else {
-          return const Text("Error");
-        }
       }
       case AppState.createIncident: {
         return CreateIncidentView(
@@ -818,172 +797,6 @@ class _MyAppState extends State<MyApp> {
 
   //End CRUD operations ############################################################
 
-  void viewUserEntrance() async {
-    final data = await SQLHelper.filteredUserList();
-    List<User> tempUserList = [];
-    for(var i = 0; i < data.length; i++) {
-      tempUserList.add(User(
-          id: data.elementAt(i)["id"],
-          username: data.elementAt(i)["username"],
-          firstName: data.elementAt(i)["first_name"],
-          lastName: data.elementAt(i)["last_name"],
-          password: data.elementAt(i)["password"],
-          entranceTime: data.elementAt(i)["entrance_time"],
-          access: data.elementAt(i)["access"]));
-    }
-
-    setState(() {
-      showIncidentForm = false;
-      filteredUserList = tempUserList;
-      selectedUser = null;
-      formList = [];
-      nameControllerList = [];
-      descriptionControllerList = [];
-      incidentController.reset();
-    });
-    //add if to check if filtered list is empty to show that there R no members outside
-    changeState(AppState.userEntrance);
-  }
-
-  void addForm() {
-    setState(() {
-      nameControllerList.add(TextEditingController());
-      descriptionControllerList.add(TextEditingController());
-      formList.add(ExternalFurnitureForm(nameController: nameControllerList.last, descriptionController: descriptionControllerList.last));
-    });
-  }
-
-  void removeForm() {
-    setState(() {
-      nameControllerList.removeAt(nameControllerList.length - 1);
-      descriptionControllerList.removeAt(descriptionControllerList.length - 1);
-      formList.removeAt(formList.length - 1);
-    });
-  }
-
-  void createEntrance() async {
-    final selectedUser = this.selectedUser;
-    if (selectedUser != null) {
-      selectedUser.entranceTime = "${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}";
-      var descriptionString = "User entered Office";
-
-      if (formList.isNotEmpty) {
-        for (var i = 0; i < formList.length; i++) {
-          final tempEquipmentExt = EquipmentExt(
-              id: 0,
-              user: selectedUser.username,
-              name: nameControllerList[i].text,
-              description: descriptionControllerList[i].text,
-              createdAt: ""
-          );
-          descriptionString = "$descriptionString \nWith external equipment ${tempEquipmentExt.name}";
-          final data = await SQLHelper.createEquipmentExt(tempEquipmentExt);
-          if (kDebugMode) {
-            print("Created External Equipment $data");
-          }
-        }
-      }
-
-      updateInternal(selectedUser, "Office");
-
-      final userData = await SQLHelper.updateUser(selectedUser.id, selectedUser);
-
-      final logData = Log(
-          id: 0,
-          title: "${selectedUser.username} Has entered Office at ${selectedUser
-              .entranceTime}",
-          createdBy: loginController.loginUser.username,
-          description: descriptionString,
-          createdAt: ""
-      );
-      final userLogData = await SQLHelper.createLog(logData, "user_log");
-
-      incidentController.create(loginController.loginUser);
-
-      if (kDebugMode) {
-        print("Updated User $userData");
-        print("Created User Log $userLogData");
-      }
-
-      changeState(AppState.entrancesAndExits);
-    }
-  }
-
-  void viewUserExit(User user) async {
-    setState(() {
-      selectedUser = user;
-      showIncidentForm = false;
-      incidentController.reset();
-    });
-    changeState(AppState.userExit);
-  }
-
-  void createExit() async {
-    final selectedUser = this.selectedUser;
-    if (selectedUser != null) {
-      selectedUser.entranceTime = "";
-      var descriptionString = "User Exited Office";
-      for (var i = 0; i < extList.length; i++) {
-        if (extList[i].user == selectedUser.username) {
-          descriptionString = "$descriptionString \nExited with ${extList[i].name}";
-          SQLHelper.deleteItem(extList[i].id, "equipment_ext");
-        }
-      }
-
-      updateInternal(selectedUser, "Outside");
-
-      final userData = await SQLHelper.updateUser(
-          selectedUser.id, selectedUser);
-
-      final logData = Log(
-          id: 0,
-          title: "${selectedUser.username} Has exited Office at ${DateTime
-              .now()
-              .hour
-              .toString()}:${DateTime
-              .now()
-              .minute
-              .toString()}",
-          createdBy: loginController.loginUser.username,
-          description: descriptionString,
-          createdAt: ""
-      );
-      final userLogData = await SQLHelper.createLog(logData, "user_log");
-
-      incidentController.create(loginController.loginUser);
-
-      if (kDebugMode) {
-        print("Updated User $userData");
-        print("Created User Log $userLogData");
-      }
-
-      changeState(AppState.entrancesAndExits);
-    }
-  }
-
-  void updateInternal(User user, String location) async {
-    for (var i = 0; i < intList.length; i++) {
-      if(intList[i].user == user.username) {
-        intList[i].location = "$location with ${user.username}";
-        final data = await SQLHelper.updateEquipmentInt(intList[i].id, intList[i]);
-        if (kDebugMode) {
-          print("Updated Internal Equipment $data");
-        }
-      }
-    }
-  }
-
-  void toggleIncidentForm() {
-    setState(() {
-      incidentController.reset();
-      if (showIncidentForm == true) {
-        showIncidentForm = false;
-      } else {
-        showIncidentForm = true;
-      }
-    });
-  }
-
   void selectUser(User user) {
     setState(() {
       selectedUser = user;
@@ -1006,6 +819,10 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       userController.access.text = access;
     });
+  }
+
+  void refresh() {
+    setState(() { });
   }
 }
 

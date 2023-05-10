@@ -4,32 +4,25 @@ import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
 import '../../app_state.dart';
+import '../../controllers/entrances_exits_controller.dart';
 import '../../models.dart';
 
 class UserExitView extends StatelessWidget {
   final User user;
-  final User selectedUser;
   final List<EquipmentInt> intList;
   final List<EquipmentExt> extList;
   final Function(AppState val) changeState;
   final VoidCallback logout;
-  final VoidCallback createExit;
-  final VoidCallback toggleIncidentForm;
-  final bool showIncidentForm;
-  final IncidentController incidentController;
+  final EntrancesAndExitsController entrancesAndExitsController;
 
   const UserExitView({
     super.key,
     required this.user,
-    required this.selectedUser,
     required this.intList,
     required this.extList,
     required this.changeState,
     required this.logout,
-    required this.createExit,
-    required this.toggleIncidentForm,
-    required this.showIncidentForm,
-    required this.incidentController,
+    required this.entrancesAndExitsController,
   });
 
   @override
@@ -61,7 +54,7 @@ class UserExitView extends StatelessWidget {
                     const Spacer(),
                     Row(children: [
                       const Text("User ", style: TextStyle(fontSize: 18)),
-                      Text(selectedUser.username, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text(entrancesAndExitsController.selectedUser!.username, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       const Text(" is about to exit office", style: TextStyle(fontSize: 18)),
                     ]),
                     const Spacer(),
@@ -78,7 +71,7 @@ class UserExitView extends StatelessWidget {
               getIncidentWidget(),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: createExit,
+                onPressed: entrancesAndExitsController.createExit,
                 child: const Text("Register Exit", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ],
@@ -91,7 +84,7 @@ class UserExitView extends StatelessWidget {
   Widget getIntListWidgets() {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < intList.length; i++){
-      if (selectedUser.username == intList[i].user) {
+      if (entrancesAndExitsController.selectedUser!.username == intList[i].user) {
         list.add(
             Row(children: [
               const Spacer(),
@@ -112,7 +105,7 @@ class UserExitView extends StatelessWidget {
   Widget getExtListWidgets() {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < extList.length; i++){
-      if (selectedUser.username == extList[i].user) {
+      if (entrancesAndExitsController.selectedUser!.username == extList[i].user) {
         list.add(
             Row(children: [
               const Spacer(),
@@ -131,18 +124,18 @@ class UserExitView extends StatelessWidget {
   }
 
   Widget getIncidentWidget() {
-    if (showIncidentForm) {
+    if (entrancesAndExitsController.showIncidentForm) {
       return Column(
         children: [
           Row(children: [
             const Spacer(),
             const Text("Incident?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            IconButton(onPressed: toggleIncidentForm, icon: const Icon(Icons.close)),
+            IconButton(onPressed: entrancesAndExitsController.toggleIncidentForm, icon: const Icon(Icons.close)),
             const Spacer(),
           ]),
           ExternalFurnitureForm(
-              nameController: incidentController.incidentTitleController,
-              descriptionController: incidentController.incidentDescriptionController
+              nameController: entrancesAndExitsController.incidentController.incidentTitleController,
+              descriptionController: entrancesAndExitsController.incidentController.incidentDescriptionController
           ),
         ],
       );
@@ -150,7 +143,7 @@ class UserExitView extends StatelessWidget {
       return Row(children: [
         const Spacer(),
         const Text("Incident?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        IconButton(onPressed: toggleIncidentForm, icon: const Icon(Icons.check)),
+        IconButton(onPressed: entrancesAndExitsController.toggleIncidentForm, icon: const Icon(Icons.check)),
         const Spacer(),
       ]);
     }

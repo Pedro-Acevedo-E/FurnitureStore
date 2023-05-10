@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furniture_store/controllers/entrances_exits_controller.dart';
 import 'package:furniture_store/controllers/incident_controller.dart';
 import 'package:furniture_store/views/input_form.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
@@ -8,40 +9,18 @@ import '../../models.dart';
 
 class UserEntranceView extends StatelessWidget {
   final User user;
-  final User? selectedUser;
-  final List<User> userList;
   final List<EquipmentInt> intList;
   final Function(AppState val) changeState;
-  final Function(User user) selectUser;
   final VoidCallback logout;
-  final VoidCallback addForm;
-  final VoidCallback removeForm;
-  final VoidCallback createEntrance;
-  final VoidCallback toggleIncidentForm;
-  final bool showIncidentForm;
-  final IncidentController incidentController;
-  final List<Widget> formList;
-  final List<TextEditingController> nameControllerList;
-  final List<TextEditingController> descriptionControllerList;
+  final EntrancesAndExitsController entrancesAndExitsController;
 
   const UserEntranceView({
     super.key,
     required this.user,
-    required this.selectedUser,
-    required this.userList,
     required this.intList,
     required this.changeState,
-    required this.selectUser,
     required this.logout,
-    required this.addForm,
-    required this.removeForm,
-    required this.createEntrance,
-    required this.toggleIncidentForm,
-    required this.showIncidentForm,
-    required this.incidentController,
-    required this.formList,
-    required this.nameControllerList,
-    required this.descriptionControllerList
+    required this.entrancesAndExitsController
   });
 
   @override
@@ -74,9 +53,9 @@ class UserEntranceView extends StatelessWidget {
                       const Text("Select User: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       const Spacer(),
                       DropdownButton(
-                          value: selectedUser,
+                          value: entrancesAndExitsController.selectedUser,
                           icon: const Icon(Icons.arrow_downward),
-                          items: userList.map((User value) {
+                          items: entrancesAndExitsController.filteredUserList.map((User value) {
                             return DropdownMenuItem(
                               value: value,
                               child: Text(value.username),
@@ -96,15 +75,15 @@ class UserEntranceView extends StatelessWidget {
                   Row(children: [
                     const Spacer(),
                     const Text("External Equipment?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    IconButton(onPressed: addForm, icon: const Icon(Icons.add)),
-                    IconButton(onPressed: removeForm, icon: const Icon(Icons.remove)),
+                    IconButton(onPressed: entrancesAndExitsController.addForm, icon: const Icon(Icons.add)),
+                    IconButton(onPressed: entrancesAndExitsController.removeForm, icon: const Icon(Icons.remove)),
                     const Spacer(),
                   ]),
                   getFormListWidgets(),
                   getIncidentWidget(),
                   const Padding(padding: EdgeInsets.only(bottom: 10)),
                   ElevatedButton(
-                      onPressed: createEntrance,
+                      onPressed: entrancesAndExitsController.createEntrance,
                       child: const Text("Register Entrance", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(height: 90),
@@ -117,11 +96,11 @@ class UserEntranceView extends StatelessWidget {
 
   Widget getFormListWidgets() {
     List<Widget> list = <Widget>[];
-    for(var i = 0; i < formList.length; i++){
+    for(var i = 0; i < entrancesAndExitsController.formList.length; i++){
         list.add(
             ExternalFurnitureForm(
-                nameController: nameControllerList[i],
-                descriptionController: descriptionControllerList[i])
+                nameController: entrancesAndExitsController.nameControllerList[i],
+                descriptionController: entrancesAndExitsController.descriptionControllerList[i])
         );
         list.add(const Padding(padding: EdgeInsets.only(top: 10)));
     }
@@ -131,7 +110,7 @@ class UserEntranceView extends StatelessWidget {
   Widget getIntListWidgets() {
     List<Widget> list = <Widget>[];
     for(var i = 0; i < intList.length; i++){
-      if (selectedUser?.username == intList[i].user) {
+      if (entrancesAndExitsController.selectedUser?.username == intList[i].user) {
         list.add(
             Row(children: [
               const Spacer(),
@@ -149,18 +128,18 @@ class UserEntranceView extends StatelessWidget {
   }
 
   Widget getIncidentWidget() {
-    if (showIncidentForm) {
+    if (entrancesAndExitsController.showIncidentForm) {
       return Column(
         children: [
           Row(children: [
             const Spacer(),
             const Text("Incident?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            IconButton(onPressed: toggleIncidentForm, icon: const Icon(Icons.close)),
+            IconButton(onPressed: entrancesAndExitsController.toggleIncidentForm, icon: const Icon(Icons.close)),
             const Spacer(),
           ]),
           ExternalFurnitureForm(
-              nameController: incidentController.incidentTitleController,
-              descriptionController: incidentController.incidentDescriptionController
+              nameController: entrancesAndExitsController.incidentController.incidentTitleController,
+              descriptionController: entrancesAndExitsController.incidentController.incidentDescriptionController
           ),
         ],
       );
@@ -168,7 +147,7 @@ class UserEntranceView extends StatelessWidget {
       return Row(children: [
         const Spacer(),
         const Text("Incident?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        IconButton(onPressed: toggleIncidentForm, icon: const Icon(Icons.check)),
+        IconButton(onPressed: entrancesAndExitsController.toggleIncidentForm, icon: const Icon(Icons.check)),
         const Spacer(),
       ]);
     }
@@ -177,7 +156,7 @@ class UserEntranceView extends StatelessWidget {
 
   void electUser(User? value) {
     if(value != null) {
-      selectUser(value);
+      entrancesAndExitsController.selectUser(value);
     }
   }
 }

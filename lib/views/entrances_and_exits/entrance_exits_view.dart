@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furniture_store/views/popup_menu_button.dart';
 
 import '../../app_state.dart';
+import '../../controllers/entrances_exits_controller.dart';
 import '../../models.dart';
 
 class EntranceAndExitsView extends StatelessWidget {
@@ -9,9 +10,8 @@ class EntranceAndExitsView extends StatelessWidget {
   final List<User> userList;
   final Function(AppState val) changeState;
   final Function(User user) viewUserDetails;
-  final VoidCallback viewUserEntrance;
-  final Function(User user) viewUserExit;
   final VoidCallback logout;
+  final EntrancesAndExitsController entrancesAndExitsController;
 
   const EntranceAndExitsView({
     super.key,
@@ -19,9 +19,8 @@ class EntranceAndExitsView extends StatelessWidget {
     required this.userList,
     required this.changeState,
     required this.viewUserDetails,
-    required this.viewUserEntrance,
-    required this.viewUserExit,
     required this.logout,
+    required this.entrancesAndExitsController,
   });
 
   @override
@@ -79,7 +78,7 @@ class EntranceAndExitsView extends StatelessWidget {
           ),
 
         floatingActionButton: FloatingActionButton(
-          onPressed: viewUserEntrance,
+          onPressed: entrancesAndExitsController.viewUserEntrance,
           tooltip: "New entrance",
           child: const Icon(Icons.add),
         ),
@@ -115,7 +114,7 @@ class EntranceAndExitsView extends StatelessWidget {
             Expanded(
                 flex: 6,
                 child: TextButton(
-                    onPressed: () => viewUserExit(users[i]),
+                    onPressed: () => entrancesAndExitsController.viewUserExit(users[i]),
                     child: const Text("Exit")
                 ),
             ),
@@ -132,6 +131,7 @@ class EntranceAndExitsView extends StatelessWidget {
   }
 
   void userExit(User user) {
-    viewUserExit(user);
+    entrancesAndExitsController.viewUserExit(user);
+    //viewUserExit(user);
   }
 }
